@@ -5,131 +5,469 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Eon Yazılım | Teknolojide Yeni Bir Boyut</title>
     <style>
+        :root {
+            --bg-gradient: radial-gradient(circle at top, #1f2937, #0d1117 55%);
+            --primary: #3b82f6;
+            --primary-accent: #60a5fa;
+            --secondary: #22d3ee;
+            --card-bg: rgba(30, 41, 59, 0.85);
+            --text-muted: #9ca3af;
+            scroll-behavior: smooth;
+        }
+
+        * {
+            box-sizing: border-box;
+        }
+
         body {
             margin: 0;
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background-color: #0d1117;
+            background: var(--bg-gradient);
             color: #fff;
+            line-height: 1.6;
         }
+
         header {
-            background-color: #111827;
-            padding: 20px 0;
-            text-align: center;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.5);
+            position: sticky;
+            top: 0;
+            z-index: 10;
+            backdrop-filter: blur(12px);
+            background: rgba(15, 23, 42, 0.8);
+            border-bottom: 1px solid rgba(148, 163, 184, 0.2);
+            padding: 18px 0;
         }
-        header h1 {
-            color: #3b82f6;
-            font-size: 2.5em;
-            margin: 0;
+
+        .container {
+            width: min(1100px, 92%);
+            margin: 0 auto;
         }
-        nav {
-            margin-top: 10px;
+
+        header .container {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
         }
-        nav a {
-            color: #fff;
-            margin: 0 15px;
-            text-decoration: none;
-            font-weight: bold;
-            transition: color 0.3s;
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 12px;
         }
-        nav a:hover {
-            color: #3b82f6;
-        }
-        section {
-            padding: 50px 20px;
-            max-width: 1000px;
-            margin: auto;
-        }
-        h2 {
-            color: #3b82f6;
-        }
-        .services {
+
+        .logo span:first-child {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-            gap: 20px;
+            place-items: center;
+            width: 46px;
+            height: 46px;
+            border-radius: 14px;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            font-weight: bold;
+            font-size: 1.2em;
         }
-        .service {
-            background-color: #1e293b;
-            padding: 20px;
-            border-radius: 10px;
-            box-shadow: 0 4px 10px rgba(0,0,0,0.4);
-            transition: transform 0.3s, box-shadow 0.3s;
+
+        .logo span:last-child {
+            font-size: 1.3em;
+            font-weight: 600;
+            letter-spacing: 0.5px;
         }
-        .service:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 6px 15px rgba(0,0,0,0.6);
+
+        nav a {
+            color: #e2e8f0;
+            margin-left: 24px;
+            text-decoration: none;
+            font-weight: 500;
+            transition: color 0.3s ease, transform 0.3s ease;
         }
-        footer {
-            text-align: center;
-            padding: 20px;
-            background-color: #111827;
-            color: #9ca3af;
+
+        nav a:hover,
+        nav a:focus {
+            color: var(--secondary);
+            transform: translateY(-2px);
         }
-        .contact {
-            text-align: center;
+
+        main section {
+            padding: 80px 0;
+        }
+
+        h1, h2, h3 {
+            font-weight: 600;
+            margin-top: 0;
+        }
+
+        .hero {
+            display: grid;
+            gap: 36px;
+            align-items: center;
+        }
+
+        .hero-content {
+            max-width: 620px;
+        }
+
+        .hero h1 {
+            font-size: clamp(2.2rem, 4vw, 3.2rem);
+            line-height: 1.2;
+            margin-bottom: 16px;
+        }
+
+        .hero p {
+            color: var(--text-muted);
             font-size: 1.1em;
         }
-        .contact a {
-            color: #3b82f6;
+
+        .cta-group {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 14px;
+            margin-top: 26px;
+        }
+
+        .btn {
+            padding: 12px 26px;
+            border-radius: 999px;
+            font-weight: 600;
+            cursor: pointer;
             text-decoration: none;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            color: #0f172a;
+            box-shadow: 0 12px 30px rgba(59, 130, 246, 0.25);
+        }
+
+        .btn-outline {
+            border: 1px solid rgba(148, 163, 184, 0.4);
+            color: #e2e8f0;
+        }
+
+        .btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 18px 38px rgba(59, 130, 246, 0.35);
+        }
+
+        .hero-highlight {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            padding: 10px 18px;
+            border-radius: 999px;
+            background: rgba(30, 41, 59, 0.7);
+            border: 1px solid rgba(148, 163, 184, 0.2);
+            color: var(--secondary);
+            font-weight: 500;
+            margin-bottom: 18px;
+            backdrop-filter: blur(6px);
+        }
+
+        .cards {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+            gap: 24px;
+        }
+
+        .card {
+            background: var(--card-bg);
+            padding: 24px;
+            border-radius: 16px;
+            border: 1px solid rgba(148, 163, 184, 0.15);
+            box-shadow: 0 18px 35px rgba(15, 23, 42, 0.45);
+            transition: transform 0.35s ease, border-color 0.35s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .card::after {
+            content: "";
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(140deg, rgba(59, 130, 246, 0.2), rgba(34, 211, 238, 0));
+            opacity: 0;
+            transition: opacity 0.35s ease;
+            pointer-events: none;
+        }
+
+        .card:hover {
+            transform: translateY(-6px);
+            border-color: rgba(94, 234, 212, 0.3);
+        }
+
+        .card:hover::after {
+            opacity: 1;
+        }
+
+        .card h3 {
+            margin-bottom: 12px;
+            font-size: 1.2em;
+        }
+
+        .card p {
+            color: var(--text-muted);
+            margin-bottom: 0;
+        }
+
+        .section-title {
+            margin-bottom: 18px;
+            font-size: 2rem;
+        }
+
+        .section-subtitle {
+            color: var(--text-muted);
+            margin-bottom: 36px;
+        }
+
+        .projects {
+            display: grid;
+            gap: 22px;
+        }
+
+        .project {
+            padding: 24px;
+            border-radius: 16px;
+            background: rgba(15, 23, 42, 0.8);
+            border: 1px solid rgba(148, 163, 184, 0.15);
+            display: grid;
+            gap: 12px;
+        }
+
+        .project small {
+            color: var(--secondary);
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+        }
+
+        .project p {
+            color: var(--text-muted);
+            margin: 0;
+        }
+
+        .tech-stack {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 12px;
+        }
+
+        .tech-chip {
+            padding: 8px 16px;
+            border-radius: 999px;
+            background: rgba(56, 189, 248, 0.15);
+            border: 1px solid rgba(56, 189, 248, 0.35);
+            color: #bae6fd;
+            font-weight: 500;
+        }
+
+        .metrics {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+            gap: 20px;
+            margin-top: 40px;
+        }
+
+        .metric {
+            background: rgba(15, 23, 42, 0.8);
+            border-radius: 16px;
+            padding: 24px;
+            text-align: center;
+            border: 1px solid rgba(148, 163, 184, 0.2);
+        }
+
+        .metric strong {
+            display: block;
+            font-size: 2rem;
+            color: var(--primary-accent);
+        }
+
+        .contact-card {
+            text-align: center;
+            max-width: 540px;
+            margin: 0 auto;
+            padding: 36px;
+            background: rgba(30, 41, 59, 0.9);
+            border-radius: 18px;
+            border: 1px solid rgba(148, 163, 184, 0.2);
+            box-shadow: 0 18px 40px rgba(15, 23, 42, 0.55);
+        }
+
+        .contact-card a {
+            color: var(--secondary);
+            text-decoration: none;
+            font-weight: 600;
+        }
+
+        footer {
+            text-align: center;
+            padding: 28px 0 42px;
+            color: var(--text-muted);
+            font-size: 0.95em;
+        }
+
+        @media (max-width: 780px) {
+            header .container {
+                flex-direction: column;
+                gap: 18px;
+            }
+
+            nav a {
+                margin: 0 12px;
+            }
+
+            .cta-group {
+                justify-content: center;
+            }
+
+            .hero {
+                text-align: center;
+            }
+
+            .hero-content {
+                margin: 0 auto;
+            }
         }
     </style>
 </head>
 <body>
-
 <header>
-    <h1>Eon Yazılım</h1>
-    <nav>
-        <a href="#anasayfa">Ana Sayfa</a>
-        <a href="#hakkimizda">Hakkımızda</a>
-        <a href="#hizmetler">Hizmetler</a>
-        <a href="#iletisim">İletişim</a>
-    </nav>
+    <div class="container">
+        <div class="logo">
+            <span>EY</span>
+            <span>Eon Yazılım</span>
+        </div>
+        <nav>
+            <a href="#anasayfa">Ana Sayfa</a>
+            <a href="#hakkimizda">Hakkımızda</a>
+            <a href="#hizmetler">Hizmetler</a>
+            <a href="#projeler">Projeler</a>
+            <a href="#iletisim">İletişim</a>
+        </nav>
+    </div>
 </header>
 
-<section id="anasayfa">
-    <h2>Teknolojide Yeni Bir Boyut</h2>
-    <p>Eon Yazılım olarak dijital dünyanın geleceğini inşa ediyoruz. Yenilikçi çözümlerimizle yazılım, güvenlik ve oyun geliştirme alanlarında fark yaratıyoruz.</p>
-</section>
+<main>
+    <section id="anasayfa">
+        <div class="container hero">
+            <div class="hero-content">
+                <div class="hero-highlight">📈 Dijital dönüşümde stratejik ortağınız</div>
+                <h1>Teknolojide Yeni Bir Boyuta Hazır mısınız?</h1>
+                <p>Eon Yazılım olarak dijital dünyanın geleceğini inşa ediyoruz. Modern web uygulamalarından oyun dünyasına, siber güvenlikten özel çözümlere kadar uçtan uca hizmet sunuyoruz.</p>
+                <div class="cta-group">
+                    <a class="btn btn-primary" href="#projeler">Çalışmalarımızı İnceleyin →</a>
+                    <a class="btn btn-outline" href="#iletisim">Toplantı Planlayın</a>
+                </div>
+            </div>
+        </div>
+    </section>
 
-<section id="hakkimizda">
-    <h2>Hakkımızda</h2>
-    <p>Eon Yazılım; web tasarım, oyun geliştirme, siber güvenlik ve kişiye özel güvenlik çözümleriyle müşterilerine profesyonel hizmet sunan bir teknoloji şirketidir.</p>
-</section>
+    <section id="hakkimizda">
+        <div class="container">
+            <h2 class="section-title">Biz Kimiz?</h2>
+            <p class="section-subtitle">Eon Yazılım; web tasarım, oyun geliştirme, siber güvenlik ve kişiye özel güvenlik çözümleriyle müşterilerine profesyonel hizmet sunan bir teknoloji şirketidir.</p>
+            <div class="metrics">
+                <div class="metric">
+                    <strong>10+</strong>
+                    <span>Yıllık deneyim</span>
+                </div>
+                <div class="metric">
+                    <strong>120+</strong>
+                    <span>Tamamlanan proje</span>
+                </div>
+                <div class="metric">
+                    <strong>%98</strong>
+                    <span>Müşteri memnuniyeti</span>
+                </div>
+                <div class="metric">
+                    <strong>7/24</strong>
+                    <span>Destek ekibi</span>
+                </div>
+            </div>
+        </div>
+    </section>
 
-<section id="hizmetler">
-    <h2>Verilen Hizmetler</h2>
-    <div class="services">
-        <div class="service">
-            <h3>🌐 Web Tasarım</h3>
-            <p>Modern, hızlı ve kullanıcı dostu web siteleri tasarlıyoruz.</p>
+    <section id="hizmetler">
+        <div class="container">
+            <h2 class="section-title">Verdiğimiz Hizmetler</h2>
+            <p class="section-subtitle">Her proje için en güncel teknolojileri kullanır, kullanıcı deneyimini önceliklendiririz.</p>
+            <div class="cards">
+                <div class="card">
+                    <h3>🌐 Web Tasarım</h3>
+                    <p>Modern, hızlı ve kullanıcı dostu web siteleri tasarlıyoruz.</p>
+                </div>
+                <div class="card">
+                    <h3>🎮 Oyun Geliştirme</h3>
+                    <p>Yaratıcı fikirleri unutulmaz interaktif deneyimlere dönüştürüyoruz.</p>
+                </div>
+                <div class="card">
+                    <h3>🛡️ Siber Güvenlik</h3>
+                    <p>Dijital varlıklarınızı son teknoloji çözümlerle koruyoruz.</p>
+                </div>
+                <div class="card">
+                    <h3>🔒 Kişiye Özel Güvenlik</h3>
+                    <p>İhtiyacınıza özel güvenlik yazılımları geliştiriyoruz.</p>
+                </div>
+            </div>
         </div>
-        <div class="service">
-            <h3>🎮 Oyun Geliştiricisi</h3>
-            <p>Yaratıcı fikirleri interaktif deneyimlere dönüştürüyoruz.</p>
-        </div>
-        <div class="service">
-            <h3>🛡️ Siber Güvenlik</h3>
-            <p>Dijital varlıklarınızı en üst düzeyde koruyoruz.</p>
-        </div>
-        <div class="service">
-            <h3>🔒 Kişiye Özel Güvenlik</h3>
-            <p>İhtiyacınıza göre özel güvenlik yazılımları geliştiriyoruz.</p>
-        </div>
-    </div>
-</section>
+    </section>
 
-<section id="iletisim">
-    <h2>İletişim</h2>
-    <div class="contact">
-        <p>Bizimle iletişime geçmek için e-posta gönderebilirsiniz:</p>
-        <p><a href="mailto:eonyazilim0@gmail.com">eonyazilim0@gmail.com</a></p>
-    </div>
-</section>
+    <section id="projeler">
+        <div class="container">
+            <h2 class="section-title">Öne Çıkan Projeler</h2>
+            <p class="section-subtitle">Çalışmalarımızın bir kısmı ile tanışın. Tüm projelerimizde ölçeklenebilirlik, güvenlik ve performans ön plandadır.</p>
+            <div class="projects">
+                <div class="project">
+                    <small>FinTech</small>
+                    <h3>Akıllı Yatırım Platformu</h3>
+                    <p>Gerçek zamanlı veri analizi ve yapay zekâ destekli öneriler ile kullanıcıların finansal kararlarını güçlendiren bir platform geliştirdik.</p>
+                    <div class="tech-stack">
+                        <span class="tech-chip">React</span>
+                        <span class="tech-chip">TypeScript</span>
+                        <span class="tech-chip">Node.js</span>
+                    </div>
+                </div>
+                <div class="project">
+                    <small>Oyun</small>
+                    <h3>Metaverse Deneyim Alanı</h3>
+                    <p>Çok oyunculu etkileşimli etkinlikler ve NFT entegrasyonu sunan yeni nesil bir metaverse ortamı inşa ettik.</p>
+                    <div class="tech-stack">
+                        <span class="tech-chip">Unity</span>
+                        <span class="tech-chip">C#</span>
+                        <span class="tech-chip">Photon</span>
+                    </div>
+                </div>
+                <div class="project">
+                    <small>Güvenlik</small>
+                    <h3>Kurumsal Güvenlik Platformu</h3>
+                    <p>Kurumsal ağlar için anlık tehdit tespiti ve müdahale sunan, yapay zekâ ile desteklenen bir güvenlik sistemi tasarladık.</p>
+                    <div class="tech-stack">
+                        <span class="tech-chip">Python</span>
+                        <span class="tech-chip">FastAPI</span>
+                        <span class="tech-chip">Kubernetes</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="iletisim">
+        <div class="container">
+            <h2 class="section-title">İletişime Geçin</h2>
+            <p class="section-subtitle">Projeniz için birlikte çalışalım. İhtiyaçlarınızı dinleyelim, stratejinizi oluşturalım.</p>
+            <div class="contact-card">
+                <p>Bizimle iletişime geçmek için e-posta gönderebilirsiniz:</p>
+                <p><a href="mailto:eonyazilim0@gmail.com">eonyazilim0@gmail.com</a></p>
+                <p>Ayrıca <strong>LinkedIn</strong> ve <strong>GitHub</strong> hesaplarımız üzerinden de bize ulaşabilirsiniz.</p>
+            </div>
+        </div>
+    </section>
+</main>
 
 <footer>
-    <p>© 2025 Eon Yazılım. Tüm hakları saklıdır.</p>
+    <div class="container">
+        <p>© 2025 Eon Yazılım. Tüm hakları saklıdır.</p>
+    </div>
 </footer>
-
 </body>
 </html>
