@@ -64,4 +64,19 @@ body{font-family:Inter,system-ui,Segoe UI,Roboto,Arial,sans-serif;background:var
 @keyframes spin {
   0% { transform: rotate(0deg); }
   100% { transform: rotate(360deg); }
+.loading-text {
+  text-align: center;
+  color: #00bfff;
+  font-weight: 600;
+  margin-top: 10px;
+  font-size: 15px;
+  opacity: 0;
+  animation: fadeInOut 3s ease-in-out infinite;
+  text-shadow: 0 0 10px rgba(0, 191, 255, 0.7);
+}
+
+@keyframes fadeInOut {
+  0%, 100% { opacity: 0.1; transform: translateY(5px); }
+  50% { opacity: 1; transform: translateY(0); }
+
 
