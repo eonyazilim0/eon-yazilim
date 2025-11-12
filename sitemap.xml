@@ -1,19 +1,18 @@
-<?xml version="1.0" encoding="UTF-8"?>
+<?xml version="1.0" ?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
     <loc>https://eonyazilim0.github.io/eon-yazilim/</loc>
-    <priority>1.00</priority>
   </url>
   <url>
     <loc>https://eonyazilim0.github.io/eon-yazilim/#hakkimizda</loc>
-    <priority>0.80</priority>
   </url>
   <url>
     <loc>https://eonyazilim0.github.io/eon-yazilim/#hizmetler</loc>
-    <priority>0.80</priority>
+  </url>
+  <url>
+    <loc>https://eonyazilim0.github.io/eon-yazilim/#projeler</loc>
   </url>
   <url>
     <loc>https://eonyazilim0.github.io/eon-yazilim/#iletisim</loc>
-    <priority>0.80</priority>
   </url>
 </urlset>
