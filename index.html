@@ -73,10 +73,19 @@
     </section>
 
     <section id="iletisim" class="section reveal">
-      <h2>İletişim</h2>
-      <p>Bize ulaşın: <a href="mailto:eonyazilim0@gmail.com">eonyazilim0@gmail.com</a></p>
-    </section>
-  </main>
+  <h2>İletişim</h2>
+  <p>Bizimle iletişime geçmek için aşağıdaki formu doldurabilirsiniz.</p>
+
+  <form id="contactForm" class="contact-form" action=https://formspree.io/f/mrbrgwpy method="POST">
+    <div class="form-row">
+      <input type="text" name="name" placeholder="Adınız Soyadınız" required>
+      <input type="email" name="email" placeholder="E-posta Adresiniz" required>
+    </div>
+    <textarea name="message" rows="5" placeholder="Mesajınız" required></textarea>
+    <button type="submit" class="btn">Gönder</button>
+    <p class="form-note">E-posta adresiniz gizli tutulacaktır.</p>
+  </form>
+</section>
 
   <footer class="footer">
     <div class="container foot">
