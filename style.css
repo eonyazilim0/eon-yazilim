@@ -50,6 +50,7 @@ body{font-family:Inter,system-ui,Segoe UI,Roboto,Arial,sans-serif;background:var
 .reveal.show{opacity:1;transform:none}
 @media (max-width:900px){.hero{grid-template-columns:1fr}.hero-text h1{font-size:32px}.hero-logo{width:180px;height:180px}}
 @media (max-width:480px){.actions .btn{width:100%;text-align:center}.nav{height:64px}}
+
 .loading-icon {
   width: 40px;
   height: 40px;
@@ -64,4 +65,3 @@ body{font-family:Inter,system-ui,Segoe UI,Roboto,Arial,sans-serif;background:var
   0% { transform: rotate(0deg); }
   100% { transform: rotate(360deg); }
 }
-
