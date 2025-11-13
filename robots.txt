@@ -1,2 +1,3 @@
 User-agent: *
 Allow: /
+Sitemap: https://eonyazilim0.github.io/eon-yazilim/sitemap.xml
