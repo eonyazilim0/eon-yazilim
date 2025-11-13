@@ -12,7 +12,7 @@
 }
 
 /* Tema toggle için */
-body.light-theme {
+body.dark-theme {
   --bg: #f3f6ff;
   --bg-alt: #ffffff;
   --card: #ffffff;
