@@ -1,8 +1,59 @@
 
-body { margin:0; background:#0b1220; color:#fff; font-family:Arial; }
-.nav { display:flex; justify-content:space-between; padding:20px; background:#0f1828; }
-.nav ul { display:flex; gap:20px; list-style:none; }
-.nav a { color:#fff; text-decoration:none; font-weight:bold; }
-.hero { text-align:center; padding:120px 20px; }
-.section { padding:100px 20px; max-width:900px; margin:auto; }
-h1, h2 { color:#38a8ff; }
+body {
+    margin: 0;
+    font-family: Arial;
+    background: #071122;
+    color: white;
+}
+
+.navbar {
+    display: flex;
+    justify-content: space-between;
+    padding: 15px 40px;
+    background: rgba(0,0,0,0.2);
+}
+
+.nav-left { display: flex; align-items: center; }
+.nav-logo { width: 40px; margin-right: 10px; }
+.brand { font-size: 20px; font-weight: bold; }
+
+.nav-right a {
+    margin-left: 20px;
+    color: white;
+    text-decoration: none;
+}
+
+.hero {
+    text-align: center;
+    padding: 120px 20px;
+}
+
+.hero h1 {
+    font-size: 48px;
+    color: #4db6ff;
+}
+
+.hero p {
+    font-size: 20px;
+    margin-top: 10px;
+}
+
+.hero-buttons .btn {
+    padding: 12px 24px;
+    background: #1fa2ff;
+    border-radius: 8px;
+    margin: 10px;
+    color: white;
+    text-decoration: none;
+}
+
+.btn.ghost {
+    background: transparent;
+    border: 2px solid #1fa2ff;
+}
+
+.content {
+    padding: 60px 40px;
+    max-width: 900px;
+    margin: auto;
+}
