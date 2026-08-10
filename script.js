@@ -13,6 +13,7 @@ document.addEventListener("DOMContentLoaded", () => {
   initMobileMenu();
   initContactForm();
   initStickyHeader();
+  initScrollSpy();
 });
 
 /* Sticky Header on Scroll */
@@ -206,7 +207,7 @@ function initScrollReveal() {
   }
 }
 
-/* Mobile responsive navigation drawer */
+/* Mobile responsive navigation drawer with backdrop & scroll lock */
 function initMobileMenu() {
   const toggle = document.getElementById("mobileNavToggle");
   const navLinks = document.getElementById("navLinks");
@@ -214,32 +215,57 @@ function initMobileMenu() {
 
   if (!toggle || !navLinks) return;
 
+  // Dynamically create backdrop overlay
+  const backdrop = document.createElement("div");
+  backdrop.className = "mobile-menu-backdrop";
+  document.body.appendChild(backdrop);
+
+  function openMenu() {
+    toggle.classList.add("open");
+    navLinks.classList.add("open");
+    backdrop.classList.add("open");
+    document.body.classList.add("no-scroll");
+    toggle.setAttribute("aria-expanded", "true");
+  }
+
+  function closeMenu() {
+    toggle.classList.remove("open");
+    navLinks.classList.remove("open");
+    backdrop.classList.remove("open");
+    document.body.classList.remove("no-scroll");
+    toggle.setAttribute("aria-expanded", "false");
+  }
+
   toggle.addEventListener("click", (e) => {
     e.stopPropagation();
-    const isOpen = toggle.classList.toggle("open");
-    navLinks.classList.toggle("open");
-    toggle.setAttribute("aria-expanded", isOpen ? "true" : "false");
+    const isOpen = toggle.classList.contains("open");
+    if (isOpen) {
+      closeMenu();
+    } else {
+      openMenu();
+    }
   });
 
   // Close menu when clicking links
   links.forEach(link => {
     link.addEventListener("click", () => {
-      toggle.classList.remove("open");
-      navLinks.classList.remove("open");
-      toggle.setAttribute("aria-expanded", "false");
+      closeMenu();
       
-      // Update active navigation link
+      // Update active navigation link manually on click
       links.forEach(l => l.classList.remove("active"));
       link.classList.add("active");
     });
   });
 
-  // Close menu when clicking outside
+  // Close menu when clicking backdrop
+  backdrop.addEventListener("click", () => {
+    closeMenu();
+  });
+
+  // Close menu when clicking outside (fallback)
   document.addEventListener("click", (e) => {
-    if (!navLinks.contains(e.target) && !toggle.contains(e.target)) {
-      toggle.classList.remove("open");
-      navLinks.classList.remove("open");
-      toggle.setAttribute("aria-expanded", "false");
+    if (toggle.classList.contains("open") && !navLinks.contains(e.target) && !toggle.contains(e.target)) {
+      closeMenu();
     }
   });
 }
@@ -351,6 +377,37 @@ function initContactForm() {
     } catch (error) {
       note.textContent = "Ağ hatası oluştu. Lütfen bağlantınızı kontrol edip tekrar deneyin.";
       note.className = "form-note error";
+    }
+  });
+}
+
+/* Scroll Spy - Automatically highlights menu links based on scroll position */
+function initScrollSpy() {
+  const sections = document.querySelectorAll("section[id], header[id]");
+  const navLinks = document.querySelectorAll(".nav-link");
+
+  if (sections.length === 0 || navLinks.length === 0) return;
+
+  window.addEventListener("scroll", () => {
+    let currentSectionId = "";
+    const scrollPosition = window.scrollY + 200; // Offset for better accuracy
+
+    sections.forEach(section => {
+      const sectionTop = section.offsetTop;
+      const sectionHeight = section.offsetHeight;
+
+      if (scrollPosition >= sectionTop && scrollPosition < sectionTop + sectionHeight) {
+        currentSectionId = section.getAttribute("id");
+      }
+    });
+
+    if (currentSectionId) {
+      navLinks.forEach(link => {
+        link.classList.remove("active");
+        if (link.getAttribute("href") === `#${currentSectionId}`) {
+          link.classList.add("active");
+        }
+      });
     }
   });
 }
