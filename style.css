@@ -1449,9 +1449,7 @@ body.light-theme .footer {
     margin-inline: auto;
   }
   
-  .hero-visual {
-    order: -1;
-  }
+
   
   .stats-grid {
     grid-template-columns: repeat(2, 1fr);
