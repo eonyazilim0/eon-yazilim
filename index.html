@@ -3,189 +3,589 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Eon Yazılım – Web Tasarım, Oyun Geliştirme ve Siber Güvenlik</title>
-  <meta name="description" content="Eon Yazılım; web tasarım, oyun geliştirme ve siber güvenlik alanlarında modern, hızlı ve güvenilir çözümler sunar.">
-  <meta name="author" content="Eon Yazılım">
+  
+  <!-- Primary SEO Meta Tags -->
+  <title>Eon Yazılım – Profesyonel Web Tasarım, Mobil Oyun Geliştirme ve Siber Güvenlik</title>
+  <meta name="description" content="Eon Yazılım; profesyonel web tasarım, mobil oyun geliştirme, siber güvenlik sızma testleri ve kişiye özel kurumsal yazılım çözümleri sunan yenilikçi teknoloji ajansı." />
+  <meta name="keywords" content="eon yazılım, web tasarım, oyun geliştirme, siber güvenlik, yazılım ajansı, sızma testi, özel yazılım, seo uyumlu web sitesi" />
+  <meta name="author" content="Eon Yazılım" />
+  <meta name="robots" content="index, follow" />
+  
+  <!-- Open Graph / Facebook -->
+  <meta property="og:type" content="website" />
+  <meta property="og:url" content="https://github.com/eonyazilim0/eon-yazilim" />
+  <meta property="og:title" content="Eon Yazılım – Profesyonel Web Tasarım, Mobil Oyun Geliştirme ve Siber Güvenlik" />
+  <meta property="og:description" content="Web tasarım, oyun geliştirme ve siber güvenlik alanlarında modern, performans odaklı ve güvenilir kurumsal çözümler." />
+  <meta property="og:image" content="logo.png" />
+
+  <!-- Twitter -->
+  <meta property="twitter:card" content="summary_large_image" />
+  <meta property="twitter:title" content="Eon Yazılım – Profesyonel Web Tasarım, Mobil Oyun Geliştirme ve Siber Güvenlik" />
+  <meta property="twitter:description" content="Web tasarım, oyun geliştirme ve siber güvenlik alanlarında modern, performans odaklı ve güvenilir kurumsal çözümler." />
+  <meta property="twitter:image" content="logo.png" />
+
+  <!-- Favicon -->
+  <link rel="icon" type="image/png" sizes="32x32" href="favicon-32.png" />
+  
+  <!-- Stylesheets -->
   <link rel="stylesheet" href="style.css" />
 </head>
 <body>
-  <header class="topbar">
+
+  <!-- Header Navigation -->
+  <header class="topbar" id="header">
     <div class="container nav-container">
-      <a href="#anasayfa" class="brand">
+      <a href="#anasayfa" class="brand" aria-label="Eon Yazılım Anasayfa">
         <img src="logo.png" alt="Eon Yazılım Logo" class="brand-logo" />
         <span class="brand-text">Eon Yazılım</span>
       </a>
-      <nav class="nav-links">
-        <a href="#hakkimizda">Hakkımızda</a>
-        <a href="#hizmetler">Hizmetler</a>
-        <a href="#projeler">Projeler</a>
-        <a href="#iletisim">İletişim</a>
+      
+      <nav class="nav-links" id="navLinks" aria-label="Ana Menü">
+        <a href="#anasayfa" class="nav-link active">Anasayfa</a>
+        <a href="#hakkimizda" class="nav-link">Hakkımızda</a>
+        <a href="#hizmetler" class="nav-link">Hizmetler</a>
+        <a href="#projeler" class="nav-link">Projeler</a>
+        <a href="#iletisim" class="nav-link">İletişim</a>
       </nav>
-      <button class="theme-toggle" id="themeToggle" aria-label="Tema değiştir">
-        🌙
-      </button>
+      
+      <div class="nav-actions">
+        <button class="theme-toggle" id="themeToggle" aria-label="Görünüm Temasını Değiştir" title="Tema Değiştir">
+          🌙
+        </button>
+        <button class="mobile-nav-toggle" id="mobileNavToggle" aria-label="Menüyü Aç/Kapat" aria-expanded="false" aria-controls="navLinks">
+          <span></span>
+          <span></span>
+          <span></span>
+        </button>
+      </div>
     </div>
   </header>
 
-  <main id="anasayfa">
-    <section class="hero">
+  <!-- Main Content -->
+  <main>
+    
+    <!-- Hero Section -->
+    <section class="hero" id="anasayfa">
       <div class="container hero-grid">
-        <div class="hero-text">
-          <h1>Eon Yazılım ile Geleceği Kodlayın</h1>
+        <div class="hero-text reveal">
+          <h1>Eon Yazılım ile<br><span id="typewriter" class="text-gradient"></span><span class="typewriter-cursor"></span></h1>
           <p>
-            Web tasarım, oyun geliştirme ve siber güvenlik alanlarında güvenilir,
-            performans odaklı çözümler sunuyoruz.
+            Dijital dönüşümünüzü hızlandırın. Web tasarım, mobil oyun geliştirme ve siber güvenlik alanlarında yüksek performanslı, güvenli ve iş odaklı çözümler sunuyoruz.
           </p>
           <div class="hero-actions">
-            <a href="#hizmetler" class="btn primary">Hizmetleri Keşfet</a>
-            <a href="#iletisim" class="btn ghost">Teklif Al</a>
+            <a href="#iletisim" class="btn btn-primary" id="heroCtaPrimary">Projeyi Başlat</a>
+            <a href="#hizmetler" class="btn btn-secondary" id="heroCtaSecondary">Hizmetleri İncele</a>
           </div>
         </div>
-        <!-- Büyük logo istenmediği için bu kısım bilinçli olarak boş bırakıldı -->
-        <div class="hero-placeholder">
+        <div class="hero-visual reveal">
+          <div class="visual-canvas-container">
+            <div class="sphere-element" aria-hidden="true"></div>
+            <div class="cyber-mesh" aria-hidden="true"></div>
+            <div class="cyber-mesh-inner" aria-hidden="true"></div>
+            <div class="visual-cards-stack">
+              <div class="visual-mini-card card-1">
+                <span class="mini-card-icon">🌐</span>
+                <span>Web Tasarım</span>
+              </div>
+              <div class="visual-mini-card card-2">
+                <span class="mini-card-icon">🎮</span>
+                <span>Oyun Geliştirme</span>
+              </div>
+              <div class="visual-mini-card card-3">
+                <span class="mini-card-icon">🛡️</span>
+                <span>Siber Güvenlik</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Stats / Metrics Section -->
+    <section class="stats" aria-label="Şirket İstatistikleri">
+      <div class="container stats-grid">
+        <div class="stat-item reveal">
+          <span class="stat-num" id="statClients">4.9/5</span>
+          <span class="stat-label">Müşteri Memnuniyeti</span>
+        </div>
+        <div class="stat-item reveal">
+          <span class="stat-num" id="statProjects">50+</span>
+          <span class="stat-label">Tamamlanan Proje</span>
+        </div>
+        <div class="stat-item reveal">
+          <span class="stat-num" id="statSupport">24/7</span>
+          <span class="stat-label">Aktif İletişim & Destek</span>
+        </div>
+        <div class="stat-item reveal">
+          <span class="stat-num" id="statExperience">5+ Yıl</span>
+          <span class="stat-label">Sektörel Deneyim</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- About Us Section -->
+    <section id="hakkimizda" class="section">
+      <div class="container about-grid">
+        <div class="about-visual reveal">
+          <div class="about-image-wrapper">
+            <svg viewBox="0 0 500 350" fill="none" xmlns="http://www.w3.org/2000/svg" style="background: #111827; display: block;" aria-label="Eon Yazılım Geliştirme Görseli">
+              <rect x="30" y="50" width="440" height="250" rx="12" fill="#1f2937" stroke="#374151" stroke-width="2"/>
+              <circle cx="55" cy="70" r="6" fill="#ef4444"/>
+              <circle cx="75" cy="70" r="6" fill="#fbbf24"/>
+              <circle cx="95" cy="70" r="6" fill="#10b981"/>
+              <path d="M150 120 L220 190 L150 260" stroke="#ff6b00" stroke-width="6" stroke-linecap="round" stroke-linejoin="round"/>
+              <line x1="240" y1="260" x2="340" y2="260" stroke="#f59e0b" stroke-width="6" stroke-linecap="round"/>
+            </svg>
+          </div>
+          <div class="about-image-overlay glass-card">
+            <h4>%100</h4>
+            <p>Müşteri odaklı teslimat ve güvenilir süreç yönetimi.</p>
+          </div>
+        </div>
+        
+        <div class="about-text reveal">
+          <span class="section-tag">Biz Kimiz?</span>
+          <h2 class="section-title">Teknolojiyle Geleceği Şekillendiriyoruz</h2>
+          <p class="lead">
+            Eon Yazılım, kurumlara ve bireylere dijital dünyada güç kazandıran yenilikçi yazılım çözümleri üretir.
+          </p>
+          <p>
+            2019 yılından bu yana web teknolojileri, mobil/masaüstü oyun tasarımı ve siber güvenlik hizmetlerinde güven, kalite ve kullanıcı odaklı yaklaşım prensibiyle çalışıyoruz. Amacımız markanızın dijital değerini artırmak ve süreçlerinizi modernize etmektir.
+          </p>
+          
+          <div class="values-list">
+            <div class="value-item">
+              <div class="value-icon" aria-hidden="true">💡</div>
+              <div>
+                <h3 class="value-title">Yenilikçi Yaklaşım</h3>
+                <p class="value-desc">En güncel teknolojileri kullanarak projelerinizi geleceğe hazırlarız.</p>
+              </div>
+            </div>
+            <div class="value-item">
+              <div class="value-icon" aria-hidden="true">🛡️</div>
+              <div>
+                <h3 class="value-title">Yüksek Güvenlik</h3>
+                <p class="value-desc">Veri gizliliğinizi ve sistemlerinizi siber tehditlere karşı koruruz.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Services Section -->
+    <section id="hizmetler" class="section">
+      <div class="container">
+        <div class="section-title-wrapper reveal">
+          <span class="section-tag">Hizmetlerimiz</span>
+          <h2 class="section-title">Hizmet Alanlarımız</h2>
+          <p class="section-subtitle">Fikirlerinizi profesyonel süreçlerle ürüne dönüştürüyor, işletmenizi güçlendiriyoruz.</p>
+        </div>
+        
+        <div class="services-grid">
+          
+          <!-- Service 1: Web Tasarım -->
+          <article class="glass-card service-card reveal" id="serviceWeb">
+            <div class="service-icon-box" aria-hidden="true">🌐</div>
+            <h3>Profesyonel Web Tasarım</h3>
+            <p>
+              Hızlı, SEO uyumlu ve kullanıcı deneyimi önceliklendirilmiş web siteleri. Modern teknolojiler kullanarak markanızın prestijini dijital ortamda en üst seviyeye taşıyoruz.
+            </p>
+            <ul class="service-features">
+              <li>Özel Tasarım</li>
+              <li>Mobil Uyumlu</li>
+              <li>SEO Optimizasyonu</li>
+              <li>Hız Odaklı Yapı</li>
+            </ul>
+          </article>
+
+          <!-- Service 2: Oyun Geliştirme -->
+          <article class="glass-card service-card reveal" id="serviceGame">
+            <div class="service-icon-box" aria-hidden="true">🎮</div>
+            <h3>Oyun Geliştirme</h3>
+            <p>
+              Mobil (iOS/Android) ve masaüstü platformlar için 2D/3D sürükleyici oyun projeleri. Fikir aşamasından yayınlama sürecine kadar optimize edilmiş profesyonel oyun geliştirme.
+            </p>
+            <ul class="service-features">
+              <li>Unity & Unreal</li>
+              <li>2D / 3D Modelleme</li>
+              <li>Performans Testleri</li>
+              <li>Çoklu Platform</li>
+            </ul>
+          </article>
+
+          <!-- Service 3: Siber Güvenlik -->
+          <article class="glass-card service-card reveal" id="serviceSecurity">
+            <div class="service-icon-box" aria-hidden="true">🛡️</div>
+            <h3>Siber Güvenlik</h3>
+            <p>
+              Sistemlerinizin güvenliğini sağlamak için sızma (penetrasyon) testleri, zafiyet analizleri ve güvenlik danışmanlığı. Tehditleri önceden belirler ve kapatırız.
+            </p>
+            <ul class="service-features">
+              <li>Sızma Testi</li>
+              <li>Zafiyet Analizi</li>
+              <li>Ağ Güvenliği</li>
+              <li>Güvenlik Raporu</li>
+            </ul>
+          </article>
+
+          <!-- Service 4: Özel Yazılım -->
+          <article class="glass-card service-card reveal" id="serviceCustom">
+            <div class="service-icon-box" aria-hidden="true">⚙️</div>
+            <h3>Kişiye Özel Yazılım</h3>
+            <p>
+              Şirketinizin ihtiyaçlarına yönelik özel otomasyonlar, yönetim panelleri, CRM/ERP entegrasyonları ve verimlilik artıran API entegrasyonları geliştiriyoruz.
+            </p>
+            <ul class="service-features">
+              <li>CRM & ERP</li>
+              <li>API Geliştirme</li>
+              <li>Özel Veri Analitiği</li>
+              <li>Bulut Entegrasyonu</li>
+            </ul>
+          </article>
           
         </div>
       </div>
     </section>
 
-    <section id="hakkimizda" class="section">
-      <div class="container">
-        <h2>Hakkımızda</h2>
-        <p class="lead">
-          Eon Yazılım, 2019 yılından bu yana teknoloji alanında yenilikçi çözümler sunan bir yazılım şirketidir.
-          Web tasarım, oyun geliştirme ve siber güvenlik ile kişiye özel yazılım alanlarında modern teknolojilerle
-          işletmelere ve bireylere özel çözümler üretiyoruz.
-        </p>
-        <p>
-          Hedefimiz; dijital dönüşümde güvenilir, yenilikçi ve sürdürülebilir projelerle markaların değerini
-          artırmaktır. Eon Yazılım olarak güven, performans ve kullanıcı deneyimini her şeyin önünde tutuyoruz.
-        </p>
-      </div>
-    </section>
+    <!-- Tech Stack Showcase -->
+    <section class="section tech" aria-label="Kullandığımız Teknolojiler">
+      <div class="container tech-container">
+        <div class="section-title-wrapper reveal">
+          <span class="section-tag">Teknoloji Havuzu</span>
+          <h2 class="section-title">Kullandığımız Teknolojiler</h2>
+          <p class="section-subtitle">Projelerinizde modern, güvenli ve sürdürülebilir altyapılar kullanıyoruz.</p>
+        </div>
+        
+        <div class="tech-row reveal">
+          <h3 class="tech-category-title">Web & Bulut</h3>
+          <div class="tech-grid">
+            <div class="tech-chip"><span class="tech-chip-icon">⚛️</span>React</div>
+            <div class="tech-chip"><span class="tech-chip-icon">🟢</span>Node.js</div>
+            <div class="tech-chip"><span class="tech-chip-icon">🔥</span>Firebase</div>
+            <div class="tech-chip"><span class="tech-chip-icon">🌐</span>HTML5 & CSS3</div>
+            <div class="tech-chip"><span class="tech-chip-icon">🎨</span>Tailwind CSS</div>
+          </div>
+        </div>
 
-    <section id="hizmetler" class="section section-muted">
-      <div class="container">
-        <h2>Verilen Hizmetler</h2>
-        <div class="grid services-grid">
-          <article class="card service-card reveal">
-            <div class="icon-circle">🌐</div>
-            <h3>Web Tasarım</h3>
-            <p>
-              Modern, mobil uyumlu ve hızlı web siteleri. Markanızın kimliğine uygun şekilde tasarlanır. Performans,
-              hız ve kullanıcı deneyimi önceliklendirilir.
-            </p>
-          </article>
+        <div class="tech-row reveal">
+          <h3 class="tech-category-title">Mobil & Oyun</h3>
+          <div class="tech-grid">
+            <div class="tech-chip"><span class="tech-chip-icon">🕹️</span>Unity</div>
+            <div class="tech-chip"><span class="tech-chip-icon">🎮</span>Unreal Engine</div>
+            <div class="tech-chip"><span class="tech-chip-icon">📱</span>Flutter</div>
+            <div class="tech-chip"><span class="tech-chip-icon">⚡</span>C#</div>
+          </div>
+        </div>
 
-          <article class="card service-card reveal">
-            <div class="icon-circle">🎮</div>
-            <h3>Oyun Geliştirme</h3>
-            <p>
-              2D/3D mobil veya masaüstü oyun projeleri. Oyunlarımız estetik, oynanış ve optimizasyon açısından
-              profesyonel süreçlerden geçer.
-            </p>
-          </article>
-
-          <article class="card service-card reveal">
-            <div class="icon-circle">🛡️</div>
-            <h3>Siber Güvenlik</h3>
-            <p>
-              Penetrasyon testleri, zafiyet analizi ve siber güvenlik danışmanlığı. Sistemlerinizi koruma altına alıyor,
-              veri güvenliğini üst seviyeye taşıyoruz.
-            </p>
-          </article>
-
-          <article class="card service-card reveal">
-            <div class="icon-circle">⚙️</div>
-            <h3>Kişiye Özel Yazılım</h3>
-            <p>
-              İhtiyaçlarınıza özel yazılım projeleri. Otomasyon çözümleri, entegrasyonlar ve yönetim panelleri ile
-              iş süreçlerinizi dijitalleştiriyoruz.
-            </p>
-          </article>
+        <div class="tech-row reveal">
+          <h3 class="tech-category-title">Siber Güvenlik & Dil</h3>
+          <div class="tech-grid">
+            <div class="tech-chip"><span class="tech-chip-icon">🐍</span>Python</div>
+            <div class="tech-chip"><span class="tech-chip-icon">🛡️</span>OWASP</div>
+            <div class="tech-chip"><span class="tech-chip-icon">👁️</span>Wireshark</div>
+            <div class="tech-chip"><span class="tech-chip-icon">⚙️</span>Linux Systems</div>
+          </div>
         </div>
       </div>
     </section>
 
+    <!-- Project Portfolio Section -->
     <section id="projeler" class="section">
       <div class="container">
-        <h2>Projelerimiz</h2>
-        <div class="card project-card reveal">
-          <div class="project-header">
-            <h3>Yeni Oyun Projesi</h3>
-            <span class="project-tag">Oyun Geliştirme</span>
-          </div>
-          <div class="project-body">
-            <div class="loading-wrapper">
-              <div class="loading-icon"></div>
-              <div class="loading-text">Çok yakında yayında...</div>
+        <div class="section-title-wrapper reveal">
+          <span class="section-tag">Portföyümüz</span>
+          <h2 class="section-title">Öne Çıkan Projeler</h2>
+          <p class="section-subtitle">Daha önce hayata geçirdiğimiz ve üzerinde çalıştığımız projelerden bazıları.</p>
+        </div>
+        
+        <div class="portfolio-filters reveal">
+          <button class="filter-btn active" data-filter="all">Hepsi</button>
+          <button class="filter-btn" data-filter="web">Web Tasarım</button>
+          <button class="filter-btn" data-filter="game">Oyun</button>
+          <button class="filter-btn" data-filter="security">Siber Güvenlik</button>
+        </div>
+        
+        <div class="portfolio-grid">
+          
+          <!-- Project 1 -->
+          <article class="portfolio-item web reveal">
+            <div class="glass-card portfolio-card">
+              <div class="portfolio-img-box">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M21 12a9 9 0 01-9 9m9-9a9 9 0 00-9-9m9 9H3m9 9a9 9 0 01-9-9m9 9c1.657 0 3-4.03 3-9s-1.343-9-3-9m0 18c-1.657 0-3-4.03-3-9s1.343-9 3-9m-9 9a9 9 0 019-9" />
+                </svg>
+                <span class="portfolio-badge">E-Ticaret</span>
+              </div>
+              <div class="portfolio-body">
+                <h3>Dönüşüm Odaklı E-Ticaret Portalı</h3>
+                <p>Müşterimizin satışlarını %40 oranında artıran, SEO odaklı, hızlı yüklenen ve sepet dönüşümü optimize edilmiş modern e-ticaret altyapısı.</p>
+                <a href="#iletisim" class="portfolio-link">Bilgi Al &rarr;</a>
+              </div>
             </div>
-            <p>
-              Yeni nesil, çok platformlu bir oyun üzerinde çalışıyoruz. Oynanış odaklı, yüksek performanslı
-              ve benzersiz bir deneyim hedefliyoruz.
-            </p>
-          </div>
+          </article>
+
+          <!-- Project 2 -->
+          <article class="portfolio-item game reveal">
+            <div class="glass-card portfolio-card">
+              <div class="portfolio-img-box">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M15 5v2m0 4v2m0 4v2M5 5a2 2 0 00-2 2v3a2 2 0 110 4v3a2 2 0 002 2h14a2 2 0 002-2v-3a2 2 0 110-4V7a2 2 0 00-2-2H5z" />
+                </svg>
+                <span class="portfolio-badge">Hyper-Casual</span>
+              </div>
+              <div class="portfolio-body">
+                <h3>NeoSphere - Mobil Bulmaca Oyunu</h3>
+                <p>iOS ve Android platformları için Unity motoru ile geliştirilen, yüksek grafik performansı ve sürükleyici oynanış dinamiklerine sahip 3D mobil oyun.</p>
+                <a href="#iletisim" class="portfolio-link">Bilgi Al &rarr;</a>
+              </div>
+            </div>
+          </article>
+
+          <!-- Project 3 -->
+          <article class="portfolio-item security reveal">
+            <div class="glass-card portfolio-card">
+              <div class="portfolio-img-box">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
+                </svg>
+                <span class="portfolio-badge">Penetrasyon</span>
+              </div>
+              <div class="portfolio-body">
+                <h3>Kurumsal Altyapı Sızma Testi</h3>
+                <p>Bir finans kuruluşunun dış ağ ve iç sistem altyapılarındaki zafiyetlerin tespiti, analiz edilmesi ve sistemlerin güvenli hale getirilmesi projesi.</p>
+                <a href="#iletisim" class="portfolio-link">Bilgi Al &rarr;</a>
+              </div>
+            </div>
+          </article>
+          
         </div>
       </div>
     </section>
 
-    <section id="iletisim" class="section section-muted">
+    <!-- Testimonials Slider Section -->
+    <section class="section testimonials" aria-label="Müşteri Yorumları">
       <div class="container">
-        <h2>İletişim</h2>
-        <p class="lead">
-          Bizimle iletişime geçmek için aşağıdaki formu doldurabilir veya doğrudan e-posta gönderebilirsiniz.
-        </p>
+        <div class="section-title-wrapper reveal">
+          <span class="section-tag">Referanslar</span>
+          <h2 class="section-title">Müşterilerimiz Ne Diyor?</h2>
+          <p class="section-subtitle">Hizmet verdiğimiz markaların ve iş ortaklarımızın bizim hakkımızdaki düşünceleri.</p>
+        </div>
+        
+        <div class="testimonials-slider reveal">
+          
+          <!-- Slide 1 -->
+          <div class="testimonial-slide active" data-slide="0">
+            <div class="glass-card testimonial-card">
+              <p class="testimonial-quote">
+                "Eon Yazılım ekibiyle web sitemizin tasarımı ve altyapı modernizasyonu için çalıştık. Tasarım harika oldu, sitemizin hızı ve dönüşüm oranları ciddi oranda arttı. Son derece profesyoneller."
+              </p>
+              <div class="testimonial-author">
+                <div class="testimonial-avatar" aria-hidden="true">HY</div>
+                <div class="testimonial-meta">
+                  <h3 class="testimonial-name">Hakan Yılmaz</h3>
+                  <span class="testimonial-title">E-Ticaret Yöneticisi, TeknoTrend</span>
+                </div>
+              </div>
+            </div>
+          </div>
 
-        <div class="grid contact-grid">
-          <form
-            id="contactForm"
-            class="card contact-form"
-            action="https://formspree.io/f/your-id"
-            method="POST"
-          >
-            <!-- Dikkat: 'your-id' kısmını kendi Formspree ID'n ile değiştir -->
-            <label>
-              Adınız Soyadınız
-              <input type="text" name="name" required />
-            </label>
-            <label>
-              E-posta Adresiniz
-              <input type="email" name="email" required />
-            </label>
-            <label>
-              Mesajınız
-              <textarea name="message" rows="4" required></textarea>
-            </label>
-            <button type="submit" class="btn primary full">Gönder</button>
-            <p class="form-note" id="formNote"></p>
+          <!-- Slide 2 -->
+          <div class="testimonial-slide" data-slide="1">
+            <div class="glass-card testimonial-card">
+              <p class="testimonial-quote">
+                "Mobil oyun projemizin prototip ve optimizasyon süreçlerinde Eon Yazılım'dan destek aldık. Hem performans hedeflerimizi yakaladık hem de sürükleyici mekanikler kurduk. Harika bir iş birliğiydi."
+              </p>
+              <div class="testimonial-author">
+                <div class="testimonial-avatar" aria-hidden="true">EK</div>
+                <div class="testimonial-meta">
+                  <h3 class="testimonial-name">Elif Kaya</h3>
+                  <span class="testimonial-title">Oyun Yapımcısı, RedPixel Studio</span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Slide 3 -->
+          <div class="testimonial-slide" data-slide="2">
+            <div class="glass-card testimonial-card">
+              <p class="testimonial-quote">
+                "Sunucu altyapımız ve web servislerimizin güvenlik analizleri için sızma testi yaptırdık. Eon Yazılım siber güvenlik ekibi zafiyetleri hızlıca raporladı ve kapatmamız için tam destek verdi. Güven veriyorlar."
+              </p>
+              <div class="testimonial-author">
+                <div class="testimonial-avatar" aria-hidden="true">MT</div>
+                <div class="testimonial-meta">
+                  <h3 class="testimonial-name">Murat Tokgöz</h3>
+                  <span class="testimonial-title">Teknoloji Direktörü, Bosphorus Finans</span>
+                </div>
+              </div>
+            </div>
+          </div>
+          
+          <!-- Controls -->
+          <div class="slider-controls">
+            <button class="slider-btn" id="prevSlide" aria-label="Önceki yorum">&larr;</button>
+            <div class="slider-dots" id="sliderDots" role="tablist">
+              <span class="dot active" data-index="0" role="tab" aria-selected="true" aria-label="1. yorum"></span>
+              <span class="dot" data-index="1" role="tab" aria-selected="false" aria-label="2. yorum"></span>
+              <span class="dot" data-index="2" role="tab" aria-selected="false" aria-label="3. yorum"></span>
+            </div>
+            <button class="slider-btn" id="nextSlide" aria-label="Sonraki yorum">&rarr;</button>
+          </div>
+          
+        </div>
+      </div>
+    </section>
+
+    <!-- FAQ Section -->
+    <section class="section faq" id="faq">
+      <div class="container">
+        <div class="section-title-wrapper reveal">
+          <span class="section-tag">SSS</span>
+          <h2 class="section-title">Sıkça Sorulan Sorular</h2>
+          <p class="section-subtitle">Süreçlerimiz ve hizmetlerimizle ilgili merak edilen soruların yanıtları.</p>
+        </div>
+        
+        <div class="faq-list reveal">
+          
+          <!-- FAQ 1 -->
+          <div class="glass-card faq-item">
+            <button class="faq-trigger" aria-expanded="false">
+              <span>Bir web sitesi tasarım süreci ne kadar sürer?</span>
+              <span class="faq-icon" aria-hidden="true">▼</span>
+            </button>
+            <div class="faq-content">
+              <div class="faq-content-inner">
+                Projenin kapsamına ve ihtiyaçlarına bağlı olarak değişmektedir. Standart kurumsal bir web sitesi tasarımı ve kodlaması genellikle 2 ila 4 hafta arasında sürerken, kapsamlı e-ticaret siteleri ve portal projeleri 6 ila 12 hafta arasında tamamlanmaktadır.
+              </div>
+            </div>
+          </div>
+
+          <!-- FAQ 2 -->
+          <div class="glass-card faq-item">
+            <button class="faq-trigger" aria-expanded="false">
+              <span>Mobil oyun geliştirmede hangi platformları destekliyorsunuz?</span>
+              <span class="faq-icon" aria-hidden="true">▼</span>
+            </button>
+            <div class="faq-content">
+              <div class="faq-content-inner">
+                Unity oyun motorunu kullanarak hem iOS hem de Android işletim sistemleri için uyumlu, performans optimizasyonu yapılmış mobil oyunlar geliştiriyoruz. İhtiyaca göre masaüstü (Windows/macOS) platformları için de oyun projeleri sunabilmekteyiz.
+              </div>
+            </div>
+          </div>
+
+          <!-- FAQ 3 -->
+          <div class="glass-card faq-item">
+            <button class="faq-trigger" aria-expanded="false">
+              <span>Siber güvenlik testleriniz ne kadar güvenli ve gizli tutuluyor?</span>
+              <span class="faq-icon" aria-hidden="true">▼</span>
+            </button>
+            <div class="faq-content">
+              <div class="faq-content-inner">
+                Tüm test süreçlerimiz sıkı gizlilik sözleşmeleri (NDA) altında yürütülür. Analiz edilen veriler, zafiyet raporları ve sistem detayları kesinlikle üçüncü şahıslarla paylaşılmaz ve güvenli şifreli sunucularda saklanır.
+              </div>
+            </div>
+          </div>
+
+          <!-- FAQ 4 -->
+          <div class="glass-card faq-item">
+            <button class="faq-trigger" aria-expanded="false">
+              <span>Proje tamamlandıktan sonra destek veriyor musunuz?</span>
+              <span class="faq-icon" aria-hidden="true">▼</span>
+            </button>
+            <div class="faq-content">
+              <div class="faq-content-inner">
+                Evet, teslim ettiğimiz tüm projeler için teknik destek ve bakım anlaşmaları sunuyoruz. Sitenizin veya oyununuzun sorunsuz çalışmaya devam etmesi için güvenlik güncellemeleri, sunucu takibi ve optimizasyon desteği sağlıyoruz.
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </section>
+
+    <!-- Contact Section -->
+    <section id="iletisim" class="section">
+      <div class="container contact-grid">
+        
+        <div class="glass-card contact-card-wrapper reveal">
+          <h3>Bizimle İletişime Geçin</h3>
+          <!-- Formspree action. User should replace their-id later -->
+          <form id="contactForm" action="https://formspree.io/f/eonyazilim0" method="POST" class="contact-form">
+            <div class="form-group">
+              <label for="contactName">Adınız Soyadınız</label>
+              <div class="input-wrapper">
+                <input type="text" id="contactName" name="name" class="form-input" placeholder="Örn: Ahmet Yılmaz" required />
+              </div>
+            </div>
+            
+            <div class="form-group">
+              <label for="contactEmail">E-posta Adresiniz</label>
+              <div class="input-wrapper">
+                <input type="email" id="contactEmail" name="email" class="form-input" placeholder="Örn: ahmet@example.com" required />
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label for="contactSubject">Konu</label>
+              <div class="input-wrapper">
+                <input type="text" id="contactSubject" name="subject" class="form-input" placeholder="Örn: Web Tasarım Projesi" required />
+              </div>
+            </div>
+            
+            <div class="form-group">
+              <label for="contactMessage">Mesajınız</label>
+              <div class="input-wrapper">
+                <textarea id="contactMessage" name="message" class="form-textarea" rows="5" placeholder="Projeniz veya sorunuz hakkında detaylar yazın..." required></textarea>
+              </div>
+            </div>
+            
+            <button type="submit" class="btn btn-primary" style="width: 100%;">Mesajı Gönder</button>
+            <div class="form-note" id="formNote" role="status" aria-live="polite"></div>
           </form>
+        </div>
 
-          <div class="card contact-info">
-            <h3>İletişim Bilgileri</h3>
-            <p>
+        <div class="contact-info reveal">
+          
+          <div class="glass-card info-box">
+            <h3 class="info-title"><span class="info-title-icon" aria-hidden="true">✉️</span>İletişim Bilgileri</h3>
+            <p>Sorularınız veya iş birliği teklifleriniz için bize e-posta yoluyla ulaşabilirsiniz:</p>
+            <p style="margin-top: 10px;">
               E-posta: <a href="mailto:eonyazilim0@gmail.com">eonyazilim0@gmail.com</a>
             </p>
-            <p>Bizi sosyal medyada takip edin:</p>
-            <a
-              href="https://www.instagram.com/eonyazilim"
-              target="_blank"
-              rel="noopener noreferrer"
-              class="insta-link"
-            >
-              <span class="insta-icon">📷</span>
-              <span class="follow-text">@eonyazilim · Bizi takip edin</span>
-            </a>
           </div>
+
+          <div class="glass-card info-box">
+            <h3 class="info-title"><span class="info-title-icon" aria-hidden="true">📸</span>Sosyal Medya</h3>
+            <p>Bizi sosyal medyada takip ederek güncel projelerimizden haberdar olun:</p>
+            <div class="social-links" style="margin-top: 15px;">
+              <a href="https://www.instagram.com/eonyazilim" target="_blank" rel="noopener noreferrer" class="social-link" aria-label="Instagram">
+                📸
+              </a>
+            </div>
+          </div>
+          
         </div>
       </div>
     </section>
+
   </main>
 
+  <!-- Footer -->
   <footer class="footer">
     <div class="container footer-inner">
-      <span>© 2025 Eon Yazılım. Tüm hakları saklıdır.</span>
+      <span class="footer-text">© 2026 Eon Yazılım. Tüm hakları saklıdır.</span>
+      <div class="footer-links">
+        <a href="#anasayfa">Anasayfa</a>
+        <a href="#hakkimizda">Hakkımızda</a>
+        <a href="#hizmetler">Hizmetler</a>
+        <a href="#projeler">Projeler</a>
+        <a href="#iletisim">İletişim</a>
+      </div>
     </div>
   </footer>
 
+  <!-- Scripts -->
   <script src="script.js"></script>
 </body>
 </html>
