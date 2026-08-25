@@ -1298,32 +1298,28 @@ button {
     width: min(98vw, 860px) !important;
     max-height: 98vh !important;
     height: auto !important;
-    padding: 8px 14px !important;
-    gap: 4px !important;
+    padding: 10px 16px !important;
+    gap: 6px !important;
     overflow: hidden !important;
     display: grid !important;
     grid-template-columns: 1.15fr 1fr !important;
-    grid-template-rows: auto 1fr auto !important;
-    column-gap: 14px !important;
-    row-gap: 4px !important;
+    grid-template-rows: 1fr auto !important;
+    column-gap: 16px !important;
+    row-gap: 6px !important;
     align-items: center !important;
   }
 
+  /* Oyun Logosu Mobilde Gizlenir */
   #startScreen .pixel-brand {
-    grid-column: 1 / 3 !important;
-    margin-bottom: 0px !important;
-  }
-
-  #startScreen .game-logo-wrapper {
-    max-width: 210px !important;
+    display: none !important;
   }
 
   /* Sol Kolon: Gemi Seçici & İstatistikler */
   #startScreen .pixel-hangar-selector {
     grid-column: 1 / 2 !important;
-    grid-row: 2 / 4 !important;
-    padding: 5px 8px !important;
-    gap: 2px !important;
+    grid-row: 1 / 3 !important;
+    padding: 6px 10px !important;
+    gap: 3px !important;
     margin-bottom: 0px !important;
     display: flex !important;
     flex-direction: column !important;
@@ -1392,8 +1388,8 @@ button {
   /* Sağ Kolon: Ses Ayarları & Başlat Butonu */
   #startScreen .pixel-audio-settings {
     grid-column: 2 / 3 !important;
-    grid-row: 2 / 3 !important;
-    padding: 4px 6px !important;
+    grid-row: 1 / 2 !important;
+    padding: 6px 8px !important;
     gap: 3px !important;
     margin: 0 !important;
   }
@@ -1438,7 +1434,7 @@ button {
 
   #startScreen .pixel-footer {
     grid-column: 2 / 3 !important;
-    grid-row: 3 / 4 !important;
+    grid-row: 2 / 3 !important;
     display: flex !important;
     flex-direction: column !important;
     gap: 4px !important;
@@ -2215,13 +2211,16 @@ button {
         <!-- 16-Bit Pixel Audio Settings Panel -->
         <div id="pixelAudioSettings" class="pixel-audio-settings">
           <div class="audio-settings-header">
-            <span class="audio-title">⚙️ AUDIO CONFIG</span>
-            <button id="masterMuteToggleBtn" class="pixel-mini-btn" type="button">🔊 ALL: ON</button>
+            <span id="audioTitleText" class="audio-title">⚙️ AUDIO CONFIG</span>
+            <div style="display: flex; gap: 4px; align-items: center;">
+              <button id="langToggleBtn" class="pixel-mini-btn active" type="button" title="Language / Dil">🌐 TR</button>
+              <button id="masterMuteToggleBtn" class="pixel-mini-btn" type="button">🔊 ALL: ON</button>
+            </div>
           </div>
           <div class="audio-controls-grid">
             <div class="audio-control-item">
               <div class="audio-item-header">
-                <span class="audio-label">🎵 MUSIC (BGM)</span>
+                <span id="bgmLabelText" class="audio-label">🎵 MUSIC (BGM)</span>
                 <button id="bgmMuteBtn" class="pixel-mini-btn active" type="button">ON</button>
               </div>
               <div class="audio-slider-row">
@@ -2231,7 +2230,7 @@ button {
             </div>
             <div class="audio-control-item">
               <div class="audio-item-header">
-                <span class="audio-label">💥 SFX (EFFECTS)</span>
+                <span id="sfxLabelText" class="audio-label">💥 SFX (EFFECTS)</span>
                 <button id="sfxMuteBtn" class="pixel-mini-btn active" type="button">ON</button>
               </div>
               <div class="audio-slider-row">
@@ -2243,7 +2242,7 @@ button {
         </div>
 
         <div class="pixel-footer">
-          <div class="pixel-record-row">🏆 BEST RECORD: <span id="startBestScore">0</span></div>
+          <div id="startBestScoreRow" class="pixel-record-row">🏆 BEST RECORD: <span id="startBestScore">0</span></div>
           <button id="startBtn" class="pixel-btn pixel-btn-primary pulse-btn" type="button">
             <span class="btn-main">[ SPACE ] LAUNCH MISSION</span>
           </button>
@@ -2253,43 +2252,49 @@ button {
       <!-- 2. RETRO 16-BIT PAUSE MENU -->
       <div id="pauseScreen" class="menu pixel-modal hidden">
         <div class="pixel-brand">
-          <div class="pixel-tag yellow">⏸️ SYSTEM PAUSED</div>
-          <h2 class="pixel-title sm">DIAGNOSTIC REPORT</h2>
+          <div id="pauseTagText" class="pixel-tag yellow">⏸️ SYSTEM PAUSED</div>
+          <h2 id="pauseTitleText" class="pixel-title sm">DIAGNOSTIC REPORT</h2>
         </div>
 
         <div class="pixel-stats-grid">
           <div class="pixel-stat-box">
-            <span class="p-lbl">SECTOR</span>
+            <span id="pauseSectorLbl" class="p-lbl">SECTOR</span>
             <strong id="pauseSector" class="p-val cyan">Sector 1</strong>
           </div>
           <div class="pixel-stat-box">
-            <span class="p-lbl">STARSHIP CLASS</span>
+            <span id="pauseShipLbl" class="p-lbl">STARSHIP CLASS</span>
             <strong id="pauseShip" class="p-val">LIGHTNING INTERCEPTOR</strong>
           </div>
           <div class="pixel-stat-box">
-            <span class="p-lbl">ACTIVE WEAPON</span>
+            <span id="pauseModuleLbl" class="p-lbl">ACTIVE WEAPON</span>
             <strong id="pauseModule" class="p-val amber">Standard Plasma</strong>
           </div>
           <div class="pixel-stat-box">
-            <span class="p-lbl">HULL INTEGRITY</span>
+            <span id="pauseHealthLbl" class="p-lbl">HULL INTEGRITY</span>
             <strong id="pauseHealth" class="p-val green">100 / 100</strong>
           </div>
           <div class="pixel-stat-box">
-            <span class="p-lbl">MISSION TIME</span>
+            <span id="pauseTimerLbl" class="p-lbl">MISSION TIME</span>
             <strong id="pauseTimer" class="p-val">00:00</strong>
           </div>
           <div class="pixel-stat-box highlight">
-            <span class="p-lbl">CURRENT SCORE</span>
+            <span id="pauseScoreLbl" class="p-lbl">CURRENT SCORE</span>
             <strong id="pauseScore" class="p-val amber">0</strong>
           </div>
         </div>
 
         <!-- Pause Audio Settings Panel -->
         <div id="pauseAudioSettings" class="pixel-audio-settings sm">
+          <div class="audio-settings-header">
+            <span id="pauseAudioTitleText" class="audio-title">⚙️ AUDIO CONFIG</span>
+            <div style="display: flex; gap: 4px; align-items: center;">
+              <button id="pauseLangToggleBtn" class="pixel-mini-btn active" type="button" title="Language / Dil">🌐 TR</button>
+            </div>
+          </div>
           <div class="audio-controls-grid">
             <div class="audio-control-item">
               <div class="audio-item-header">
-                <span class="audio-label">🎵 MUSIC</span>
+                <span id="pauseBgmLabelText" class="audio-label">🎵 MUSIC</span>
                 <button id="pauseBgmMuteBtn" class="pixel-mini-btn active" type="button">ON</button>
               </div>
               <div class="audio-slider-row">
@@ -10429,6 +10434,191 @@ const ctrlGLabel = getEl("ctrlGLabel");
 const ctrlFLabel = getEl("ctrlFLabel");
 const ctrlF = getEl("ctrlF");
 
+// ============================================================================
+// 🌐 ULUSLARARASI ÇOKLU DİL SİSTEMİ (TR 🇹🇷 & EN 🇬🇧)
+// ============================================================================
+const I18N = {
+  tr: {
+    langBtn: "🌐 TR",
+    audioTitle: "⚙️ SES AYARLARI",
+    musicLabel: "🎵 MÜZİK (BGM)",
+    sfxLabel: "💥 EFEKTLER (SFX)",
+    allOn: "🔊 HEPSİ: AÇIK",
+    allOff: "🔇 HEPSİ: KAPALI",
+    on: "AÇIK",
+    off: "KAPALI",
+    bestRecord: "🏆 EN İYİ SKOR: ",
+    launchDesktop: "[ SPACE ] GÖREVİ BAŞLAT",
+    launchTouch: "🚀 GÖREVİ BAŞLAT",
+    
+    // Gemi Bilgileri
+    interceptorName: "ŞİMŞEK ÖNCÜSÜ",
+    interceptorRole: "⚡ YÜKSEK HIZ & KRİTİK VURUŞ",
+    interceptorDesc: "+%30 Hız, +%18 Kritik Vuruş, Çift Plazma İticisi, Çevik Kaçış Manevraları.",
+    
+    dreadnoughtName: "TİTAN DREADNOUGHT",
+    dreadnoughtRole: "🛡️ AĞIR ZIRH & KUŞATMA TOPU",
+    dreadnoughtDesc: "Ağır çelik titanyum kaplama, nükleer kuşatma topları ve %100 hasarsızlık kalkanı.",
+    
+    voidPhantomName: "HİÇLİK HAYALETİ",
+    voidPhantomRole: "🌌 KUANTUM IŞINLANMA & GİRDAP",
+    voidPhantomDesc: "Kuantum Işınlanma, Boyutlararası Hiçlik Girdabı ve düşman delen anti-madde atışları.",
+
+    // Pause Screen
+    pauseTag: "⏸️ OYUN DURAKLATILDI",
+    pauseTitle: "DURUM VE SİSTEM RAPORU",
+    lblSector: "SEKTÖR",
+    lblShipClass: "GEMİ SINIFI",
+    lblWeapon: "AKTİF SİLAH",
+    lblHull: "GÖVDE SAĞLIĞI",
+    lblTime: "GÖREV SÜRESİ",
+    lblScore: "MEVCUT SKOR",
+    btnResume: "[ SPACE / P ] DEVAM ET",
+    btnResumeTouch: "▶ DEVAM ET",
+    btnRestart: "🔄 YENİDEN BAŞLAT",
+    btnMenu: "[ ENTER ] ANA MENÜ",
+    btnMenuTouch: "🏠 ANA MENÜ",
+    btnFullscreen: "⛶ TAM EKRAN",
+
+    // Game Over
+    deathTagNormal: "🚨 GEMİ İMHA EDİLDİ 🚨",
+    deathTagVictory: "👑 20 SEKTÖR ZAFERLE TAMAMLANDI 👑",
+    deathTitleNormal: "GÖREV BAŞARISIZ",
+    deathTitleVictory: "GALAKTİK ZAFER",
+    lblSectorReached: "ULAŞILAN SEKTÖR",
+    lblHostilesPurged: "YOK EDİLEN DÜŞMAN",
+    lblOre: "KOZMİK CEVHER",
+    lblFinalScore: "SON SKOR",
+    lblAllTimeBest: "EN YÜKSEK SKOR",
+    lblSectorLevel: "SEKTÖR SEVİYESİ",
+    btnRetry: "[ SPACE ] TEKRAR DENE",
+    btnRetryTouch: "🚀 TEKRAR DENE",
+
+    // Rotate Overlay
+    rotateTitle: "LÜTFEN CİHAZI YATAY ÇEVİRİN",
+    rotateDesc: "En iyi 16-Bit arcade uzay savaşı deneyimi için telefonunuzu yatay konuma getirin."
+  },
+  en: {
+    langBtn: "🌐 EN",
+    audioTitle: "⚙️ AUDIO CONFIG",
+    musicLabel: "🎵 MUSIC (BGM)",
+    sfxLabel: "💥 SFX (EFFECTS)",
+    allOn: "🔊 ALL: ON",
+    allOff: "🔇 ALL: OFF",
+    on: "ON",
+    off: "OFF",
+    bestRecord: "🏆 BEST RECORD: ",
+    launchDesktop: "[ SPACE ] LAUNCH MISSION",
+    launchTouch: "🚀 LAUNCH MISSION",
+    
+    // Gemi Bilgileri
+    interceptorName: "LIGHTNING INTERCEPTOR",
+    interceptorRole: "⚡ HIGH SPEED & CRIT STRIKE",
+    interceptorDesc: "+30% Speed, +18% Critical Strike, Dual Plasma Thrusters, Agile Evasion.",
+    
+    dreadnoughtName: "TITAN DREADNOUGHT",
+    dreadnoughtRole: "🛡️ HEAVY SIEGE & KINETIC ARMOR",
+    dreadnoughtDesc: "Heavy steel plating, supreme damage mitigation, and devastating nuclear siege artillery.",
+    
+    voidPhantomName: "VOID PHANTOM",
+    voidPhantomRole: "🌌 QUANTUM WARP & ABYSS VORTEX",
+    voidPhantomDesc: "Quantum Phase Dash, Dark Vortex Rift, and piercing cosmic anti-matter pulses.",
+
+    // Pause Screen
+    pauseTag: "⏸️ SYSTEM PAUSED",
+    pauseTitle: "DIAGNOSTIC REPORT",
+    lblSector: "SECTOR",
+    lblShipClass: "STARSHIP CLASS",
+    lblWeapon: "ACTIVE WEAPON",
+    lblHull: "HULL INTEGRITY",
+    lblTime: "MISSION TIME",
+    lblScore: "CURRENT SCORE",
+    btnResume: "[ SPACE / P ] RESUME",
+    btnResumeTouch: "▶ RESUME MISSION",
+    btnRestart: "🔄 RESTART MISSION",
+    btnMenu: "[ ENTER ] MAIN MENU",
+    btnMenuTouch: "🏠 MAIN MENU",
+    btnFullscreen: "⛶ FULLSCREEN",
+
+    // Game Over
+    deathTagNormal: "🚨 STARSHIP DESTROYED 🚨",
+    deathTagVictory: "👑 20 SECTORS CLEARED WITH VICTORY 👑",
+    deathTitleNormal: "MISSION FAILED",
+    deathTitleVictory: "GALACTIC VICTORY",
+    lblSectorReached: "SECTOR REACHED",
+    lblHostilesPurged: "HOSTILES PURGED",
+    lblOre: "COSMIC ORE",
+    lblFinalScore: "FINAL SCORE",
+    lblAllTimeBest: "ALL-TIME BEST",
+    lblSectorLevel: "SECTOR LEVEL",
+    btnRetry: "[ SPACE ] RETRY MISSION",
+    btnRetryTouch: "🚀 RETRY MISSION",
+
+    // Rotate Overlay
+    rotateTitle: "PLEASE ROTATE DEVICE",
+    rotateDesc: "Rotate your phone to landscape mode for the ultimate 16-Bit deep space arcade experience."
+  }
+};
+
+let currentLang = "tr";
+if (typeof localStorage !== "undefined") {
+  const savedLang = localStorage.getItem("voidSurvivor_lang");
+  if (savedLang && (savedLang === "tr" || savedLang === "en")) {
+    currentLang = savedLang;
+  }
+}
+
+const langToggleBtn = getEl("langToggleBtn");
+const pauseLangToggleBtn = getEl("pauseLangToggleBtn");
+const audioTitleText = getEl("audioTitleText");
+const bgmLabelText = getEl("bgmLabelText");
+const sfxLabelText = getEl("sfxLabelText");
+const pauseAudioTitleText = getEl("pauseAudioTitleText");
+const pauseBgmLabelText = getEl("pauseBgmLabelText");
+const startBestScoreRow = getEl("startBestScoreRow");
+const pauseTagText = getEl("pauseTagText");
+const pauseTitleText = getEl("pauseTitleText");
+const pauseSectorLbl = getEl("pauseSectorLbl");
+const pauseShipLbl = getEl("pauseShipLbl");
+const pauseModuleLbl = getEl("pauseModuleLbl");
+const pauseHealthLbl = getEl("pauseHealthLbl");
+const pauseTimerLbl = getEl("pauseTimerLbl");
+const pauseScoreLbl = getEl("pauseScoreLbl");
+
+function applyTranslations() {
+  const dict = I18N[currentLang] || I18N.tr;
+  if (langToggleBtn) langToggleBtn.textContent = dict.langBtn;
+  if (pauseLangToggleBtn) pauseLangToggleBtn.textContent = dict.langBtn;
+
+  if (audioTitleText) audioTitleText.textContent = dict.audioTitle;
+  if (bgmLabelText) bgmLabelText.textContent = dict.musicLabel;
+  if (sfxLabelText) sfxLabelText.textContent = dict.sfxLabel;
+
+  if (pauseAudioTitleText) pauseAudioTitleText.textContent = dict.audioTitle;
+  if (pauseBgmLabelText) pauseBgmLabelText.textContent = dict.musicLabel;
+
+  if (startBestScoreRow) {
+    startBestScoreRow.innerHTML = `${dict.bestRecord}<span id="startBestScore">${state.bestScore}</span>`;
+  }
+
+  if (pauseTagText) pauseTagText.textContent = dict.pauseTag;
+  if (pauseTitleText) pauseTitleText.textContent = dict.pauseTitle;
+  if (pauseSectorLbl) pauseSectorLbl.textContent = dict.lblSector;
+  if (pauseShipLbl) pauseShipLbl.textContent = dict.lblShipClass;
+  if (pauseModuleLbl) pauseModuleLbl.textContent = dict.lblWeapon;
+  if (pauseHealthLbl) pauseHealthLbl.textContent = dict.lblHull;
+  if (pauseTimerLbl) pauseTimerLbl.textContent = dict.lblTime;
+  if (pauseScoreLbl) pauseScoreLbl.textContent = dict.lblScore;
+
+  const rotBox = typeof document !== "undefined" ? document.querySelector("#orientationOverlay .orientation-box") : null;
+  if (rotBox) {
+    const rotH3 = rotBox.querySelector("h3");
+    const rotP = rotBox.querySelector("p");
+    if (rotH3) rotH3.textContent = dict.rotateTitle;
+    if (rotP) rotP.textContent = dict.rotateDesc;
+  }
+}
+
 // Gemi Sınıfı Seçim Durumu
 const SHIP_CLASS_KEYS = ["interceptor", "dreadnought", "void_phantom"];
 let selectedShipIndex = typeof localStorage !== "undefined" ? Number(localStorage.getItem("neonSurvivorSelectedShip") || "0") : 0;
@@ -10439,6 +10629,8 @@ function updateShipSelectorUI() {
   selectedShipClass = SHIP_CLASS_KEYS[selectedShipIndex];
   if (typeof localStorage !== "undefined") localStorage.setItem("neonSurvivorSelectedShip", String(selectedShipIndex));
   const sc = SHIP_CLASSES[selectedShipClass] || SHIP_CLASSES.interceptor;
+  const dict = I18N[currentLang] || I18N.tr;
+
   const tierLabel = typeof document !== "undefined" ? document.querySelector(".ship-tier-label") : null;
   const roleLabel = getEl("shipRoleLabel");
   const descLabel = getEl("shipDescLabel");
@@ -10447,17 +10639,21 @@ function updateShipSelectorUI() {
   const statFire = getEl("statFire");
   const statSpecial = getEl("statSpecial");
 
+  const shipName = selectedShipClass === "interceptor" ? dict.interceptorName : (selectedShipClass === "dreadnought" ? dict.dreadnoughtName : dict.voidPhantomName);
+  const shipRole = selectedShipClass === "interceptor" ? dict.interceptorRole : (selectedShipClass === "dreadnought" ? dict.dreadnoughtRole : dict.voidPhantomRole);
+  const shipDesc = selectedShipClass === "interceptor" ? dict.interceptorDesc : (selectedShipClass === "dreadnought" ? dict.dreadnoughtDesc : dict.voidPhantomDesc);
+
   if (tierLabel) {
-    tierLabel.textContent = `★ ${sc.name} ★`;
+    tierLabel.textContent = `★ ${shipName} ★`;
     tierLabel.style.color = "#000000";
     tierLabel.style.background = sc.color;
   }
   if (roleLabel) {
-    roleLabel.textContent = sc.role;
+    roleLabel.textContent = shipRole;
     roleLabel.style.color = sc.color;
   }
   if (descLabel) {
-    descLabel.textContent = sc.desc;
+    descLabel.textContent = shipDesc;
   }
 
   if (statSpeed && statArmor && statFire && statSpecial) {
@@ -10637,26 +10833,27 @@ function updateAudioSettingsUI() {
   if (pauseSfxSlider) pauseSfxSlider.value = String(sfxPct);
   if (pauseSfxValText) pauseSfxValText.textContent = `${sfxPct}%`;
 
+  const dict = I18N[currentLang] || I18N.tr;
   if (bgmMuteBtn) {
-    bgmMuteBtn.textContent = audio.bgmMuted ? "OFF" : "ON";
+    bgmMuteBtn.textContent = audio.bgmMuted ? dict.off : dict.on;
     bgmMuteBtn.className = `pixel-mini-btn ${audio.bgmMuted ? "muted" : "active"}`;
   }
   if (pauseBgmMuteBtn) {
-    pauseBgmMuteBtn.textContent = audio.bgmMuted ? "OFF" : "ON";
+    pauseBgmMuteBtn.textContent = audio.bgmMuted ? dict.off : dict.on;
     pauseBgmMuteBtn.className = `pixel-mini-btn ${audio.bgmMuted ? "muted" : "active"}`;
   }
 
   if (sfxMuteBtn) {
-    sfxMuteBtn.textContent = audio.sfxMuted ? "OFF" : "ON";
+    sfxMuteBtn.textContent = audio.sfxMuted ? dict.off : dict.on;
     sfxMuteBtn.className = `pixel-mini-btn ${audio.sfxMuted ? "muted" : "active"}`;
   }
   if (pauseSfxMuteBtn) {
-    pauseSfxMuteBtn.textContent = audio.sfxMuted ? "OFF" : "ON";
+    pauseSfxMuteBtn.textContent = audio.sfxMuted ? dict.off : dict.on;
     pauseSfxMuteBtn.className = `pixel-mini-btn ${audio.sfxMuted ? "muted" : "active"}`;
   }
 
   if (masterMuteToggleBtn) {
-    masterMuteToggleBtn.textContent = audio.muted ? "🔇 ALL: OFF" : "🔊 ALL: ON";
+    masterMuteToggleBtn.textContent = audio.muted ? dict.allOff : dict.allOn;
     masterMuteToggleBtn.className = `pixel-mini-btn ${audio.muted ? "muted" : "active"}`;
   }
   if (muteBtn) {
@@ -10866,6 +11063,7 @@ function showStartScreen() {
   if (audio.ctx) {
     audio.playMenuMusic();
   }
+  applyTranslations();
   updateShipSelectorUI();
   updateAudioSettingsUI();
   updateDeviceSpecificUI();
@@ -10883,27 +11081,28 @@ function updateDeviceSpecificUI() {
     (navigator.maxTouchPoints > 0) ||
     /Android|iPhone|iPad|iPod|Mobile/i.test(navigator.userAgent || "")
   );
+  const dict = I18N[currentLang] || I18N.tr;
 
   if (typeof document !== "undefined" && document.body) {
     if (isTouchMobile) {
       document.body.classList.add("is-touch-device");
       const startMainText = startBtn ? startBtn.querySelector(".btn-main") : null;
-      if (startMainText) startMainText.textContent = "🚀 LAUNCH MISSION";
+      if (startMainText) startMainText.textContent = dict.launchTouch;
       
       const resumeMainText = resumeBtn ? resumeBtn.querySelector(".btn-main") : null;
-      if (resumeMainText) resumeMainText.textContent = "▶ RESUME MISSION";
+      if (resumeMainText) resumeMainText.textContent = dict.btnResumeTouch;
 
       const restartMainText = restartFromPauseBtn ? restartFromPauseBtn.querySelector(".btn-main") : null;
-      if (restartMainText) restartMainText.textContent = "🔄 RESTART MISSION";
+      if (restartMainText) restartMainText.textContent = dict.btnRestart;
 
       const pauseHomeMainText = pauseHomeBtn ? pauseHomeBtn.querySelector(".btn-main") : null;
-      if (pauseHomeMainText) pauseHomeMainText.textContent = "🏠 MAIN MENU";
+      if (pauseHomeMainText) pauseHomeMainText.textContent = dict.btnMenuTouch;
 
       const respawnMainText = respawnBtn ? respawnBtn.querySelector(".btn-main") : null;
-      if (respawnMainText) respawnMainText.textContent = "🚀 RETRY MISSION";
+      if (respawnMainText) respawnMainText.textContent = dict.btnRetryTouch;
 
       const homeMainText = homeBtn ? homeBtn.querySelector(".btn-main") : null;
-      if (homeMainText) homeMainText.textContent = "🏠 MAIN MENU";
+      if (homeMainText) homeMainText.textContent = dict.btnMenuTouch;
 
       const endlessContText = endlessContinueBtn ? endlessContinueBtn.querySelector(".btn-main") : null;
       if (endlessContText) endlessContText.textContent = "🚀 CONTINUE (ENDLESS)";
@@ -10913,22 +11112,22 @@ function updateDeviceSpecificUI() {
     } else {
       document.body.classList.remove("is-touch-device");
       const startMainText = startBtn ? startBtn.querySelector(".btn-main") : null;
-      if (startMainText) startMainText.textContent = "[ SPACE ] LAUNCH MISSION";
+      if (startMainText) startMainText.textContent = dict.launchDesktop;
 
       const resumeMainText = resumeBtn ? resumeBtn.querySelector(".btn-main") : null;
-      if (resumeMainText) resumeMainText.textContent = "[ SPACE / P ] RESUME";
+      if (resumeMainText) resumeMainText.textContent = dict.btnResume;
 
       const restartMainText = restartFromPauseBtn ? restartFromPauseBtn.querySelector(".btn-main") : null;
-      if (restartMainText) restartMainText.textContent = "🔄 RESTART MISSION";
+      if (restartMainText) restartMainText.textContent = dict.btnRestart;
 
       const pauseHomeMainText = pauseHomeBtn ? pauseHomeBtn.querySelector(".btn-main") : null;
-      if (pauseHomeMainText) pauseHomeMainText.textContent = "[ ENTER ] MAIN MENU";
+      if (pauseHomeMainText) pauseHomeMainText.textContent = dict.btnMenu;
 
       const respawnMainText = respawnBtn ? respawnBtn.querySelector(".btn-main") : null;
-      if (respawnMainText) respawnMainText.textContent = "[ SPACE ] RETRY MISSION";
+      if (respawnMainText) respawnMainText.textContent = dict.btnRetry;
 
       const homeMainText = homeBtn ? homeBtn.querySelector(".btn-main") : null;
-      if (homeMainText) homeMainText.textContent = "[ ENTER ] MAIN MENU";
+      if (homeMainText) homeMainText.textContent = dict.btnMenu;
 
       const endlessContText = endlessContinueBtn ? endlessContinueBtn.querySelector(".btn-main") : null;
       if (endlessContText) endlessContText.textContent = "[ SPACE ] CONTINUE (ENDLESS)";
@@ -10941,13 +11140,16 @@ function updateDeviceSpecificUI() {
 
 function showPauseScreen() {
   audio.pauseMusic();
+  applyTranslations();
   updateAudioSettingsUI();
   if (pauseSector) {
     pauseSector.textContent = state.currentBiome.name;
     pauseSector.style.color = state.currentBiome.accentColor;
   }
   if (pauseShip) {
-    pauseShip.textContent = player.shipClass ? player.shipClass.name : "LIGHTNING INTERCEPTOR";
+    const dict = I18N[currentLang] || I18N.tr;
+    const shipName = selectedShipClass === "interceptor" ? dict.interceptorName : (selectedShipClass === "dreadnought" ? dict.dreadnoughtName : dict.voidPhantomName);
+    pauseShip.textContent = shipName;
   }
   if (pauseModule) {
     if (player.activeModule) {
@@ -10974,22 +11176,23 @@ function showPauseScreen() {
 
 function showGameOverScreen(isVictory = false) {
   audio.playGameOverMusic(isVictory);
+  const dict = I18N[currentLang] || I18N.tr;
   if (deathTag) {
     if (isVictory) {
-      deathTag.textContent = "👑 20 SECTORS CLEARED WITH VICTORY 👑";
+      deathTag.textContent = dict.deathTagVictory;
       deathTag.className = "pixel-tag gold";
     } else {
-      deathTag.textContent = "🚨 STARSHIP DESTROYED 🚨";
+      deathTag.textContent = dict.deathTagNormal;
       deathTag.className = "pixel-tag red";
     }
   }
 
   if (deathTitle) {
     if (isVictory) {
-      deathTitle.textContent = "GALACTIC VICTORY";
+      deathTitle.textContent = dict.deathTitleVictory;
       deathTitle.className = "pixel-title gold";
     } else {
-      deathTitle.textContent = "MISSION FAILED";
+      deathTitle.textContent = dict.deathTitleNormal;
       deathTitle.className = "pixel-title red";
     }
   }
@@ -12206,6 +12409,23 @@ if (typeof window !== "undefined") {
       updateAudioSettingsUI();
     });
   }
+
+  // Dil Değiştirme (TR / EN) Buton Dinleyicileri
+  const onToggleLang = (e) => {
+    e.stopPropagation();
+    audio.ensureContext();
+    currentLang = currentLang === "tr" ? "en" : "tr";
+    try {
+      if (typeof localStorage !== "undefined") localStorage.setItem("voidSurvivor_lang", currentLang);
+    } catch (err) {}
+    applyTranslations();
+    updateShipSelectorUI();
+    updateAudioSettingsUI();
+    updateDeviceSpecificUI();
+  };
+
+  if (langToggleBtn) langToggleBtn.addEventListener("click", onToggleLang);
+  if (pauseLangToggleBtn) pauseLangToggleBtn.addEventListener("click", onToggleLang);
 
   // 🎬 EON YAZILIM — Sinematik Giriş Ekranı (Intro Splash Screen) Yönetimi
   const eonIntroScreen = getEl("eonIntroScreen");
