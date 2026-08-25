@@ -14,6 +14,8 @@ document.addEventListener("DOMContentLoaded", () => {
   initContactForm();
   initStickyHeader();
   initScrollSpy();
+  initGameModal();
+  initGameFeedback();
 });
 
 /* Sticky Header on Scroll */
@@ -410,4 +412,143 @@ function initScrollSpy() {
       });
     }
   });
+}
+
+/* ==========================================================================
+   🎮 Oyun Modalı (Sitede Canlı Oynama)
+   ========================================================================== */
+function initGameModal() {
+  const gameModal = document.getElementById("gameModal");
+  const openGameModalBtn = document.getElementById("openGameModalBtn");
+  const closeGameModalBtn = document.getElementById("closeGameModalBtn");
+  const gameIframe = document.getElementById("gameIframe");
+
+  function openGameModal() {
+    if (gameModal && gameIframe) {
+      gameIframe.src = "game/index.html";
+      gameModal.classList.remove("hidden");
+      gameModal.setAttribute("aria-hidden", "false");
+      document.body.style.overflow = "hidden";
+    }
+  }
+
+  function closeGameModal() {
+    if (gameModal && gameIframe) {
+      gameModal.classList.add("hidden");
+      gameModal.setAttribute("aria-hidden", "true");
+      gameIframe.src = ""; // Sesleri ve oyunu durdurmak için
+      document.body.style.overflow = "";
+    }
+  }
+
+  if (openGameModalBtn) {
+    openGameModalBtn.addEventListener("click", openGameModal);
+  }
+
+  if (closeGameModalBtn) {
+    closeGameModalBtn.addEventListener("click", closeGameModal);
+  }
+
+  if (gameModal) {
+    gameModal.addEventListener("click", (e) => {
+      if (e.target === gameModal) {
+        closeGameModal();
+      }
+    });
+  }
+
+  document.addEventListener("keydown", (e) => {
+    if (e.key === "Escape" && gameModal && !gameModal.classList.contains("hidden")) {
+      closeGameModal();
+    }
+  });
+}
+
+/* ==========================================================================
+   ⭐ İnteraktif Yıldız Puanlama & Oyuncu Geri Bildirim Formu
+   ========================================================================== */
+function initGameFeedback() {
+  const starRating = document.getElementById("starRating");
+  const ratingInput = document.getElementById("ratingInput");
+  const ratingText = document.getElementById("ratingText");
+  const gameFeedbackForm = document.getElementById("gameFeedbackForm");
+  const feedbackStatus = document.getElementById("feedbackStatus");
+
+  const ratingLabels = {
+    1: "1 / 5 — Geliştirilmesi Gerek",
+    2: "2 / 5 — İdare Eder",
+    3: "3 / 5 — İyi & Potansiyelli",
+    4: "4 / 5 — Çok Başarılı!",
+    5: "5 / 5 — Efsane / Mükemmel! 🚀"
+  };
+
+  if (starRating && ratingInput) {
+    const stars = starRating.querySelectorAll(".star");
+
+    function updateStars(rating) {
+      stars.forEach((star) => {
+        const val = parseInt(star.getAttribute("data-val"), 10);
+        if (val <= rating) {
+          star.classList.add("active");
+        } else {
+          star.classList.remove("active");
+        }
+      });
+      ratingInput.value = rating;
+      if (ratingText) {
+        ratingText.textContent = ratingLabels[rating] || `${rating} / 5`;
+      }
+    }
+
+    stars.forEach((star) => {
+      star.addEventListener("click", () => {
+        const val = parseInt(star.getAttribute("data-val"), 10);
+        updateStars(val);
+      });
+
+      star.addEventListener("mouseenter", () => {
+        const val = parseInt(star.getAttribute("data-val"), 10);
+        stars.forEach((s) => {
+          const sVal = parseInt(s.getAttribute("data-val"), 10);
+          if (sVal <= val) {
+            s.classList.add("active");
+          } else {
+            s.classList.remove("active");
+          }
+        });
+      });
+    });
+
+    starRating.addEventListener("mouseleave", () => {
+      updateStars(parseInt(ratingInput.value, 10) || 5);
+    });
+  }
+
+  if (gameFeedbackForm) {
+    gameFeedbackForm.addEventListener("submit", (e) => {
+      try {
+        const formData = new FormData(gameFeedbackForm);
+        const feedbackObj = {
+          rating: formData.get("rating"),
+          platform: formData.get("platform"),
+          favorite_ship: formData.get("favorite_ship"),
+          message: formData.get("feedback_message"),
+          player_name: formData.get("player_name") || "Anonim Pilot",
+          player_email: formData.get("player_email") || "-",
+          timestamp: new Date().toISOString()
+        };
+
+        const existing = JSON.parse(localStorage.getItem("eon_game_feedbacks") || "[]");
+        existing.push(feedbackObj);
+        localStorage.setItem("eon_game_feedbacks", JSON.stringify(existing));
+      } catch (err) {
+        console.warn("Feedback localStorage save:", err);
+      }
+
+      if (feedbackStatus) {
+        feedbackStatus.className = "feedback-status success";
+        feedbackStatus.innerHTML = "✨ <strong>Geri bildiriminiz için teşekkürler!</strong> Görüşleriniz nihai sürüm güncellemesinde dikkate alınacaktır. 🚀";
+      }
+    });
+  }
 }

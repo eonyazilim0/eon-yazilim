@@ -1633,3 +1633,511 @@ body.light-theme .footer {
     width: 100%;
   }
 }
+
+/* ==========================================================================
+   🎮 EON YAZILIM — Oyun Vitrini & Geri Bildirim Sistemi (Game Showcase)
+   ========================================================================== */
+.section-game {
+  background: radial-gradient(circle at center, rgba(14, 165, 233, 0.08) 0%, transparent 70%);
+  position: relative;
+  overflow: hidden;
+}
+
+.nav-highlight {
+  color: #38bdf8 !important;
+  font-weight: 700 !important;
+  text-shadow: 0 0 10px rgba(56, 189, 248, 0.5);
+}
+
+.game-showcase-card {
+  margin-top: 28px;
+  background: radial-gradient(circle at top, rgba(11, 21, 46, 0.9) 0%, rgba(6, 11, 24, 0.95) 100%);
+  border: 1px solid rgba(56, 189, 248, 0.35);
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.8), 0 0 35px rgba(56, 189, 248, 0.18);
+  padding: 32px;
+  border-radius: 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 28px;
+}
+
+.game-banner-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  flex-wrap: wrap;
+  gap: 16px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+  padding-bottom: 20px;
+}
+
+.game-badge-pulse {
+  display: inline-block;
+  font-size: 0.72rem;
+  font-weight: 800;
+  letter-spacing: 0.06em;
+  color: #000000;
+  background: #facc15;
+  padding: 3px 8px;
+  border-radius: 6px;
+  margin-bottom: 6px;
+  box-shadow: 0 0 15px rgba(250, 204, 21, 0.6);
+  animation: pulseBetaBadge 2s infinite ease-in-out;
+}
+
+@keyframes pulseBetaBadge {
+  0%, 100% { transform: scale(1); }
+  50% { transform: scale(1.05); }
+}
+
+.game-main-title {
+  font-size: clamp(1.6rem, 2.5vw + 0.8rem, 2.3rem);
+  font-weight: 900;
+  margin: 0;
+  color: #ffffff;
+  letter-spacing: 0.03em;
+  background: linear-gradient(135deg, #ffffff 0%, #7dd3fc 50%, #38bdf8 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.game-sub-title {
+  display: block;
+  font-size: 0.82rem;
+  font-weight: 700;
+  color: #f59e0b;
+  letter-spacing: 0.08em;
+  margin-top: 3px;
+}
+
+.game-meta-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  align-items: center;
+}
+
+.tag {
+  font-size: 0.76rem;
+  font-weight: 600;
+  padding: 4px 10px;
+  border-radius: 999px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.tag-cyan { background: rgba(56, 189, 248, 0.15); color: #7dd3fc; border-color: rgba(56, 189, 248, 0.4); }
+.tag-yellow { background: rgba(250, 204, 21, 0.15); color: #fde047; border-color: rgba(250, 204, 21, 0.4); }
+.tag-purple { background: rgba(168, 85, 247, 0.15); color: #d8b4fe; border-color: rgba(168, 85, 247, 0.4); }
+.tag-orange { background: rgba(249, 115, 22, 0.15); color: #fdba74; border-color: rgba(249, 115, 22, 0.4); }
+
+/* Gemi Özellikleri Grid */
+.game-features-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 16px;
+}
+
+.game-feat-item {
+  display: flex;
+  gap: 12px;
+  align-items: flex-start;
+  background: rgba(15, 23, 42, 0.65);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  padding: 16px;
+  border-radius: 16px;
+}
+
+.feat-icon {
+  font-size: 1.4rem;
+  line-height: 1;
+}
+
+.game-feat-item strong {
+  display: block;
+  font-size: 0.88rem;
+  color: #f1f5f9;
+  margin-bottom: 3px;
+}
+
+.game-feat-item p {
+  margin: 0;
+  font-size: 0.78rem;
+  color: var(--text-muted);
+  line-height: 1.4;
+}
+
+/* 3 Platform Kartları */
+.platform-section {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.platform-title {
+  font-size: 1.05rem;
+  font-weight: 700;
+  margin: 0;
+  color: #f8fafc;
+}
+
+.platform-buttons-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 16px;
+}
+
+.platform-card {
+  background: rgba(9, 14, 29, 0.9);
+  border: 1px solid rgba(56, 189, 248, 0.25);
+  border-radius: 16px;
+  padding: 18px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  gap: 14px;
+  transition: transform 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.platform-card:hover {
+  transform: translateY(-4px);
+  border-color: #38bdf8;
+  box-shadow: 0 10px 30px rgba(56, 189, 248, 0.2);
+}
+
+.plat-header {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.plat-icon {
+  font-size: 1.8rem;
+  line-height: 1;
+}
+
+.plat-header strong {
+  display: block;
+  font-size: 0.95rem;
+  color: #ffffff;
+}
+
+.plat-header small {
+  display: block;
+  font-size: 0.75rem;
+  color: #38bdf8;
+}
+
+.plat-desc {
+  font-size: 0.78rem;
+  color: var(--text-muted);
+  margin: 0;
+  line-height: 1.4;
+}
+
+.plat-btn {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  padding: 12px 16px;
+  font-size: 0.88rem;
+  font-weight: 700;
+  border-radius: 10px;
+}
+
+.plat-btn.android-btn {
+  background: linear-gradient(135deg, #059669 0%, #047857 100%);
+  box-shadow: 0 4px 14px rgba(5, 150, 105, 0.35);
+}
+
+.plat-btn.ios-btn {
+  background: linear-gradient(135deg, #475569 0%, #1e293b 100%);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.4);
+}
+
+.quick-play-row {
+  margin-top: 4px;
+}
+
+.glow-btn {
+  background: linear-gradient(90deg, #2563eb, #06b6d4);
+  color: #ffffff;
+  font-weight: 800;
+  font-size: 0.95rem;
+  padding: 14px 20px;
+  border-radius: 12px;
+  border: none;
+  cursor: pointer;
+  box-shadow: 0 0 25px rgba(6, 182, 212, 0.45);
+  transition: all 0.2s ease;
+}
+
+.glow-btn:hover {
+  filter: brightness(1.15);
+  box-shadow: 0 0 35px rgba(6, 182, 212, 0.7);
+  transform: translateY(-2px);
+}
+
+/* ⭐ Geri Bildirim Bölümü */
+.feedback-section {
+  background: rgba(10, 15, 30, 0.85);
+  border: 1px solid rgba(250, 204, 21, 0.35);
+  border-radius: 20px;
+  padding: 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+}
+
+.feedback-header {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+  padding-bottom: 12px;
+}
+
+.feedback-icon {
+  font-size: 1.8rem;
+  line-height: 1;
+}
+
+.feedback-header h4 {
+  font-size: 1.05rem;
+  color: #facc15;
+  margin: 0 0 2px 0;
+}
+
+.feedback-header p {
+  font-size: 0.8rem;
+  color: var(--text-muted);
+  margin: 0;
+}
+
+.feedback-form {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.rating-group {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.rating-group label {
+  font-size: 0.88rem;
+  font-weight: 700;
+  color: #f1f5f9;
+}
+
+.star-rating {
+  display: inline-flex;
+  gap: 4px;
+  font-size: 1.6rem;
+  cursor: pointer;
+}
+
+.star {
+  color: #475569;
+  transition: color 0.15s ease, transform 0.15s ease;
+  user-select: none;
+}
+
+.star.active {
+  color: #facc15;
+  text-shadow: 0 0 10px rgba(250, 204, 21, 0.7);
+}
+
+.star:hover {
+  transform: scale(1.2);
+}
+
+.rating-text {
+  font-size: 0.82rem;
+  font-weight: 600;
+  color: #facc15;
+}
+
+.form-row-2 {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 14px;
+}
+
+.form-group {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+
+.form-group label {
+  font-size: 0.82rem;
+  font-weight: 600;
+  color: #cbd5e1;
+}
+
+.custom-select {
+  width: 100%;
+  border-radius: 12px;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  padding: 10px 14px;
+  background: rgba(15, 23, 42, 0.95);
+  color: #f8fafc;
+  font-family: inherit;
+  font-size: 0.85rem;
+}
+
+.custom-select:focus {
+  outline: none;
+  border-color: #facc15;
+  box-shadow: 0 0 0 1px rgba(250, 204, 21, 0.5);
+}
+
+.feedback-submit-btn {
+  background: linear-gradient(135deg, #eab308 0%, #ca8a04 100%) !important;
+  color: #000000 !important;
+  font-weight: 800 !important;
+  box-shadow: 0 4px 20px rgba(234, 179, 8, 0.4) !important;
+  padding: 14px !important;
+  border-radius: 12px !important;
+}
+
+.feedback-status {
+  font-size: 0.85rem;
+  font-weight: 600;
+  text-align: center;
+  min-height: 20px;
+}
+
+.feedback-status.success {
+  color: #4ade80;
+}
+
+/* 🎮 Sitede Canlı Oyun Modalı */
+.game-modal-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 1000;
+  background: rgba(2, 6, 23, 0.94);
+  backdrop-filter: blur(14px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 16px;
+  opacity: 1;
+  transition: opacity 0.25s ease;
+}
+
+.game-modal-overlay.hidden {
+  display: none !important;
+}
+
+.game-modal-content {
+  width: min(98vw, 1100px);
+  height: min(94vh, 680px);
+  background: #000000;
+  border: 2px solid #00f0ff;
+  border-radius: 16px;
+  box-shadow: 0 0 50px rgba(0, 240, 255, 0.35);
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+.game-modal-topbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: #090e17;
+  padding: 10px 16px;
+  border-bottom: 2px solid #1e293b;
+}
+
+.modal-title-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  color: #ffffff;
+  font-size: 0.9rem;
+}
+
+.modal-badge {
+  font-size: 0.68rem;
+  background: #facc15;
+  color: #000000;
+  padding: 2px 6px;
+  border-radius: 4px;
+  font-weight: 800;
+}
+
+.modal-actions {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.modal-btn {
+  background: #1e293b;
+  color: #f1f5f9;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  padding: 6px 12px;
+  border-radius: 8px;
+  font-size: 0.78rem;
+  cursor: pointer;
+  text-decoration: none;
+}
+
+.modal-btn:hover {
+  background: #334155;
+  color: #ffffff;
+}
+
+.modal-btn.close-btn {
+  background: #dc2626;
+  border-color: #ef4444;
+}
+
+.modal-btn.close-btn:hover {
+  background: #ef4444;
+}
+
+.game-modal-iframe-wrap {
+  flex: 1;
+  width: 100%;
+  height: 100%;
+  background: #000000;
+}
+
+.game-modal-iframe-wrap iframe {
+  width: 100%;
+  height: 100%;
+  border: none;
+  display: block;
+}
+
+/* Responsive Düzenlemeler */
+@media (max-width: 900px) {
+  .game-features-grid {
+    grid-template-columns: 1fr;
+  }
+  .platform-buttons-grid {
+    grid-template-columns: 1fr;
+  }
+  .form-row-2 {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 640px) {
+  .game-showcase-card {
+    padding: 18px;
+  }
+  .feedback-section {
+    padding: 16px;
+  }
+}
