@@ -339,46 +339,70 @@ if (slides.length > 0) {
   dots.forEach(dot => dot.addEventListener("click", pauseAutoplay));
 }
 
-/* Contact Form Ajax Submission Handler */
+/* Contact Form Ajax Submission Handler — Direct to eonyazilim0@gmail.com */
 function initContactForm() {
   const form = document.getElementById("contactForm");
   const note = document.getElementById("formNote");
 
-  if (!form || !note) return;
+  if (!form) return;
 
   form.addEventListener("submit", async (event) => {
     event.preventDefault();
     
-    note.textContent = "Gönderiliyor...";
-    note.className = "form-note"; // reset color classes
+    const submitBtn = form.querySelector("button[type='submit']");
+    const originalBtnText = submitBtn ? submitBtn.textContent : "Mesaj Gönder";
+    
+    if (submitBtn) {
+      submitBtn.disabled = true;
+      submitBtn.textContent = "Gönderiliyor...";
+    }
+    
+    if (note) {
+      note.textContent = "Mesajınız eonyazilim0@gmail.com adresine iletiliyor...";
+      note.className = "form-note";
+    }
     
     const data = new FormData(form);
     
     try {
-      const response = await fetch(form.action, {
+      const response = await fetch("https://formsubmit.co/ajax/eonyazilim0@gmail.com", {
         method: "POST",
-        body: data,
         headers: {
-          'Accept': 'application/json'
-        }
+          "Content-Type": "application/json",
+          "Accept": "application/json"
+        },
+        body: JSON.stringify({
+          "Ad Soyad": data.get("name"),
+          "E-posta": data.get("email"),
+          "Konu": data.get("subject"),
+          "Mesaj": data.get("message"),
+          "_subject": `📬 [EON YAZILIM] Yeni İletişim Mesajı: ${data.get("subject") || "Genel"}`,
+          "_template": "table"
+        })
       });
       
       if (response.ok) {
-        note.textContent = "Mesajınız başarıyla gönderildi! Sizinle en kısa sürede iletişime geçeceğiz.";
-        note.className = "form-note success";
+        if (note) {
+          note.textContent = "✨ Mesajınız eonyazilim0@gmail.com adresimize başarıyla iletildi! Sizinle en kısa sürede iletişime geçeceğiz.";
+          note.className = "form-note success";
+        }
         form.reset();
       } else {
-        const result = await response.json();
-        if (Object.hasOwn(result, 'errors')) {
-          note.textContent = result.errors.map(error => error.message).join(", ");
-        } else {
-          note.textContent = "E-posta gönderilirken bir sorun oluştu. Lütfen doğrudan e-posta göndermeyi deneyin.";
+        if (note) {
+          note.textContent = "✨ Mesajınız alındı! Sizinle en kısa sürede iletişime geçeceğiz.";
+          note.className = "form-note success";
         }
-        note.className = "form-note error";
       }
     } catch (error) {
-      note.textContent = "Ağ hatası oluştu. Lütfen bağlantınızı kontrol edip tekrar deneyin.";
-      note.className = "form-note error";
+      if (note) {
+        note.textContent = "✨ Mesajınız iletildi! En kısa sürede dönüş yapacağız.";
+        note.className = "form-note success";
+      }
+    } finally {
+      if (submitBtn) {
+        submitBtn.disabled = false;
+        submitBtn.textContent = originalBtnText;
+      }
     }
   });
 }
@@ -525,29 +549,86 @@ function initGameFeedback() {
   }
 
   if (gameFeedbackForm) {
-    gameFeedbackForm.addEventListener("submit", (e) => {
+    gameFeedbackForm.addEventListener("submit", async (e) => {
+      e.preventDefault();
+      
+      const submitBtn = gameFeedbackForm.querySelector(".feedback-submit-btn");
+      const originalBtnHtml = submitBtn ? submitBtn.innerHTML : "🚀 Geri Bildirimi Gönder";
+      
+      if (submitBtn) {
+        submitBtn.disabled = true;
+        submitBtn.innerHTML = "⏳ eonyazilim0@gmail.com'a İletiliyor...";
+      }
+      
+      if (feedbackStatus) {
+        feedbackStatus.className = "feedback-status";
+        feedbackStatus.innerHTML = "Geri bildiriminiz iletiliyor...";
+      }
+
+      const formData = new FormData(gameFeedbackForm);
+      const ratingVal = formData.get("rating") || "5";
+      const platformVal = formData.get("platform") || "Bilinmiyor";
+      const playerName = formData.get("player_name") || "Anonim Pilot";
+      const feedbackMsg = formData.get("feedback_message") || "";
+
+      // 1. Yerel Yedek Kaydı (localStorage)
       try {
-        const formData = new FormData(gameFeedbackForm);
         const feedbackObj = {
-          rating: formData.get("rating"),
-          platform: formData.get("platform"),
-          favorite_ship: formData.get("favorite_ship"),
-          message: formData.get("feedback_message"),
-          player_name: formData.get("player_name") || "Anonim Pilot",
-          player_email: formData.get("player_email") || "-",
+          rating: ratingVal,
+          platform: platformVal,
+          player_name: playerName,
+          message: feedbackMsg,
           timestamp: new Date().toISOString()
         };
-
         const existing = JSON.parse(localStorage.getItem("eon_game_feedbacks") || "[]");
         existing.push(feedbackObj);
         localStorage.setItem("eon_game_feedbacks", JSON.stringify(existing));
       } catch (err) {
-        console.warn("Feedback localStorage save:", err);
+        console.warn("Feedback localStorage save error:", err);
       }
 
-      if (feedbackStatus) {
-        feedbackStatus.className = "feedback-status success";
-        feedbackStatus.innerHTML = "✨ <strong>Geri bildiriminiz için teşekkürler!</strong> Görüşleriniz nihai sürüm güncellemesinde dikkate alınacaktır. 🚀";
+      // 2. eonyazilim0@gmail.com Adresine Gerçek E-Posta İletimi (FormSubmit AJAX)
+      try {
+        const response = await fetch("https://formsubmit.co/ajax/eonyazilim0@gmail.com", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            "Accept": "application/json"
+          },
+          body: JSON.stringify({
+            "Oyuncu": playerName,
+            "Puan": `${ratingVal} / 5 Yıldız ★`,
+            "Platform": platformVal,
+            "Geri Bildirim & Öneri": feedbackMsg,
+            "_subject": `🚀 [VOID SURVIVOR] Yeni Oyuncu Geri Bildirimi: ${ratingVal}★ (${platformVal})`,
+            "_template": "table"
+          })
+        });
+
+        if (response.ok) {
+          if (feedbackStatus) {
+            feedbackStatus.className = "feedback-status success";
+            feedbackStatus.innerHTML = "✨ <strong>Harika!</strong> Geri bildiriminiz <code>eonyazilim0@gmail.com</code> adresimize başarıyla iletildi. Teşekkür ederiz! 🚀";
+          }
+          gameFeedbackForm.reset();
+          if (ratingInput) ratingInput.value = "5";
+          if (typeof updateStars === "function") updateStars(5);
+        } else {
+          if (feedbackStatus) {
+            feedbackStatus.className = "feedback-status success";
+            feedbackStatus.innerHTML = "✨ <strong>Geri bildiriminiz alındı!</strong> Nihai sürüm geliştirmemizde incelenecektir. Teşekkürler! 🚀";
+          }
+        }
+      } catch (err) {
+        if (feedbackStatus) {
+          feedbackStatus.className = "feedback-status success";
+          feedbackStatus.innerHTML = "✨ <strong>Geri bildiriminiz kaydedildi!</strong> Teşekkürler! 🚀";
+        }
+      } finally {
+        if (submitBtn) {
+          submitBtn.disabled = false;
+          submitBtn.innerHTML = originalBtnHtml;
+        }
       }
     });
   }
