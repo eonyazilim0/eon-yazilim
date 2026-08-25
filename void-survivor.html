@@ -1550,6 +1550,56 @@ button {
   }
 }
 
+/* 📱 Mobil Dikey Ekranda Otomatik Yatay Çevirme Katmanı */
+.orientation-overlay {
+  display: none;
+  position: fixed;
+  inset: 0;
+  z-index: 999999;
+  background: rgba(2, 6, 23, 0.98);
+  backdrop-filter: blur(16px);
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: 24px;
+}
+
+@media (max-width: 900px) and (orientation: portrait) {
+  .orientation-overlay {
+    display: flex !important;
+  }
+}
+
+.rotate-phone-icon {
+  font-size: 48px;
+  animation: rotatePhoneAnim 1.8s infinite ease-in-out;
+  margin-bottom: 16px;
+}
+
+@keyframes rotatePhoneAnim {
+  0% { transform: rotate(0deg); }
+  50% { transform: rotate(90deg); }
+  100% { transform: rotate(90deg); }
+}
+
+.orientation-box h3 {
+  font-family: 'Press Start 2P', monospace, sans-serif !important;
+  font-size: 12px;
+  color: #ffd166;
+  margin-bottom: 12px;
+  line-height: 1.5;
+  text-shadow: 2px 2px 0px #000;
+}
+
+.orientation-box p {
+  font-family: 'Press Start 2P', monospace, sans-serif !important;
+  font-size: 8px;
+  color: #94a3b8;
+  max-width: 320px;
+  line-height: 1.6;
+}
+
 </style>
   </head>
   <body>
@@ -2039,6 +2089,15 @@ button {
           <button id="endlessFinishBtn" class="pixel-btn pixel-btn-secondary" type="button">
             <span class="btn-main">[ X ] FINISH GAME (VICTORY)</span>
           </button>
+        </div>
+      </div>
+
+      <!-- 📱 Mobil Dikey Ekranda Otomatik Yatay Çevirme Katmanı -->
+      <div id="orientationOverlay" class="orientation-overlay">
+        <div class="orientation-box">
+          <div class="rotate-phone-icon">🔄</div>
+          <h3>LÜTFEN CİHAZI YATAY ÇEVİRİN</h3>
+          <p>En iyi 16-Bit arcade uzay savaşı deneyimi için telefonunuzu yatay konuma getirin.</p>
         </div>
       </div>
 

@@ -102,6 +102,104 @@
       </div>
     </section>
 
+    <!-- 🎮 OYUN VİTRİNİ & GERİ BİLDİRİM MERKEZİ (EN ÜSTTE) -->
+    <section id="oyunlar" class="section section-game">
+      <div class="container">
+        
+        <!-- Sade, Şık & Göze Hitap Eden Oyun Kartı -->
+        <div class="glass-card game-showcase-card reveal">
+          <div class="game-card-top">
+            <div class="game-title-group">
+              <span class="game-badge-pulse">BETA TESTİ</span>
+              <h2 class="game-main-title">VOID SURVIVOR: DEEP SPACE</h2>
+              <p class="game-simple-desc">16-Bit retro arcade derin uzay roguelite oyunu! Hemen oyna ve geri bildirim vererek nihai sürümü birlikte oluşturalım.</p>
+            </div>
+          </div>
+
+          <!-- 3 Platform Linkleri & Sitede Oyna Butonları -->
+          <div class="platform-buttons-row">
+            <a href="game/index.html" target="_blank" class="btn plat-btn pc-btn" title="Bilgisayarda Oyna (Tam Ekran)">
+              <span class="plat-icon">💻</span>
+              <span class="plat-text">Bilgisayarda Oyna</span>
+            </a>
+            <a href="game/index.html" target="_blank" class="btn plat-btn android-btn" title="Android İçin Başlat (Tam Ekran & Yatay)">
+              <span class="plat-icon">🤖</span>
+              <span class="plat-text">Android İçin Oyna</span>
+            </a>
+            <a href="game/index.html" target="_blank" class="btn plat-btn ios-btn" title="iOS / iPhone İçin Başlat (Tam Ekran & Yatay)">
+              <span class="plat-icon">🍏</span>
+              <span class="plat-text">iOS / iPhone İçin Oyna</span>
+            </a>
+            <button id="openGameModalBtn" class="btn plat-btn modal-trigger-btn" type="button" title="Sayfada Doğrudan Oyna">
+              <span class="plat-icon">⚡</span>
+              <span class="plat-text">Sitede Canlı Oyna</span>
+            </button>
+          </div>
+
+          <!-- ⭐ Gerçek Geri Bildirim & Değerlendirme Merkezi -->
+          <div class="feedback-box">
+            <div class="feedback-header">
+              <span class="feedback-icon">⭐</span>
+              <div>
+                <h3 class="feedback-title">Oyuncu Geri Bildirim & Değerlendirme Merkezi</h3>
+                <p class="feedback-subtitle">Deneyimini puanla, önerilerini ilet; oyunun nihai sürümüne yön ver!</p>
+              </div>
+            </div>
+
+            <form id="gameFeedbackForm" class="feedback-form" action="https://formspree.io/f/eonyazilim0" method="POST">
+              <!-- Yıldız Puanlama -->
+              <div class="rating-row">
+                <label>Oyuna Puanınız:</label>
+                <div class="star-rating" id="starRating">
+                  <span class="star active" data-val="1">★</span>
+                  <span class="star active" data-val="2">★</span>
+                  <span class="star active" data-val="3">★</span>
+                  <span class="star active" data-val="4">★</span>
+                  <span class="star active" data-val="5">★</span>
+                </div>
+                <input type="hidden" name="rating" id="ratingInput" value="5" />
+                <span id="ratingText" class="rating-text">5 / 5 — Mükemmel! 🚀</span>
+              </div>
+
+              <!-- Form Alanları -->
+              <div class="form-row-compact">
+                <div class="form-group">
+                  <label>Oynadığınız Cihaz:</label>
+                  <select name="platform" id="feedbackPlatform" class="custom-select" required>
+                    <option value="Bilgisayar (PC / Mac)">💻 Bilgisayar (PC / Mac)</option>
+                    <option value="Android Telefon / Tablet">🤖 Android</option>
+                    <option value="iOS (iPhone / iPad)">🍏 iOS (iPhone / iPad)</option>
+                  </select>
+                </div>
+                <div class="form-group">
+                  <label>İsminiz / Nick (İsteğe Bağlı):</label>
+                  <input type="text" name="player_name" class="form-input" placeholder="Pilot Adınız" />
+                </div>
+              </div>
+
+              <div class="form-group">
+                <label>Geri Bildiriminiz & Önerileriniz:</label>
+                <textarea
+                  name="feedback_message"
+                  id="feedbackMessage"
+                  rows="2"
+                  class="form-textarea"
+                  placeholder="Grafikler, sesler, oynanış zorluğu veya karşılaştığınız hatalar hakkında görüşlerinizi yazın..."
+                  required
+                ></textarea>
+              </div>
+
+              <button type="submit" class="btn btn-primary feedback-submit-btn">
+                🚀 Geri Bildirimi Gönder
+              </button>
+              <div id="feedbackStatus" class="feedback-status"></div>
+            </form>
+          </div>
+
+        </div>
+      </div>
+    </section>
+
     <!-- Stats / Metrics Section -->
     <section class="stats" aria-label="Şirket İstatistikleri">
       <div class="container stats-grid">
@@ -360,203 +458,6 @@
             </div>
           </article>
           
-        </div>
-      </div>
-    </section>
-
-    <!-- 🎮 EON YAZILIM OYUN STÜDYOSU / VOID SURVIVOR: DEEP SPACE -->
-    <section id="oyunlar" class="section section-game">
-      <div class="container">
-        <div class="section-title-wrapper reveal">
-          <span class="section-tag">🚀 Oyun Stüdyomuz</span>
-          <h2 class="section-title">VOID SURVIVOR: DEEP SPACE</h2>
-          <p class="section-subtitle">16-Bit retro arcade roguelite uzay savaşı! 3 özelleştirilebilir savaş gemisi, 20 galaktik sektör, bağımsız prosedürel synth müzikleri ve 60fps+ akıcı aksiyon deneyimi şimdi yayında.</p>
-        </div>
-
-        <!-- Ana Oyun Vitrini Kartı -->
-        <div class="glass-card game-showcase-card reveal">
-          <!-- Oyun Başlığı & Rozeti -->
-          <div class="game-banner-header">
-            <div class="game-logo-box">
-              <span class="game-badge-pulse">BETA TESTİ AÇIK</span>
-              <h3 class="game-main-title">VOID SURVIVOR</h3>
-              <span class="game-sub-title">★ DEEP SPACE ARCADE SURVIVAL ★</span>
-            </div>
-            <div class="game-meta-tags">
-              <span class="tag tag-cyan">⚡ 16-Bit Arcade</span>
-              <span class="tag tag-yellow">🛸 3 Gemi Sınıfı</span>
-              <span class="tag tag-purple">🎵 Retro Synth BGM</span>
-              <span class="tag tag-orange">🌌 20 Galaktik Sektör</span>
-            </div>
-          </div>
-
-          <!-- Oyun Açıklaması & Özellikleri -->
-          <div class="game-features-grid">
-            <div class="game-feat-item">
-              <span class="feat-icon">⚡</span>
-              <div>
-                <strong>Lightning Interceptor</strong>
-                <p>Yüksek hız, kritik vuruş, Nitro Dash ve Kuantum Şok Dalgası.</p>
-              </div>
-            </div>
-            <div class="game-feat-item">
-              <span class="feat-icon">🛡️</span>
-              <div>
-                <strong>Titan Dreadnought</strong>
-                <p>Çelik Kalkan (4sn hasarsızlık), 4'lü Kuad Top ve Ağır Titanyum Zırh.</p>
-              </div>
-            </div>
-            <div class="game-feat-item">
-              <span class="feat-icon">🌌</span>
-              <div>
-                <strong>Void Phantom</strong>
-                <p>Kuantum Işınlanma, Boyutlararası Hiçlik Girdabı ve Astral Yankılar.</p>
-              </div>
-            </div>
-          </div>
-
-          <!-- 3 Ayrı Platform Oynama Butonları -->
-          <div class="platform-section">
-            <h4 class="platform-title">🎮 Platformunuzu Seçin ve Hemen Oynayın:</h4>
-            <div class="platform-buttons-grid">
-              
-              <!-- 1. Bilgisayar / Masaüstü -->
-              <div class="platform-card">
-                <div class="plat-header">
-                  <span class="plat-icon">💻</span>
-                  <div>
-                    <strong>Bilgisayar (PC / Mac)</strong>
-                    <small>Web & Tam Ekran Modu</small>
-                  </div>
-                </div>
-                <p class="plat-desc">Klavye & Fare (WASD + Space) kontrolleri, 144Hz+ yüksek kare hızı desteği.</p>
-                <a href="game/index.html" target="_blank" class="btn btn-primary plat-btn">
-                  <span>💻 Bilgisayarda Oyna</span>
-                  <span class="btn-arrow">➔</span>
-                </a>
-              </div>
-
-              <!-- 2. Android -->
-              <div class="platform-card">
-                <div class="plat-header">
-                  <span class="plat-icon">🤖</span>
-                  <div>
-                    <strong>Android (Mobil Web)</strong>
-                    <small>Dokunmatik & PWA Desteği</small>
-                  </div>
-                </div>
-                <p class="plat-desc">Çift sanal joystick, haptik titreşim, Chrome 'Ana Ekrana Ekle' ile uygulama gibi oynama.</p>
-                <a href="game/index.html" target="_blank" class="btn btn-primary plat-btn android-btn">
-                  <span>🤖 Android İçin Başlat</span>
-                  <span class="btn-arrow">➔</span>
-                </a>
-              </div>
-
-              <!-- 3. iOS / iPhone -->
-              <div class="platform-card">
-                <div class="plat-header">
-                  <span class="plat-icon">🍏</span>
-                  <div>
-                    <strong>iOS (iPhone & iPad)</strong>
-                    <small>Safari & Apple Web App</small>
-                  </div>
-                </div>
-                <p class="plat-desc">Safari tam ekran uyumu, otomatik yatay ekran kilidi ve akıcı 60fps dokunmatik kontroller.</p>
-                <a href="game/index.html" target="_blank" class="btn btn-primary plat-btn ios-btn">
-                  <span>🍏 iOS / iPhone İçin Başlat</span>
-                  <span class="btn-arrow">➔</span>
-                </a>
-              </div>
-
-            </div>
-
-            <!-- Doğrudan Sitede Oyna Butonu -->
-            <div class="quick-play-row">
-              <button id="openGameModalBtn" class="btn glow-btn" style="width: 100%;" type="button">
-                ⚡ Doğrudan Bu Sayfada Oyna (Canlı Önizleme)
-              </button>
-            </div>
-          </div>
-
-          <!-- ⭐ OYUNCU GERİ BİLDİRİM & DEĞERLENDİRME FORMU -->
-          <div class="feedback-section">
-            <div class="feedback-header">
-              <span class="feedback-icon">⭐</span>
-              <div>
-                <h4>Erken Erişim Oyuncu Geri Bildirimi</h4>
-                <p>Görüşleriniz oyunun nihai sürümünün geliştirilmesinde doğrudan kullanılacaktır.</p>
-              </div>
-            </div>
-
-            <form id="gameFeedbackForm" class="feedback-form" action="https://formspree.io/f/eonyazilim0" method="POST">
-              
-              <!-- Puanlama Yıldızları -->
-              <div class="rating-group">
-                <label>Oyuna Puanınız:</label>
-                <div class="star-rating" id="starRating">
-                  <span class="star active" data-val="1">★</span>
-                  <span class="star active" data-val="2">★</span>
-                  <span class="star active" data-val="3">★</span>
-                  <span class="star active" data-val="4">★</span>
-                  <span class="star active" data-val="5">★</span>
-                </div>
-                <input type="hidden" name="rating" id="ratingInput" value="5" />
-                <span id="ratingText" class="rating-text">5 / 5 — Mükemmel!</span>
-              </div>
-
-              <div class="form-row-2">
-                <!-- Platform Seçimi -->
-                <div class="form-group">
-                  <label>Oynadığınız Cihaz / Platform:</label>
-                  <select name="platform" id="feedbackPlatform" class="custom-select" required>
-                    <option value="Bilgisayar (PC / Mac)">💻 Bilgisayar (PC / Mac)</option>
-                    <option value="Android Telefon / Tablet">🤖 Android Telefon / Tablet</option>
-                    <option value="iOS (iPhone / iPad)">🍏 iOS (iPhone / iPad)</option>
-                  </select>
-                </div>
-
-                <!-- Favori Gemi -->
-                <div class="form-group">
-                  <label>Favori Gemi Sınıfınız:</label>
-                  <select name="favorite_ship" id="feedbackShip" class="custom-select">
-                    <option value="Lightning Interceptor (Hız & Kritik)">⚡ Lightning Interceptor (Hız & Kritik)</option>
-                    <option value="Titan Dreadnought (Zırh & Çelik Kalkan)">🛡️ Titan Dreadnought (Zırh & Kalkan)</option>
-                    <option value="Void Phantom (Işınlanma & Girdap)">🌌 Void Phantom (Işınlanma & Girdap)</option>
-                  </select>
-                </div>
-              </div>
-
-              <!-- Geri Bildirim & Öneri Metni -->
-              <div class="form-group">
-                <label>Geri Bildiriminiz, Önerileriniz veya Bildirmek İstediğiniz Hatalar:</label>
-                <textarea
-                  name="feedback_message"
-                  id="feedbackMessage"
-                  rows="3"
-                  class="form-textarea"
-                  placeholder="Oyun mekanikleri, kontroller, grafikler, ses efektleri veya zorluk derecesi hakkındaki görüşlerinizi yazın..."
-                  required
-                ></textarea>
-              </div>
-
-              <div class="form-row-2">
-                <div class="form-group">
-                  <label>İsminiz / Oyuncu Nick'iniz (İsteğe Bağlı):</label>
-                  <input type="text" name="player_name" class="form-input" placeholder="Örn: Pilot Ahmet" />
-                </div>
-                <div class="form-group">
-                  <label>E-posta Adresiniz (İsteğe Bağlı):</label>
-                  <input type="email" name="player_email" class="form-input" placeholder="ornek@mail.com" />
-                </div>
-              </div>
-
-              <button type="submit" class="btn btn-primary feedback-submit-btn" style="width: 100%;">
-                🚀 Geri Bildirimi Gönder
-              </button>
-              <div id="feedbackStatus" class="feedback-status"></div>
-            </form>
-          </div>
-
         </div>
       </div>
     </section>

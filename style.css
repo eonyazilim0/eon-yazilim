@@ -413,14 +413,21 @@ body.light-theme .btn-secondary:hover {
 }
 
 .hero-text h1 {
-  font-size: clamp(2.5rem, 5vw, 4rem);
+  font-size: clamp(2.2rem, 4.5vw, 3.8rem);
   font-weight: 800;
-  line-height: 1.1;
+  line-height: 1.2;
   margin-bottom: 24px;
+  min-height: 2.5em; /* Yazı yazılırken/silinirken sayfanın zıplamasını %100 önler */
+}
+
+#typewriter {
+  display: inline-block;
+  min-height: 1.2em;
+  vertical-align: bottom;
 }
 
 .hero-text p {
-  font-size: 1.2rem;
+  font-size: 1.15rem;
   color: var(--text-muted);
   margin-bottom: 36px;
   max-width: 540px;
@@ -1650,25 +1657,27 @@ body.light-theme .footer {
 }
 
 .game-showcase-card {
-  margin-top: 28px;
-  background: radial-gradient(circle at top, rgba(11, 21, 46, 0.9) 0%, rgba(6, 11, 24, 0.95) 100%);
+  margin-top: 20px;
+  background: radial-gradient(circle at top, rgba(14, 26, 56, 0.95) 0%, rgba(6, 11, 24, 0.98) 100%);
   border: 1px solid rgba(56, 189, 248, 0.35);
   box-shadow: 0 20px 60px rgba(0, 0, 0, 0.8), 0 0 35px rgba(56, 189, 248, 0.18);
-  padding: 32px;
+  padding: 28px;
   border-radius: 24px;
   display: flex;
   flex-direction: column;
-  gap: 28px;
+  gap: 22px;
 }
 
-.game-banner-header {
+.game-card-top {
   display: flex;
   justify-content: space-between;
   align-items: flex-start;
-  flex-wrap: wrap;
-  gap: 16px;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
-  padding-bottom: 20px;
+}
+
+.game-title-group {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
 }
 
 .game-badge-pulse {
@@ -1678,9 +1687,9 @@ body.light-theme .footer {
   letter-spacing: 0.06em;
   color: #000000;
   background: #facc15;
-  padding: 3px 8px;
+  padding: 3px 10px;
   border-radius: 6px;
-  margin-bottom: 6px;
+  width: fit-content;
   box-shadow: 0 0 15px rgba(250, 204, 21, 0.6);
   animation: pulseBetaBadge 2s infinite ease-in-out;
 }
@@ -1701,194 +1710,97 @@ body.light-theme .footer {
   -webkit-text-fill-color: transparent;
 }
 
-.game-sub-title {
-  display: block;
-  font-size: 0.82rem;
-  font-weight: 700;
-  color: #f59e0b;
-  letter-spacing: 0.08em;
-  margin-top: 3px;
-}
-
-.game-meta-tags {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 8px;
-  align-items: center;
-}
-
-.tag {
-  font-size: 0.76rem;
-  font-weight: 600;
-  padding: 4px 10px;
-  border-radius: 999px;
-  border: 1px solid rgba(255, 255, 255, 0.1);
-}
-
-.tag-cyan { background: rgba(56, 189, 248, 0.15); color: #7dd3fc; border-color: rgba(56, 189, 248, 0.4); }
-.tag-yellow { background: rgba(250, 204, 21, 0.15); color: #fde047; border-color: rgba(250, 204, 21, 0.4); }
-.tag-purple { background: rgba(168, 85, 247, 0.15); color: #d8b4fe; border-color: rgba(168, 85, 247, 0.4); }
-.tag-orange { background: rgba(249, 115, 22, 0.15); color: #fdba74; border-color: rgba(249, 115, 22, 0.4); }
-
-/* Gemi Özellikleri Grid */
-.game-features-grid {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 16px;
-}
-
-.game-feat-item {
-  display: flex;
-  gap: 12px;
-  align-items: flex-start;
-  background: rgba(15, 23, 42, 0.65);
-  border: 1px solid rgba(255, 255, 255, 0.08);
-  padding: 16px;
-  border-radius: 16px;
-}
-
-.feat-icon {
-  font-size: 1.4rem;
-  line-height: 1;
-}
-
-.game-feat-item strong {
-  display: block;
-  font-size: 0.88rem;
-  color: #f1f5f9;
-  margin-bottom: 3px;
-}
-
-.game-feat-item p {
-  margin: 0;
-  font-size: 0.78rem;
-  color: var(--text-muted);
-  line-height: 1.4;
-}
-
-/* 3 Platform Kartları */
-.platform-section {
-  display: flex;
-  flex-direction: column;
-  gap: 16px;
-}
-
-.platform-title {
-  font-size: 1.05rem;
-  font-weight: 700;
-  margin: 0;
-  color: #f8fafc;
-}
-
-.platform-buttons-grid {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 16px;
-}
-
-.platform-card {
-  background: rgba(9, 14, 29, 0.9);
-  border: 1px solid rgba(56, 189, 248, 0.25);
-  border-radius: 16px;
-  padding: 18px;
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-  gap: 14px;
-  transition: transform 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease;
-}
-
-.platform-card:hover {
-  transform: translateY(-4px);
-  border-color: #38bdf8;
-  box-shadow: 0 10px 30px rgba(56, 189, 248, 0.2);
-}
-
-.plat-header {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-}
-
-.plat-icon {
-  font-size: 1.8rem;
-  line-height: 1;
-}
-
-.plat-header strong {
-  display: block;
+.game-simple-desc {
   font-size: 0.95rem;
-  color: #ffffff;
-}
-
-.plat-header small {
-  display: block;
-  font-size: 0.75rem;
-  color: #38bdf8;
-}
-
-.plat-desc {
-  font-size: 0.78rem;
   color: var(--text-muted);
   margin: 0;
-  line-height: 1.4;
+  max-width: 680px;
+  line-height: 1.5;
+}
+
+/* 3 Platform Butonları & Sitede Oyna */
+.platform-buttons-row {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 14px;
+  width: 100%;
 }
 
 .plat-btn {
   display: flex;
   align-items: center;
-  justify-content: space-between;
-  width: 100%;
-  padding: 12px 16px;
-  font-size: 0.88rem;
+  justify-content: center;
+  gap: 10px;
+  padding: 14px 18px;
+  font-size: 0.92rem;
   font-weight: 700;
-  border-radius: 10px;
+  border-radius: 14px;
+  transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+  text-decoration: none;
+  cursor: pointer;
+}
+
+.plat-btn .plat-icon {
+  font-size: 1.35rem;
+  line-height: 1;
+}
+
+.plat-btn.pc-btn {
+  background: linear-gradient(135deg, #0284c7 0%, #0369a1 100%);
+  color: #ffffff;
+  box-shadow: 0 4px 18px rgba(2, 132, 199, 0.35);
+}
+
+.plat-btn.pc-btn:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 8px 25px rgba(2, 132, 199, 0.55);
 }
 
 .plat-btn.android-btn {
   background: linear-gradient(135deg, #059669 0%, #047857 100%);
-  box-shadow: 0 4px 14px rgba(5, 150, 105, 0.35);
+  color: #ffffff;
+  box-shadow: 0 4px 18px rgba(5, 150, 105, 0.35);
+}
+
+.plat-btn.android-btn:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 8px 25px rgba(5, 150, 105, 0.55);
 }
 
 .plat-btn.ios-btn {
   background: linear-gradient(135deg, #475569 0%, #1e293b 100%);
-  border: 1px solid rgba(255, 255, 255, 0.2);
-  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.4);
-}
-
-.quick-play-row {
-  margin-top: 4px;
-}
-
-.glow-btn {
-  background: linear-gradient(90deg, #2563eb, #06b6d4);
   color: #ffffff;
-  font-weight: 800;
-  font-size: 0.95rem;
-  padding: 14px 20px;
-  border-radius: 12px;
-  border: none;
-  cursor: pointer;
-  box-shadow: 0 0 25px rgba(6, 182, 212, 0.45);
-  transition: all 0.2s ease;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  box-shadow: 0 4px 18px rgba(0, 0, 0, 0.4);
 }
 
-.glow-btn:hover {
-  filter: brightness(1.15);
-  box-shadow: 0 0 35px rgba(6, 182, 212, 0.7);
-  transform: translateY(-2px);
+.plat-btn.ios-btn:hover {
+  transform: translateY(-3px);
+  border-color: rgba(255, 255, 255, 0.4);
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.6);
 }
 
-/* ⭐ Geri Bildirim Bölümü */
-.feedback-section {
+.plat-btn.modal-trigger-btn {
+  background: linear-gradient(135deg, #7c3aed 0%, #6d28d9 100%);
+  color: #ffffff;
+  border: 1px solid rgba(168, 85, 247, 0.3);
+  box-shadow: 0 4px 18px rgba(124, 58, 237, 0.35);
+}
+
+.plat-btn.modal-trigger-btn:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 8px 25px rgba(124, 58, 237, 0.55);
+}
+
+/* ⭐ Geri Bildirim Kutusu */
+.feedback-box {
   background: rgba(10, 15, 30, 0.85);
-  border: 1px solid rgba(250, 204, 21, 0.35);
-  border-radius: 20px;
-  padding: 24px;
+  border: 1px solid rgba(250, 204, 21, 0.3);
+  border-radius: 18px;
+  padding: 20px;
   display: flex;
   flex-direction: column;
-  gap: 16px;
-  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+  gap: 14px;
 }
 
 .feedback-header {
@@ -1896,22 +1808,23 @@ body.light-theme .footer {
   align-items: center;
   gap: 12px;
   border-bottom: 1px solid rgba(255, 255, 255, 0.08);
-  padding-bottom: 12px;
+  padding-bottom: 10px;
 }
 
 .feedback-icon {
-  font-size: 1.8rem;
+  font-size: 1.6rem;
   line-height: 1;
 }
 
-.feedback-header h4 {
-  font-size: 1.05rem;
+.feedback-title {
+  font-size: 1rem;
   color: #facc15;
   margin: 0 0 2px 0;
+  font-weight: 700;
 }
 
-.feedback-header p {
-  font-size: 0.8rem;
+.feedback-subtitle {
+  font-size: 0.82rem;
   color: var(--text-muted);
   margin: 0;
 }
@@ -1919,17 +1832,17 @@ body.light-theme .footer {
 .feedback-form {
   display: flex;
   flex-direction: column;
-  gap: 14px;
+  gap: 12px;
 }
 
-.rating-group {
+.rating-row {
   display: flex;
   align-items: center;
   gap: 12px;
   flex-wrap: wrap;
 }
 
-.rating-group label {
+.rating-row label {
   font-size: 0.88rem;
   font-weight: 700;
   color: #f1f5f9;
@@ -1938,7 +1851,7 @@ body.light-theme .footer {
 .star-rating {
   display: inline-flex;
   gap: 4px;
-  font-size: 1.6rem;
+  font-size: 1.5rem;
   cursor: pointer;
 }
 
@@ -1963,29 +1876,29 @@ body.light-theme .footer {
   color: #facc15;
 }
 
-.form-row-2 {
+.form-row-compact {
   display: grid;
   grid-template-columns: 1fr 1fr;
-  gap: 14px;
+  gap: 12px;
 }
 
 .form-group {
   display: flex;
   flex-direction: column;
-  gap: 5px;
+  gap: 4px;
 }
 
 .form-group label {
-  font-size: 0.82rem;
+  font-size: 0.8rem;
   font-weight: 600;
   color: #cbd5e1;
 }
 
 .custom-select {
   width: 100%;
-  border-radius: 12px;
+  border-radius: 10px;
   border: 1px solid rgba(255, 255, 255, 0.12);
-  padding: 10px 14px;
+  padding: 9px 12px;
   background: rgba(15, 23, 42, 0.95);
   color: #f8fafc;
   font-family: inherit;
@@ -2002,9 +1915,10 @@ body.light-theme .footer {
   background: linear-gradient(135deg, #eab308 0%, #ca8a04 100%) !important;
   color: #000000 !important;
   font-weight: 800 !important;
-  box-shadow: 0 4px 20px rgba(234, 179, 8, 0.4) !important;
-  padding: 14px !important;
-  border-radius: 12px !important;
+  box-shadow: 0 4px 18px rgba(234, 179, 8, 0.4) !important;
+  padding: 12px !important;
+  border-radius: 10px !important;
+  width: 100%;
 }
 
 .feedback-status {
@@ -2121,23 +2035,17 @@ body.light-theme .footer {
 }
 
 /* Responsive Düzenlemeler */
-@media (max-width: 900px) {
-  .game-features-grid {
+@media (max-width: 768px) {
+  .platform-buttons-row {
     grid-template-columns: 1fr;
   }
-  .platform-buttons-grid {
+  .form-row-compact {
     grid-template-columns: 1fr;
   }
-  .form-row-2 {
-    grid-template-columns: 1fr;
-  }
-}
-
-@media (max-width: 640px) {
   .game-showcase-card {
     padding: 18px;
   }
-  .feedback-section {
+  .feedback-box {
     padding: 16px;
   }
 }
