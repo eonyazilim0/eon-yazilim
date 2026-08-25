@@ -1294,7 +1294,7 @@ button {
   }
 
   /* 🛸 MOBIL HANGAR & BAŞLANGIÇ EKRANI — 2 KOLONLU SIFIR KAYDIRMA DÜZENİ */
-  #startScreen {
+  #startScreen:not(.hidden) {
     width: min(98vw, 860px) !important;
     max-height: 98vh !important;
     height: auto !important;
@@ -1462,38 +1462,181 @@ button {
     font-size: 8.5px !important;
   }
 
-  /* Diğer Modalların Mobilde Sıfır Kaydırma Düzeni */
-  .pixel-modal {
+  /* ⏸️ MOBIL DURDURMA EKRANI (PAUSE SCREEN) */
+  #pauseScreen:not(.hidden) {
+    width: min(96vw, 660px) !important;
     max-height: 98vh !important;
-    padding: 10px 14px !important;
-    gap: 6px !important;
+    height: auto !important;
+    padding: 8px 14px !important;
+    gap: 5px !important;
+    overflow: hidden !important;
+    display: flex !important;
+    flex-direction: column !important;
+    align-items: center !important;
   }
 
-  .pixel-stats-grid {
-    gap: 4px !important;
-    padding: 4px 6px !important;
+  #pauseScreen .pixel-brand {
+    margin-bottom: 0px !important;
   }
 
-  .pixel-stat-box {
+  #pauseScreen .pixel-title {
+    font-size: 11px !important;
+  }
+
+  #pauseScreen .pixel-stats-grid {
+    display: grid !important;
+    grid-template-columns: repeat(3, 1fr) !important;
+    gap: 3px 6px !important;
+    padding: 4px 8px !important;
+    width: 100% !important;
+  }
+
+  #pauseScreen .pixel-stat-box {
     padding: 3px 5px !important;
   }
 
-  .pixel-stat-box .p-lbl {
-    font-size: 6px !important;
+  #pauseScreen .pixel-stat-box .p-lbl {
+    font-size: 5.5px !important;
   }
 
-  .pixel-stat-box .p-val {
+  #pauseScreen .pixel-stat-box .p-val {
+    font-size: 7px !important;
+  }
+
+  #pauseScreen .pixel-audio-settings {
+    padding: 3px 6px !important;
+    gap: 2px !important;
+    width: 100% !important;
+  }
+
+  #pauseScreen .pixel-btn-group {
+    display: grid !important;
+    grid-template-columns: 1fr 1fr !important;
+    gap: 5px !important;
+    width: 100% !important;
+  }
+
+  #pauseScreen .pixel-btn {
+    min-height: 32px !important;
+    padding: 5px 8px !important;
     font-size: 7.5px !important;
   }
 
-  .pixel-btn-group {
+  /* 💀 MOBIL ÖLÜM EKRANI (GAME OVER SCREEN) */
+  #gameOverScreen:not(.hidden) {
+    width: min(96vw, 660px) !important;
+    max-height: 98vh !important;
+    height: auto !important;
+    padding: 8px 14px !important;
     gap: 5px !important;
+    overflow: hidden !important;
+    display: flex !important;
+    flex-direction: column !important;
+    align-items: center !important;
   }
 
-  .pixel-btn {
-    min-height: 34px !important;
-    font-size: 8.5px !important;
-    padding: 6px 8px !important;
+  #gameOverScreen .pixel-brand {
+    margin-bottom: 0px !important;
+  }
+
+  #gameOverScreen .pixel-tag {
+    font-size: 7.5px !important;
+    padding: 2px 6px !important;
+  }
+
+  #gameOverScreen .pixel-title {
+    font-size: 13px !important;
+  }
+
+  #gameOverScreen .pixel-rank-pill {
+    font-size: 6.5px !important;
+    padding: 1px 6px !important;
+  }
+
+  #gameOverScreen .pixel-stats-grid {
+    display: grid !important;
+    grid-template-columns: repeat(3, 1fr) !important;
+    gap: 3px 6px !important;
+    padding: 4px 8px !important;
+    width: 100% !important;
+  }
+
+  #gameOverScreen .pixel-stat-box {
+    padding: 3px 5px !important;
+  }
+
+  #gameOverScreen .pixel-stat-box .p-lbl {
+    font-size: 5.5px !important;
+  }
+
+  #gameOverScreen .pixel-stat-box .p-val {
+    font-size: 7px !important;
+  }
+
+  #gameOverScreen .pixel-stat-box.full {
+    grid-column: 1 / 4 !important;
+    padding: 3px 6px !important;
+  }
+
+  #gameOverScreen .pixel-btn-group {
+    display: grid !important;
+    grid-template-columns: 1fr 1fr !important;
+    gap: 5px !important;
+    width: 100% !important;
+  }
+
+  #gameOverScreen .pixel-btn {
+    min-height: 36px !important;
+    padding: 6px 10px !important;
+    font-size: 8px !important;
+  }
+
+  /* 👑 MOBIL ZAFER MODALI (ENDLESS VICTORY) */
+  #endlessVictoryModal:not(.hidden) {
+    width: min(96vw, 660px) !important;
+    max-height: 98vh !important;
+    height: auto !important;
+    padding: 8px 14px !important;
+    gap: 5px !important;
+    overflow: hidden !important;
+    display: flex !important;
+    flex-direction: column !important;
+    align-items: center !important;
+  }
+
+  #endlessVictoryModal .endless-pixel-content {
+    gap: 4px !important;
+  }
+
+  #endlessVictoryModal .endless-pixel-feature {
+    padding: 4px 8px !important;
+    gap: 6px !important;
+  }
+
+  #endlessVictoryModal .endless-pixel-feature strong {
+    font-size: 7.5px !important;
+  }
+
+  #endlessVictoryModal .endless-pixel-feature small {
+    font-size: 6.5px !important;
+  }
+
+  #endlessVictoryModal .pixel-btn-group {
+    display: grid !important;
+    grid-template-columns: 1fr 1fr !important;
+    gap: 5px !important;
+    width: 100% !important;
+  }
+
+  /* Genel Modal Sıfır Kaydırma Koruması */
+  .hidden,
+  #startScreen.hidden,
+  #pauseScreen.hidden,
+  #gameOverScreen.hidden,
+  #endlessVictoryModal.hidden,
+  #upgradeModal.hidden,
+  .menu.hidden {
+    display: none !important;
   }
 
   .toast-feed {
@@ -2267,12 +2410,12 @@ button {
         </div>
       </div>
 
-      <!-- 📱 Mobil Dikey Ekranda Otomatik Yatay Çevirme Katmanı -->
+      <!-- 📱 Mobile Portrait Auto-Rotate Overlay -->
       <div id="orientationOverlay" class="orientation-overlay">
         <div class="orientation-box">
           <div class="rotate-phone-icon">🔄</div>
-          <h3>LÜTFEN CİHAZI YATAY ÇEVİRİN</h3>
-          <p>En iyi 16-Bit arcade uzay savaşı deneyimi için telefonunuzu yatay konuma getirin.</p>
+          <h3>PLEASE ROTATE DEVICE</h3>
+          <p>Rotate your phone to landscape mode for the ultimate 16-Bit deep space arcade experience.</p>
         </div>
       </div>
 
@@ -10720,15 +10863,53 @@ function updateDeviceSpecificUI() {
     if (isTouchMobile) {
       document.body.classList.add("is-touch-device");
       const startMainText = startBtn ? startBtn.querySelector(".btn-main") : null;
-      if (startMainText) {
-        startMainText.textContent = "🚀 GÖREVİ BAŞLAT";
-      }
+      if (startMainText) startMainText.textContent = "🚀 LAUNCH MISSION";
+      
+      const resumeMainText = resumeBtn ? resumeBtn.querySelector(".btn-main") : null;
+      if (resumeMainText) resumeMainText.textContent = "▶ RESUME MISSION";
+
+      const restartMainText = restartFromPauseBtn ? restartFromPauseBtn.querySelector(".btn-main") : null;
+      if (restartMainText) restartMainText.textContent = "🔄 RESTART MISSION";
+
+      const pauseHomeMainText = pauseHomeBtn ? pauseHomeBtn.querySelector(".btn-main") : null;
+      if (pauseHomeMainText) pauseHomeMainText.textContent = "🏠 MAIN MENU";
+
+      const respawnMainText = respawnBtn ? respawnBtn.querySelector(".btn-main") : null;
+      if (respawnMainText) respawnMainText.textContent = "🚀 RETRY MISSION";
+
+      const homeMainText = homeBtn ? homeBtn.querySelector(".btn-main") : null;
+      if (homeMainText) homeMainText.textContent = "🏠 MAIN MENU";
+
+      const endlessContText = endlessContinueBtn ? endlessContinueBtn.querySelector(".btn-main") : null;
+      if (endlessContText) endlessContText.textContent = "🚀 CONTINUE (ENDLESS)";
+
+      const endlessFinText = endlessFinishBtn ? endlessFinishBtn.querySelector(".btn-main") : null;
+      if (endlessFinText) endlessFinText.textContent = "👑 FINISH GAME";
     } else {
       document.body.classList.remove("is-touch-device");
       const startMainText = startBtn ? startBtn.querySelector(".btn-main") : null;
-      if (startMainText) {
-        startMainText.textContent = "[ SPACE ] LAUNCH MISSION";
-      }
+      if (startMainText) startMainText.textContent = "[ SPACE ] LAUNCH MISSION";
+
+      const resumeMainText = resumeBtn ? resumeBtn.querySelector(".btn-main") : null;
+      if (resumeMainText) resumeMainText.textContent = "[ SPACE / P ] RESUME";
+
+      const restartMainText = restartFromPauseBtn ? restartFromPauseBtn.querySelector(".btn-main") : null;
+      if (restartMainText) restartMainText.textContent = "🔄 RESTART MISSION";
+
+      const pauseHomeMainText = pauseHomeBtn ? pauseHomeBtn.querySelector(".btn-main") : null;
+      if (pauseHomeMainText) pauseHomeMainText.textContent = "[ ENTER ] MAIN MENU";
+
+      const respawnMainText = respawnBtn ? respawnBtn.querySelector(".btn-main") : null;
+      if (respawnMainText) respawnMainText.textContent = "[ SPACE ] RETRY MISSION";
+
+      const homeMainText = homeBtn ? homeBtn.querySelector(".btn-main") : null;
+      if (homeMainText) homeMainText.textContent = "[ ENTER ] MAIN MENU";
+
+      const endlessContText = endlessContinueBtn ? endlessContinueBtn.querySelector(".btn-main") : null;
+      if (endlessContText) endlessContText.textContent = "[ SPACE ] CONTINUE (ENDLESS)";
+
+      const endlessFinText = endlessFinishBtn ? endlessFinishBtn.querySelector(".btn-main") : null;
+      if (endlessFinText) endlessFinText.textContent = "[ X ] FINISH GAME (VICTORY)";
     }
   }
 }
@@ -10757,6 +10938,7 @@ function showPauseScreen() {
   }
   if (pauseTimer) pauseTimer.textContent = formatTime(state.time);
   if (pauseScore) pauseScore.textContent = `${Math.floor(state.score)}`;
+  updateDeviceSpecificUI();
 
   overlay.classList.remove("hidden", "game-over-mode");
   if (startScreen) startScreen.classList.add("hidden");
@@ -10855,6 +11037,7 @@ function showGameOverScreen(isVictory = false) {
     }
   }
 
+  updateDeviceSpecificUI();
   overlay.classList.add("game-over-mode");
   overlay.classList.remove("hidden");
   if (startScreen) startScreen.classList.add("hidden");
