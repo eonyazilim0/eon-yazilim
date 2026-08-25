@@ -1639,10 +1639,19 @@ button {
     display: none !important;
   }
 
+  /* Mobilde (iOS & Android) Sağdaki Mesaj Kartları (Toast Feed) Gizlenir */
   .toast-feed {
-    top: max(35px, calc(env(safe-area-inset-top) + 35px));
-    max-width: 220px;
+    display: none !important;
+    visibility: hidden !important;
+    pointer-events: none !important;
   }
+}
+
+/* Dokunmatik Cihazlarda da Toast Feed Gizlenir */
+.is-touch-device .toast-feed {
+  display: none !important;
+  visibility: hidden !important;
+  pointer-events: none !important;
 }
 
 /* ==========================================================================
@@ -10734,6 +10743,14 @@ player.upgradeManager = upgradeManager;
 
 function showToast(perk) {
   if (!toastFeed) return;
+  // Mobilde (iOS & Android) sağ taraftaki mesaj kartları gösterilmez
+  const isTouchMobile = typeof window !== "undefined" && (
+    ('ontouchstart' in window) ||
+    (navigator.maxTouchPoints > 0) ||
+    /Android|iPhone|iPad|iPod|Mobile/i.test(navigator.userAgent || "")
+  );
+  if (isTouchMobile) return;
+
   while (toastFeed.children.length >= 3) {
     toastFeed.lastElementChild.remove();
   }
@@ -10756,6 +10773,14 @@ function showToast(perk) {
 
 function showBiomeBanner(biome) {
   if (!toastFeed) return;
+  // Mobilde (iOS & Android) sağ taraftaki mesaj kartları gösterilmez
+  const isTouchMobile = typeof window !== "undefined" && (
+    ('ontouchstart' in window) ||
+    (navigator.maxTouchPoints > 0) ||
+    /Android|iPhone|iPad|iPod|Mobile/i.test(navigator.userAgent || "")
+  );
+  if (isTouchMobile) return;
+
   const banner = document.createElement("div");
   banner.className = "toast-item biome-banner";
   banner.style.borderColor = biome.accentColor;
