@@ -1271,14 +1271,19 @@ button {
   .actions {
     right: max(14px, env(safe-area-inset-right));
     bottom: max(10px, env(safe-area-inset-bottom));
-    gap: 8px;
+    gap: 10px;
+    touch-action: none;
+    user-select: none;
+    -webkit-user-select: none;
   }
 
   .shoot {
-    width: 66px;
-    height: 66px;
+    width: 68px;
+    height: 68px;
+    margin-left: 6px;
   }
 
+  .vortex,
   .power,
   .dash {
     width: 52px;
@@ -11766,41 +11771,6 @@ function updateHud() {
         : (player.boostCooldown / player.maxBoostCooldown) * 100;
     hud.dashCooldown.style.height = `${clamp(boostFill, 0, 100)}%`;
   }
-
-  // Gemi sınıfına özel dinamik HUD buton ikon ve etiketleri
-  if (dashBtn) {
-    const lbl = dashBtn.querySelector(".btn-label");
-    const ico = dashBtn.querySelector(".btn-icon");
-    if (lbl && ico) {
-      if (isDread) {
-        lbl.textContent = "BARRIER";
-        ico.textContent = "🛡️";
-      } else if (isVoid) {
-        lbl.textContent = "BLINK";
-        ico.textContent = "⚡";
-      } else {
-        lbl.textContent = "BOOST";
-        ico.textContent = "🚀";
-      }
-    }
-  }
-
-  if (powerBtn) {
-    const lbl = powerBtn.querySelector(".btn-label");
-    const ico = powerBtn.querySelector(".btn-icon");
-    if (lbl && ico) {
-      if (isDread) {
-        lbl.textContent = "SIEGE";
-        ico.textContent = "🚀";
-      } else if (isVoid) {
-        lbl.textContent = "RIFT";
-        ico.textContent = "🌀";
-      } else {
-        lbl.textContent = "ŞOK";
-        ico.textContent = "⚡";
-      }
-    }
-  }
 }
 
 function draw() {
@@ -12175,59 +12145,92 @@ if (typeof window !== "undefined") {
     });
   }
 
-  // Mobil Eylem Butonları Dinleyicileri
+  // Mobil Eylem Butonları Dinleyicileri (Pointer Capture & Ghost Touch Koruması)
   if (shootBtn) {
-    shootBtn.addEventListener("pointerdown", (e) => {
+    const startShoot = (e) => {
       e.preventDefault();
       e.stopPropagation();
+      if (e.target && e.target.blur) e.target.blur();
       audio.ensureContext();
       touchFire.active = true;
       shootBtn.classList.add("is-firing");
-    });
+      try {
+        if (e.pointerId !== undefined && shootBtn.setPointerCapture) {
+          shootBtn.setPointerCapture(e.pointerId);
+        }
+      } catch (err) {}
+    };
+
     const endShoot = (e) => {
       e.preventDefault();
+      e.stopPropagation();
       touchFire.active = false;
       shootBtn.classList.remove("is-firing");
+      try {
+        if (e.pointerId !== undefined && shootBtn.releasePointerCapture) {
+          shootBtn.releasePointerCapture(e.pointerId);
+        }
+      } catch (err) {}
     };
+
+    shootBtn.addEventListener("pointerdown", startShoot);
     shootBtn.addEventListener("pointerup", endShoot);
     shootBtn.addEventListener("pointercancel", endShoot);
     shootBtn.addEventListener("pointerleave", endShoot);
   }
 
+  let lastVortexTap = 0;
   if (vortexBtn) {
-    vortexBtn.addEventListener("pointerdown", (e) => {
+    const onVortex = (e) => {
       e.preventDefault();
       e.stopPropagation();
+      if (e.target && e.target.blur) e.target.blur();
+      const now = performance.now();
+      if (now - lastVortexTap < 220) return;
+      lastVortexTap = now;
       audio.ensureContext();
       vibrate([50, 40, 70]);
       const nearest = getNearestEnemy();
       const tx = nearest ? nearest.x : (mouse.worldX || (player.x + player.lastDx * 320));
       const ty = nearest ? nearest.y : (mouse.worldY || (player.y + player.lastDy * 320));
       player.launchVortex(tx, ty, state);
-    });
+    };
+    vortexBtn.addEventListener("pointerdown", onVortex);
   }
 
+  let lastPowerTap = 0;
   if (powerBtn) {
-    powerBtn.addEventListener("pointerdown", (e) => {
+    const onPower = (e) => {
       e.preventDefault();
       e.stopPropagation();
+      if (e.target && e.target.blur) e.target.blur();
+      const now = performance.now();
+      if (now - lastPowerTap < 220) return;
+      lastPowerTap = now;
       audio.ensureContext();
       vibrate([40, 30, 60]);
       const nearest = getNearestEnemy();
       const aimX = nearest ? nearest.x : (mouse.worldX || (player.x + player.lastDx * 320));
       const aimY = nearest ? nearest.y : (mouse.worldY || (player.y + player.lastDy * 320));
       player.activateSpecialPower(enemies, state, pickupManager, bulletManager, aimX, aimY);
-    });
+    };
+    powerBtn.addEventListener("pointerdown", onPower);
   }
 
+  let lastDashTap = 0;
   if (dashBtn) {
-    dashBtn.addEventListener("pointerdown", (e) => {
+    const onDash = (e) => {
       e.preventDefault();
       e.stopPropagation();
+      if (e.target && e.target.blur) e.target.blur();
+      const now = performance.now();
+      if (now - lastDashTap < 250) return; // Yanlışlıkla veya kayarak basılmaları filtreler
+      lastDashTap = now;
       audio.ensureContext();
       vibrate(25);
       player.triggerSpeedBoost(state);
-    });
+    };
+    dashBtn.addEventListener("pointerdown", onDash);
   }
 
   if (pauseBtn) {
