@@ -1120,6 +1120,24 @@ button {
   box-shadow: 0 2px 0px #000000;
 }
 
+.pixel-btn-danger {
+  background: #ff0055;
+  color: #ffffff;
+  border: 3px solid #000000;
+  box-shadow: 0 5px 0px #000000, inset 1px 1px 0px rgba(255, 255, 255, 0.4);
+  font-size: 11px;
+  min-height: 44px;
+}
+
+.pixel-btn-danger:hover {
+  background: #ff2a6d;
+}
+
+.pixel-btn-danger:active {
+  transform: translateY(3px);
+  box-shadow: 0 2px 0px #000000;
+}
+
 .pulse-btn {
   animation: arcadeBlink 1.4s steps(2) infinite;
 }
@@ -2348,8 +2366,8 @@ button {
           <button id="restartFromPauseBtn" class="pixel-btn pixel-btn-secondary" type="button">
             <span class="btn-main">🔄 RESTART MISSION</span>
           </button>
-          <button id="pauseHomeBtn" class="pixel-btn pixel-btn-secondary" type="button">
-            <span class="btn-main">[ ENTER ] MAIN MENU</span>
+          <button id="pauseHomeBtn" class="pixel-btn pixel-btn-danger" type="button">
+            <span class="btn-main">[ X ] QUIT TO MENU</span>
           </button>
           <button id="pauseFullscreenBtn" class="pixel-btn pixel-btn-secondary" type="button">
             <span class="btn-main">⛶ FULLSCREEN</span>
@@ -2409,8 +2427,8 @@ button {
           <button id="respawnBtn" class="pixel-btn pixel-btn-primary pulse-btn" type="button">
             <span class="btn-main">[ SPACE ] RETRY MISSION</span>
           </button>
-          <button id="homeBtn" class="pixel-btn pixel-btn-secondary" type="button">
-            <span class="btn-main">[ ENTER ] MAIN MENU</span>
+          <button id="homeBtn" class="pixel-btn pixel-btn-danger" type="button">
+            <span class="btn-main">[ X ] QUIT TO MENU</span>
           </button>
         </div>
       </div>
@@ -10524,8 +10542,8 @@ const I18N = {
     btnResume: "[ SPACE / P ] DEVAM ET",
     btnResumeTouch: "▶ DEVAM ET",
     btnRestart: "🔄 YENİDEN BAŞLAT",
-    btnMenu: "[ ENTER ] ANA MENÜ",
-    btnMenuTouch: "🏠 ANA MENÜ",
+    btnMenu: "[ X ] OYUNDAN ÇIK",
+    btnMenuTouch: "🚪 OYUNDAN ÇIK",
     btnFullscreen: "⛶ TAM EKRAN",
 
     // Game Over
@@ -10584,8 +10602,8 @@ const I18N = {
     btnResume: "[ SPACE / P ] RESUME",
     btnResumeTouch: "▶ RESUME MISSION",
     btnRestart: "🔄 RESTART MISSION",
-    btnMenu: "[ ENTER ] MAIN MENU",
-    btnMenuTouch: "🏠 MAIN MENU",
+    btnMenu: "[ X ] QUIT TO MENU",
+    btnMenuTouch: "🚪 QUIT TO MENU",
     btnFullscreen: "⛶ FULLSCREEN",
 
     // Game Over
@@ -11996,6 +12014,13 @@ if (typeof window !== "undefined") {
     const k = e.key.toLowerCase();
     const isRepeat = e.repeat || keys.has(k);
 
+    // Tuşa basıldığında HTML butonlarının odaklanmasını kaldır (Space'in butona tıklamasını engeller)
+    if (typeof document !== "undefined" && document.activeElement && typeof document.activeElement.blur === "function") {
+      if (document.activeElement.tagName === "BUTTON" || document.activeElement.tagName === "A") {
+        document.activeElement.blur();
+      }
+    }
+
     // 0. Sonsuzluk Modu Zafer Modali açıkken: Space ile DEVAM ET, X ile OYUNU BİTİR
     if (endlessVictoryModal && !endlessVictoryModal.classList.contains("hidden")) {
       if (k === " " || k === "spacebar") {
@@ -12004,7 +12029,7 @@ if (typeof window !== "undefined") {
         hideModals();
         return;
       }
-      if (k === "x") {
+      if (k === "x" || k === "enter") {
         e.preventDefault();
         finishGameWithVictory();
         return;
@@ -12030,64 +12055,78 @@ if (typeof window !== "undefined") {
       }
     }
 
-    // 2. Oyun bitti (Game Over) ekranındayken Space ile TEKRAR OYNA, Enter / ESC ile ANA MENÜYE DÖN (Tam ekrandan çıkmaz)
+    // 2. Oyun bitti (Game Over) ekranındayken Space ile TEKRAR OYNA, X / Enter / ESC ile ANA MENÜYE DÖN
     if (state.over) {
       if ((k === " " || k === "spacebar") && !isRepeat) {
         e.preventDefault();
         startGame();
         return;
       }
-      if ((k === "enter" || k === "escape" || k === "esc" || k === "h" || k === "backspace") && !isRepeat) {
+      if ((k === "x" || k === "enter" || k === "escape" || k === "esc" || k === "h" || k === "backspace") && !isRepeat) {
         e.preventDefault();
         showStartScreen();
         return;
       }
     }
 
-    // 3. Oyun duraklatılmışken (Pause) Enter / ESC ile Ana Menüye dön, Space/P ile oyuna devam et
+    // 3. Oyun duraklatılmışken (Pause): X / Enter ile Ana Menüye dön (Oyundan çık), Space / P / ESC ile oyuna devam et
     if (state.paused) {
-      if ((k === "enter" || k === "escape" || k === "esc") && !isRepeat) {
+      if ((k === "x" || k === "enter") && !isRepeat) {
         e.preventDefault();
         showStartScreen();
         return;
       }
-      if ((k === " " || k === "spacebar" || k === "p") && !isRepeat) {
+      if ((k === " " || k === "spacebar" || k === "p" || k === "escape" || k === "esc") && !isRepeat) {
         e.preventDefault();
         togglePause();
         return;
       }
     }
 
-    // 🎯 TEKİL TETİKLENEN YETENEKLER (Basılı tutulsa bile ASLA seri/sürekli ateşlenmez, her tuş basımı 1 tek atış yapar):
-    if ((k === " " || k === "spacebar" || k === "shift") && !isRepeat) {
-      if (state.running && !state.paused && !player.isDying && !player.dead) {
-        vibrate(25);
-        player.triggerSpeedBoost(state);
+    // 4. OYUN OYNANIRKEN (Active Gameplay):
+    if (state.running && !state.paused && !state.over) {
+      // Space / Shift tuşu: KESİNTİSİZ HYPER BOOST / HIZLANMA ÖZEL GÜCÜ (Asla oyunu duraklatmaz!)
+      if ((k === " " || k === "spacebar" || k === "shift") && !isRepeat) {
+        e.preventDefault();
+        if (!player.isDying && !player.dead) {
+          vibrate(25);
+          player.triggerSpeedBoost(state);
+        }
+        return;
       }
-    }
-    if ((k === "f" || k === "e") && !isRepeat) {
-      if (state.running && !state.paused && !player.isDying && !player.dead) {
-        if (player.shipClass && player.shipClass.hasVortex === false) return;
-        vibrate([50, 40, 70]);
-        const tx = mouse.worldX || (player.x + player.lastDx * 320);
-        const ty = mouse.worldY || (player.y + player.lastDy * 320);
-        player.launchVortex(tx, ty, state);
+
+      if ((k === "f" || k === "e") && !isRepeat) {
+        e.preventDefault();
+        if (!player.isDying && !player.dead) {
+          if (player.shipClass && player.shipClass.hasVortex === false) return;
+          vibrate([50, 40, 70]);
+          const tx = mouse.worldX || (player.x + player.lastDx * 320);
+          const ty = mouse.worldY || (player.y + player.lastDy * 320);
+          player.launchVortex(tx, ty, state);
+        }
+        return;
       }
-    }
-    if ((k === "g" || k === "q") && !isRepeat) {
-      if (state.running && !state.paused && !player.isDying && !player.dead) {
-        vibrate([40, 30, 60]);
-        const nearest = getNearestEnemy();
-        const aimX = nearest ? nearest.x : (mouse.worldX || (player.x + player.lastDx * 320));
-        const aimY = nearest ? nearest.y : (mouse.worldY || (player.y + player.lastDy * 320));
-        player.activateSpecialPower(enemies, state, pickupManager, bulletManager, aimX, aimY);
+
+      if ((k === "g" || k === "q") && !isRepeat) {
+        e.preventDefault();
+        if (!player.isDying && !player.dead) {
+          vibrate([40, 30, 60]);
+          const nearest = getNearestEnemy();
+          const aimX = nearest ? nearest.x : (mouse.worldX || (player.x + player.lastDx * 320));
+          const aimY = nearest ? nearest.y : (mouse.worldY || (player.y + player.lastDy * 320));
+          player.activateSpecialPower(enemies, state, pickupManager, bulletManager, aimX, aimY);
+        }
+        return;
       }
-    }
-    if ((k === "p" || k === "escape") && !isRepeat) {
-      if (state.running) {
+
+      // P veya ESC tuşu: OYUNU DURAKLAT (ESC tam ekrandan çıkmaz, oyunu duraklatır)
+      if ((k === "p" || k === "escape" || k === "esc") && !isRepeat) {
+        e.preventDefault();
         togglePause();
+        return;
       }
     }
+
     if (k === "m" && !isRepeat) {
       const isMuted = audio.toggleMute();
       if (muteBtn) muteBtn.textContent = isMuted ? "🔇" : "🔊";
