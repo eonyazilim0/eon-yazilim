@@ -11215,6 +11215,8 @@ const resumeBtn = getEl("resumeBtn");
 const pauseFullscreenBtn = getEl("pauseFullscreenBtn");
 const restartFromPauseBtn = getEl("restartFromPauseBtn");
 const pauseHomeBtn = getEl("pauseHomeBtn");
+let introFinishedAt = 0;
+let isIntroActive = false;
 
 // Ölüm Ekranı Elemanları
 const deathTag = getEl("deathTag");
@@ -12508,6 +12510,7 @@ if (typeof window !== "undefined") {
 
     // 1. Başlangıç ekranındayken: Space basıldığında tam ekran değilse ÖNCE tam ekrana geçirir, tam ekrandaysa oyunu başlatır! X / R tuşu oyunu başlatır!
     if (!state.running && !state.over && !state.paused) {
+      if (isIntroActive || (Date.now() - introFinishedAt < 500)) return;
       if ((k === "arrowleft" || k === "a") && !isRepeat) {
         e.preventDefault();
         prevShip();
@@ -12928,6 +12931,7 @@ if (typeof window !== "undefined") {
   }
 
   bindButton(startBtn, () => {
+    if (isIntroActive || (Date.now() - introFinishedAt < 500)) return;
     enterFullscreen();
     startGame();
   });
@@ -13063,6 +13067,7 @@ if (typeof window !== "undefined") {
   const finishEonIntro = () => {
     if (!isIntroActive) return;
     isIntroActive = false;
+    introFinishedAt = Date.now();
     if (introTimer) {
       clearTimeout(introTimer);
       introTimer = null;
@@ -13167,6 +13172,7 @@ if (typeof window !== "undefined") {
 
   // Başlatma
   updateDeviceSpecificUI();
+  showStartScreen();
   resize();
   startEonIntro();
   updateHud();
