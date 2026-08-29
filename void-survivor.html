@@ -10101,20 +10101,21 @@ function exitFullscreen() {
       }
     } catch (e) {}
     if (typeof navigator !== "undefined" && navigator.keyboard && navigator.keyboard.unlock) {
-      navigator.keyboard.unlock();
+      try { navigator.keyboard.unlock(); } catch (e) {}
     }
-    if (typeof document !== "undefined" && isFullscreen()) {
-      if (document.exitFullscreen) {
-        document.exitFullscreen().catch(() => {});
-      } else if (document.webkitExitFullscreen) {
-        document.webkitExitFullscreen();
-      } else if (document.mozCancelFullScreen) {
-        document.mozCancelFullScreen();
-      } else if (document.msExitFullscreen) {
-        document.msExitFullscreen();
-      }
+    if (typeof document !== "undefined") {
+      try { if (document.exitFullscreen) document.exitFullscreen().catch(() => {}); } catch (e) {}
+      try { if (document.webkitExitFullscreen) document.webkitExitFullscreen(); } catch (e) {}
+      try { if (document.webkitCancelFullScreen) document.webkitCancelFullScreen(); } catch (e) {}
+      try { if (document.mozCancelFullScreen) document.mozCancelFullScreen(); } catch (e) {}
+      try { if (document.msExitFullscreen) document.msExitFullscreen(); } catch (e) {}
     }
-  } catch (e) {}
+    if (typeof screen !== "undefined" && screen.orientation && screen.orientation.unlock) {
+      try { screen.orientation.unlock().catch(() => {}); } catch (e) {}
+    }
+  } catch (e) {
+    console.warn("exitFullscreen error:", e);
+  }
 }
 
 function toggleFullscreen() {
@@ -12472,10 +12473,13 @@ if (typeof window !== "undefined") {
   // Menü Butonları Bağlayıcıları (Dokunmatik ve Tıklama Korumalı)
   const bindButton = (btn, action) => {
     if (!btn) return;
+    let lastTime = 0;
     const handler = (e) => {
+      const now = Date.now();
+      if (now - lastTime < 300) return;
+      lastTime = now;
       if (e) {
         if (e.stopPropagation) e.stopPropagation();
-        if (e.preventDefault && e.cancelable) e.preventDefault();
       }
       action();
     };
@@ -12716,11 +12720,16 @@ if (typeof window !== "undefined") {
   window.addEventListener("keydown", triggerMenuAudioOnInteraction, { passive: true });
   window.addEventListener("touchstart", triggerMenuAudioOnInteraction, { passive: true });
 
-  // Tam ekran modunda ESC tuşunun browser tarafından tam ekrandan çıkmasını engelleme (Keyboard Lock API)
+  // Tam ekran modunda ESC tuşunun browser tarafından tam ekrandan çıkmasını engelleme (Keyboard Lock API) ve otomatik duraklatma
   const handleFsChange = () => {
     if (isFullscreen()) {
       if (typeof navigator !== "undefined" && navigator.keyboard && navigator.keyboard.lock) {
         navigator.keyboard.lock(["Escape"]).catch(() => {});
+      }
+    } else {
+      // Eğer tarayıcı yerel olarak tam ekrandan çıkarsa (ESC veya kaydırma ile) ve oyun oynanıyorsa, oyunu otomatik duraklat!
+      if (state && state.running && !state.paused && !state.over) {
+        togglePause();
       }
     }
   };
