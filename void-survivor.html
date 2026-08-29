@@ -11039,10 +11039,13 @@ function finishGameWithVictory() {
   showGameOverScreen(true);
 }
 
+let isMobileDevice = typeof window !== "undefined" && window.matchMedia ? window.matchMedia("(pointer: coarse), (max-width: 900px)").matches : false;
+
 function resize() {
   dpr = Math.min(2, window.devicePixelRatio || 1);
   width = window.innerWidth;
   height = window.innerHeight;
+  isMobileDevice = typeof window !== "undefined" && window.matchMedia ? window.matchMedia("(pointer: coarse), (max-width: 900px)").matches : false;
   canvas.width = Math.floor(width * dpr);
   canvas.height = Math.floor(height * dpr);
   canvas.style.width = `${width}px`;
@@ -11301,8 +11304,7 @@ function resetGame(shipClassId = selectedShipClass) {
   enemies = [];
   camera.x = 0;
   camera.y = 0;
-  const isMobile = matchMedia("(pointer: coarse), (max-width: 900px)").matches;
-  camera.zoom = isMobile ? 0.72 : 0.85;
+  camera.zoom = isMobileDevice ? 0.72 : 0.85;
   camera.targetZoom = camera.zoom;
 
   state = {
@@ -11488,8 +11490,7 @@ function update(dt) {
   state.spawnTimer -= dt;
   state.bossTimer -= dt;
 
-  const isMobile = matchMedia("(pointer: coarse), (max-width: 900px)").matches;
-  const MAX_ACTIVE_ENEMIES = isMobile ? 22 : 30;
+  const MAX_ACTIVE_ENEMIES = isMobileDevice ? 22 : 30;
   const isEndless = state.level >= 21;
   const spawnInterval = clamp(0.55 - state.wave * 0.02, isEndless ? 0.22 : 0.30, 0.60);
 
