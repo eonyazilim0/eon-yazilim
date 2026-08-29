@@ -5067,8 +5067,11 @@ class PixelRenderer {
     ctx.lineWidth = 2.5;
     ctx.globalAlpha = 0.4 + Math.sin(animTime * 4) * 0.15;
     ctx.setLineDash([6, 5]);
-    ctx.beginPath();
-    ctx.ellipse(cx, cy + 34, 56, 18, 0, 0, TAU);
+    if (typeof ctx.ellipse === "function") {
+      ctx.ellipse(cx, cy + 34, 56, 18, 0, 0, TAU);
+    } else {
+      ctx.arc(cx, cy + 34, 40, 0, TAU);
+    }
     ctx.stroke();
     ctx.restore();
 
@@ -10591,36 +10594,42 @@ const pauseTimerLbl = getEl("pauseTimerLbl");
 const pauseScoreLbl = getEl("pauseScoreLbl");
 
 function applyTranslations() {
-  const dict = I18N[currentLang] || I18N.tr;
-  if (langToggleBtn) langToggleBtn.textContent = dict.langBtn;
-  if (pauseLangToggleBtn) pauseLangToggleBtn.textContent = dict.langBtn;
+  try {
+    const dict = I18N[currentLang] || I18N.tr;
+    if (langToggleBtn) langToggleBtn.textContent = dict.langBtn;
+    if (pauseLangToggleBtn) pauseLangToggleBtn.textContent = dict.langBtn;
 
-  if (audioTitleText) audioTitleText.textContent = dict.audioTitle;
-  if (bgmLabelText) bgmLabelText.textContent = dict.musicLabel;
-  if (sfxLabelText) sfxLabelText.textContent = dict.sfxLabel;
+    if (audioTitleText) audioTitleText.textContent = dict.audioTitle;
+    if (bgmLabelText) bgmLabelText.textContent = dict.musicLabel;
+    if (sfxLabelText) sfxLabelText.textContent = dict.sfxLabel;
 
-  if (pauseAudioTitleText) pauseAudioTitleText.textContent = dict.audioTitle;
-  if (pauseBgmLabelText) pauseBgmLabelText.textContent = dict.musicLabel;
+    if (pauseAudioTitleText) pauseAudioTitleText.textContent = dict.audioTitle;
+    if (pauseBgmLabelText) pauseBgmLabelText.textContent = dict.musicLabel;
 
-  if (startBestScoreRow) {
-    startBestScoreRow.innerHTML = `${dict.bestRecord}<span id="startBestScore">${state.bestScore}</span>`;
-  }
+    if (startBestScoreRow) {
+      startBestScoreRow.innerHTML = `${dict.bestRecord}<span id="startBestScore">${state ? state.bestScore : 0}</span>`;
+    }
 
-  if (pauseTagText) pauseTagText.textContent = dict.pauseTag;
-  if (pauseTitleText) pauseTitleText.textContent = dict.pauseTitle;
-  if (pauseSectorLbl) pauseSectorLbl.textContent = dict.lblSector;
-  if (pauseShipLbl) pauseShipLbl.textContent = dict.lblShipClass;
-  if (pauseModuleLbl) pauseModuleLbl.textContent = dict.lblWeapon;
-  if (pauseHealthLbl) pauseHealthLbl.textContent = dict.lblHull;
-  if (pauseTimerLbl) pauseTimerLbl.textContent = dict.lblTime;
-  if (pauseScoreLbl) pauseScoreLbl.textContent = dict.lblScore;
+    if (pauseTagText) pauseTagText.textContent = dict.pauseTag;
+    if (pauseTitleText) pauseTitleText.textContent = dict.pauseTitle;
+    if (pauseSectorLbl) pauseSectorLbl.textContent = dict.lblSector;
+    if (pauseShipLbl) pauseShipLbl.textContent = dict.lblShipClass;
+    if (pauseModuleLbl) pauseModuleLbl.textContent = dict.lblWeapon;
+    if (pauseHealthLbl) pauseHealthLbl.textContent = dict.lblHull;
+    if (pauseTimerLbl) pauseTimerLbl.textContent = dict.lblTime;
+    if (pauseScoreLbl) pauseScoreLbl.textContent = dict.lblScore;
 
-  const rotBox = typeof document !== "undefined" ? document.querySelector("#orientationOverlay .orientation-box") : null;
-  if (rotBox) {
-    const rotH3 = rotBox.querySelector("h3");
-    const rotP = rotBox.querySelector("p");
-    if (rotH3) rotH3.textContent = dict.rotateTitle;
-    if (rotP) rotP.textContent = dict.rotateDesc;
+    if (typeof document !== "undefined" && typeof document.querySelector === "function") {
+      const rotBox = document.querySelector("#orientationOverlay .orientation-box");
+      if (rotBox && typeof rotBox.querySelector === "function") {
+        const rotH3 = rotBox.querySelector("h3");
+        const rotP = rotBox.querySelector("p");
+        if (rotH3) rotH3.textContent = dict.rotateTitle;
+        if (rotP) rotP.textContent = dict.rotateDesc;
+      }
+    }
+  } catch (err) {
+    console.warn("applyTranslations caught error:", err);
   }
 }
 
