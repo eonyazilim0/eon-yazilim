@@ -11577,9 +11577,9 @@ function update(dt) {
   const speedRatio = clamp(currentSpeed / Math.max(1, player.speed), 0, 2.5);
 
   // Taban Zoom: Mobilde 0.72, Uçuşta 0.50'ye kadar açılarak ultra geniş taktiksel görüş sağlar
-  const baseZoom = isMobile ? 0.72 : 0.85;
-  const moveZoomOut = isMobile ? 0.22 : 0.20;
-  const boostZoomOut = isMobile ? 0.14 : 0.15;
+  const baseZoom = isMobileDevice ? 0.72 : 0.85;
+  const moveZoomOut = isMobileDevice ? 0.22 : 0.20;
+  const boostZoomOut = isMobileDevice ? 0.14 : 0.15;
 
   let targetZoom = baseZoom - speedRatio * moveZoomOut;
   if (player.boostTime > 0) {
