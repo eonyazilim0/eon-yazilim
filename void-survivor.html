@@ -3408,7 +3408,7 @@ class SoundEngine {
   playMenuMusic() {
     this.ensureContext();
     if (!this.ctx) return;
-    if (this.isMusicPlaying && this.musicMode === "menu") return;
+    if (this.isMusicPlaying && this.musicInterval && this.musicMode === "menu") return;
 
     this.musicMode = "menu";
     this.bpm = 112;
@@ -3419,7 +3419,7 @@ class SoundEngine {
     this.ensureContext();
     if (!this.ctx) return;
     const targetMode = isBoss ? "boss" : "battle";
-    if (this.isMusicPlaying && this.musicMode === targetMode) return;
+    if (this.isMusicPlaying && this.musicInterval && this.musicMode === targetMode) return;
 
     this.musicMode = targetMode;
     this.bpm = isBoss ? 144 : 126;
@@ -3430,7 +3430,7 @@ class SoundEngine {
     this.ensureContext();
     if (!this.ctx) return;
     const targetMode = isVictory ? "victory" : "gameover";
-    if (this.isMusicPlaying && this.musicMode === targetMode) return;
+    if (this.isMusicPlaying && this.musicInterval && this.musicMode === targetMode) return;
 
     this.musicMode = targetMode;
     this.bpm = isVictory ? 134 : 96;
@@ -3479,11 +3479,13 @@ class SoundEngine {
   }
 
   resumeMusic() {
-    if (!this.isMusicPlaying) return;
     this.ensureContext();
     if (!this.ctx) return;
-
-    if (this.musicInterval) clearInterval(this.musicInterval);
+    this.isMusicPlaying = true;
+    if (this.musicInterval) {
+      clearInterval(this.musicInterval);
+      this.musicInterval = null;
+    }
     this.nextNoteTime = this.ctx.currentTime + 0.05;
     this.musicInterval = setInterval(() => {
       this._scheduleMusic();
