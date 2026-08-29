@@ -403,7 +403,7 @@ button {
 }
 
 /* Mobilde ve Dokunmatikte Sağ Üstteki Tam Ekran Butonunu Gizle */
-@media (max-width: 900px), (pointer: coarse) {
+@media (max-width: 1200px), (pointer: coarse) {
   .desktop-only,
   #fullscreenBtn {
     display: none !important;
@@ -539,8 +539,9 @@ button {
   border-radius: 50%;
   background: radial-gradient(circle, rgba(14, 28, 48, 0.45) 0%, rgba(4, 8, 16, 0.8) 100%);
   box-shadow: 0 0 20px rgba(84, 247, 255, 0.2), inset 0 0 20px rgba(84, 247, 255, 0.15);
-  pointer-events: none;
-  z-index: 12;
+  pointer-events: auto;
+  touch-action: none;
+  z-index: 15;
 }
 
 .joystick::before {
@@ -575,13 +576,18 @@ button {
   background: #ffffff;
   box-shadow: 0 0 16px #ffffff, 0 0 28px rgba(84, 247, 255, 0.9);
   border: 2px solid #54f7ff;
+  pointer-events: none;
   transition: transform 0.04s ease-out;
 }
 
-@media (pointer: coarse), (max-width: 900px) {
+@media (pointer: coarse), (max-width: 1200px), (max-height: 800px) {
   .joystick {
-    display: block;
+    display: block !important;
   }
+}
+
+.is-touch-device .joystick {
+  display: block !important;
 }
 
 .actions {
@@ -591,11 +597,15 @@ button {
   display: flex;
   align-items: center;
   gap: 10px;
-  z-index: 12;
+  z-index: 15;
   pointer-events: auto;
   touch-action: none;
   user-select: none;
   -webkit-user-select: none;
+}
+
+.is-touch-device .actions {
+  display: flex !important;
 }
 
 .action-btn {
@@ -3758,6 +3768,7 @@ class SoundEngine {
   }
 
   pauseMusic() {
+    this.isMusicPlaying = false;
     if (this.musicInterval) {
       clearInterval(this.musicInterval);
       this.musicInterval = null;
@@ -3783,10 +3794,16 @@ class SoundEngine {
     const stepDuration = 60 / this.bpm / 4;
     const lookahead = 0.10;
 
-    while (this.nextNoteTime < this.ctx.currentTime + lookahead) {
+    if (this.nextNoteTime < this.ctx.currentTime) {
+      this.nextNoteTime = this.ctx.currentTime + 0.02;
+    }
+
+    let safetyCount = 0;
+    while (this.nextNoteTime < this.ctx.currentTime + lookahead && safetyCount < 16) {
       this._playBgmStep(this.currentStep, this.nextNoteTime, stepDuration);
       this.nextNoteTime += stepDuration;
       this.currentStep = (this.currentStep + 1) % 64;
+      safetyCount++;
     }
   }
 
@@ -12642,11 +12659,6 @@ if (typeof window !== "undefined") {
           joystick.startY = t.clientY;
           joystick.vx = 0;
           joystick.vy = 0;
-          if (joystickEl) {
-            joystickEl.classList.remove("hidden");
-            joystickEl.style.left = `${t.clientX}px`;
-            joystickEl.style.top = `${t.clientY}px`;
-          }
           if (stickNub) stickNub.style.transform = `translate(0px, 0px)`;
         } else if (t.clientX >= width * 0.45 && aimTouchId === null) {
           aimTouchId = t.identifier;
@@ -12664,7 +12676,7 @@ if (typeof window !== "undefined") {
           const dx = t.clientX - joystick.startX;
           const dy = t.clientY - joystick.startY;
           const distVal = Math.hypot(dx, dy);
-          const maxDist = 55;
+          const maxDist = 45;
           const angle = Math.atan2(dy, dx);
           const clampedDist = Math.min(distVal, maxDist);
 
@@ -12687,7 +12699,7 @@ if (typeof window !== "undefined") {
         joystick.id = null;
         joystick.vx = 0;
         joystick.vy = 0;
-        if (joystickEl) joystickEl.classList.add("hidden");
+        if (stickNub) stickNub.style.transform = `translate(0px, 0px)`;
       }
       if (t.identifier === aimTouchId) {
         aimTouchId = null;
@@ -12706,6 +12718,71 @@ if (typeof window !== "undefined") {
         endTouch(e.changedTouches[i]);
       }
     });
+
+    if (joystickEl) {
+      joystickEl.addEventListener("touchstart", (e) => {
+        e.preventDefault();
+        e.stopPropagation();
+        audio.ensureContext();
+        if (e.changedTouches.length > 0 && !joystick.active) {
+          const t = e.changedTouches[0];
+          const rect = joystickEl.getBoundingClientRect();
+          const cx = rect.left + rect.width / 2;
+          const cy = rect.top + rect.height / 2;
+          joystick.active = true;
+          joystick.id = t.identifier;
+          joystick.startX = cx;
+          joystick.startY = cy;
+          const dx = t.clientX - cx;
+          const dy = t.clientY - cy;
+          const distVal = Math.hypot(dx, dy);
+          const maxDist = 45;
+          const angle = Math.atan2(dy, dx);
+          const clampedDist = Math.min(distVal, maxDist);
+          joystick.vx = (Math.cos(angle) * clampedDist) / maxDist;
+          joystick.vy = (Math.sin(angle) * clampedDist) / maxDist;
+          const nx = Math.cos(angle) * clampedDist;
+          const ny = Math.sin(angle) * clampedDist;
+          if (stickNub) stickNub.style.transform = `translate(${nx}px, ${ny}px)`;
+        }
+      }, { passive: false });
+
+      joystickEl.addEventListener("touchmove", (e) => {
+        e.preventDefault();
+        e.stopPropagation();
+        for (let i = 0; i < e.changedTouches.length; i++) {
+          const t = e.changedTouches[i];
+          if (joystick.active && t.identifier === joystick.id) {
+            const dx = t.clientX - joystick.startX;
+            const dy = t.clientY - joystick.startY;
+            const distVal = Math.hypot(dx, dy);
+            const maxDist = 45;
+            const angle = Math.atan2(dy, dx);
+            const clampedDist = Math.min(distVal, maxDist);
+            joystick.vx = (Math.cos(angle) * clampedDist) / maxDist;
+            joystick.vy = (Math.sin(angle) * clampedDist) / maxDist;
+            const nx = Math.cos(angle) * clampedDist;
+            const ny = Math.sin(angle) * clampedDist;
+            if (stickNub) stickNub.style.transform = `translate(${nx}px, ${ny}px)`;
+          }
+        }
+      }, { passive: false });
+
+      joystickEl.addEventListener("touchend", (e) => {
+        e.preventDefault();
+        e.stopPropagation();
+        for (let i = 0; i < e.changedTouches.length; i++) {
+          endTouch(e.changedTouches[i]);
+        }
+      });
+      joystickEl.addEventListener("touchcancel", (e) => {
+        e.preventDefault();
+        e.stopPropagation();
+        for (let i = 0; i < e.changedTouches.length; i++) {
+          endTouch(e.changedTouches[i]);
+        }
+      });
+    }
   }
 
   // Mobil Eylem Butonları Dinleyicileri (Pointer Capture & Ghost Touch Koruması)
@@ -12717,11 +12794,6 @@ if (typeof window !== "undefined") {
       audio.ensureContext();
       touchFire.active = true;
       shootBtn.classList.add("is-firing");
-      try {
-        if (e.pointerId !== undefined && shootBtn.setPointerCapture) {
-          shootBtn.setPointerCapture(e.pointerId);
-        }
-      } catch (err) {}
     };
 
     const endShoot = (e) => {
@@ -12729,17 +12801,14 @@ if (typeof window !== "undefined") {
       e.stopPropagation();
       touchFire.active = false;
       shootBtn.classList.remove("is-firing");
-      try {
-        if (e.pointerId !== undefined && shootBtn.releasePointerCapture) {
-          shootBtn.releasePointerCapture(e.pointerId);
-        }
-      } catch (err) {}
     };
 
     shootBtn.addEventListener("pointerdown", startShoot);
     shootBtn.addEventListener("pointerup", endShoot);
     shootBtn.addEventListener("pointercancel", endShoot);
-    shootBtn.addEventListener("pointerleave", endShoot);
+    shootBtn.addEventListener("touchstart", startShoot, { passive: false });
+    shootBtn.addEventListener("touchend", endShoot, { passive: false });
+    shootBtn.addEventListener("touchcancel", endShoot, { passive: false });
   }
 
   let lastVortexTap = 0;
@@ -12749,7 +12818,7 @@ if (typeof window !== "undefined") {
       e.stopPropagation();
       if (e.target && e.target.blur) e.target.blur();
       const now = performance.now();
-      if (now - lastVortexTap < 220) return;
+      if (now - lastVortexTap < 200) return;
       lastVortexTap = now;
       audio.ensureContext();
       vibrate([50, 40, 70]);
@@ -12759,6 +12828,7 @@ if (typeof window !== "undefined") {
       player.launchVortex(tx, ty, state);
     };
     vortexBtn.addEventListener("pointerdown", onVortex);
+    vortexBtn.addEventListener("touchstart", onVortex, { passive: false });
   }
 
   let lastPowerTap = 0;
@@ -12768,7 +12838,7 @@ if (typeof window !== "undefined") {
       e.stopPropagation();
       if (e.target && e.target.blur) e.target.blur();
       const now = performance.now();
-      if (now - lastPowerTap < 220) return;
+      if (now - lastPowerTap < 200) return;
       lastPowerTap = now;
       audio.ensureContext();
       vibrate([40, 30, 60]);
@@ -12778,6 +12848,7 @@ if (typeof window !== "undefined") {
       player.activateSpecialPower(enemies, state, pickupManager, bulletManager, aimX, aimY);
     };
     powerBtn.addEventListener("pointerdown", onPower);
+    powerBtn.addEventListener("touchstart", onPower, { passive: false });
   }
 
   let lastDashTap = 0;
@@ -12787,38 +12858,55 @@ if (typeof window !== "undefined") {
       e.stopPropagation();
       if (e.target && e.target.blur) e.target.blur();
       const now = performance.now();
-      if (now - lastDashTap < 250) return; // Yanlışlıkla veya kayarak basılmaları filtreler
+      if (now - lastDashTap < 200) return;
       lastDashTap = now;
       audio.ensureContext();
       vibrate(25);
       player.triggerSpeedBoost(state);
     };
     dashBtn.addEventListener("pointerdown", onDash);
+    dashBtn.addEventListener("touchstart", onDash, { passive: false });
+  }
+
+  // Menü Butonları Bağlayıcıları (Dokunmatik ve Tıklama Korumalı)
+  function bindButton(btn, action) {
+    if (!btn) return;
+    let lastTime = 0;
+    const handler = (e) => {
+      const now = Date.now();
+      if (now - lastTime < 250) return;
+      lastTime = now;
+      if (e && e.stopPropagation) e.stopPropagation();
+      action();
+    };
+    btn.addEventListener("click", handler);
+    btn.addEventListener("pointerdown", handler);
+    btn.addEventListener("touchend", handler);
   }
 
   if (pauseBtn) {
-    pauseBtn.addEventListener("click", () => {
+    bindButton(pauseBtn, () => {
       audio.ensureContext();
       togglePause();
     });
   }
 
   if (fullscreenBtn) {
-    fullscreenBtn.addEventListener("click", () => {
+    bindButton(fullscreenBtn, () => {
       audio.ensureContext();
       lockLandscape();
     });
   }
 
   if (pauseFullscreenBtn) {
-    pauseFullscreenBtn.addEventListener("click", () => {
+    bindButton(pauseFullscreenBtn, () => {
       audio.ensureContext();
       lockLandscape();
     });
   }
 
   if (muteBtn) {
-    muteBtn.addEventListener("click", () => {
+    bindButton(muteBtn, () => {
       audio.ensureContext();
       const isMuted = audio.toggleMute();
       muteBtn.textContent = isMuted ? "🔇" : "🔊";
@@ -12841,24 +12929,6 @@ if (typeof window !== "undefined") {
       nextShip();
     });
   }
-
-  // Menü Butonları Bağlayıcıları (Dokunmatik ve Tıklama Korumalı)
-  const bindButton = (btn, action) => {
-    if (!btn) return;
-    let lastTime = 0;
-    const handler = (e) => {
-      const now = Date.now();
-      if (now - lastTime < 300) return;
-      lastTime = now;
-      if (e) {
-        if (e.stopPropagation) e.stopPropagation();
-      }
-      action();
-    };
-    btn.addEventListener("click", handler);
-    btn.addEventListener("pointerdown", handler);
-    btn.addEventListener("touchend", handler);
-  };
 
   bindButton(startBtn, () => {
     enterFullscreen();
