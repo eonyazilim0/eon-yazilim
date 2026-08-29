@@ -333,9 +333,7 @@ button {
   color: #ffd166;
   letter-spacing: 0.5px;
   white-space: nowrap;
-}
-
-/* 📊 Sağ Taraf: Skor ve Ergonomik Pause Butonu */
+/* 📊 Sağ Taraf: Skor, Ses ve Ergonomik Pause Butonları */
 .hud-right-group {
   display: flex;
   flex-direction: column;
@@ -365,7 +363,14 @@ button {
   white-space: nowrap;
 }
 
-.hud-pause-btn {
+.hud-action-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  justify-content: flex-end;
+}
+
+.hud-ctrl-btn {
   display: inline-flex;
   align-items: center;
   justify-content: center;
@@ -379,12 +384,35 @@ button {
   box-shadow: 0 0 14px rgba(84, 247, 255, 0.35);
   cursor: pointer;
   pointer-events: auto;
-  transition: transform 0.1s ease, filter 0.15s ease, background 0.15s ease;
+  transition: transform 0.1s ease, filter 0.15s ease, background 0.15s ease, border-color 0.15s ease;
 }
 
-.hud-pause-btn:active {
+.hud-ctrl-btn:active {
   transform: scale(0.92);
   background: rgba(84, 247, 255, 0.2);
+}
+
+.hud-sound-btn {
+  border-color: rgba(255, 209, 102, 0.6);
+  color: #ffd166;
+  box-shadow: 0 0 14px rgba(255, 209, 102, 0.35);
+}
+
+.hud-sound-btn:active {
+  background: rgba(255, 209, 102, 0.2);
+}
+
+/* Mobilde ve Dokunmatikte Sağ Üstteki Tam Ekran Butonunu Gizle */
+@media (max-width: 900px), (pointer: coarse) {
+  .desktop-only,
+  #fullscreenBtn {
+    display: none !important;
+  }
+}
+
+.is-touch-device #fullscreenBtn,
+.is-touch-device .desktop-only {
+  display: none !important;
 }
 
 .badge-wave {
@@ -1526,7 +1554,11 @@ button {
     font-size: 9.5px;
   }
 
-  .hud-pause-btn {
+  .hud-action-row {
+    gap: 6px;
+  }
+
+  .hud-ctrl-btn {
     width: 38px;
     height: 38px;
     font-size: 17px;
@@ -2273,10 +2305,12 @@ button {
           <span id="score" class="score">0</span>
           <span id="coins" class="coins">🪙 0</span>
           <span id="waveBadge" class="wave-badge">Sector 1</span>
-          <button id="fullscreenBtn" class="hud-btn" type="button" aria-label="Fullscreen" title="Fullscreen (H)">⛶</button>
-          <button id="muteBtn" class="hud-btn" type="button" aria-label="Toggle Sound" title="Sound On/Off (M)">🔊</button>
+          <button id="fullscreenBtn" class="hud-btn desktop-only" type="button" aria-label="Fullscreen" title="Fullscreen (H)">⛶</button>
         </div>
-        <button id="pauseBtn" class="hud-pause-btn" type="button" aria-label="Pause" title="Pause (P / ESC)">⏸️</button>
+        <div class="hud-action-row">
+          <button id="muteBtn" class="hud-ctrl-btn hud-sound-btn" type="button" aria-label="Toggle Sound" title="Sound On/Off (M)">🔊</button>
+          <button id="pauseBtn" class="hud-ctrl-btn hud-pause-btn" type="button" aria-label="Pause" title="Pause (P / ESC)">⏸️</button>
+        </div>
       </div>
     </section>
 
