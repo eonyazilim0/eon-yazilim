@@ -394,11 +394,20 @@ button {
   position: fixed;
   right: max(18px, env(safe-area-inset-right));
   bottom: max(16px, env(safe-area-inset-bottom));
-  display: flex;
+  display: none;
   align-items: flex-end;
   gap: 10px;
   z-index: 12;
   pointer-events: auto;
+}
+
+@media (pointer: coarse), (max-width: 900px) {
+  .joystick {
+    display: block;
+  }
+  .actions {
+    display: flex;
+  }
 }
 
 .action-btn {
@@ -11052,14 +11061,16 @@ let isMobileDevice = typeof window !== "undefined" && window.matchMedia ? window
 
 function resize() {
   dpr = Math.min(2, window.devicePixelRatio || 1);
-  width = window.innerWidth;
-  height = window.innerHeight;
+  width = Math.max(320, window.innerWidth || (typeof document !== "undefined" && document.documentElement ? document.documentElement.clientWidth : 800) || 800);
+  height = Math.max(240, window.innerHeight || (typeof document !== "undefined" && document.documentElement ? document.documentElement.clientHeight : 600) || 600);
   isMobileDevice = typeof window !== "undefined" && window.matchMedia ? window.matchMedia("(pointer: coarse), (max-width: 900px)").matches : false;
-  canvas.width = Math.floor(width * dpr);
-  canvas.height = Math.floor(height * dpr);
-  canvas.style.width = `${width}px`;
-  canvas.style.height = `${height}px`;
-  ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+  if (canvas && ctx) {
+    canvas.width = Math.floor(width * dpr);
+    canvas.height = Math.floor(height * dpr);
+    canvas.style.width = `${width}px`;
+    canvas.style.height = `${height}px`;
+    ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+  }
 }
 
 // ============================================================================
