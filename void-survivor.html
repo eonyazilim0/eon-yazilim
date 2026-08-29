@@ -1,15 +1,11 @@
 <!doctype html>
-<html lang="tr" class="notranslate" translate="no">
+<html lang="en">
   <head>
     <meta charset="utf-8" />
-    <meta name="google" content="notranslate" />
     <meta
       name="viewport"
       content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover"
     />
-    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate" />
-    <meta http-equiv="Pragma" content="no-cache" />
-    <meta http-equiv="Expires" content="0" />
     <meta name="theme-color" content="#04070b" />
     <meta name="apple-mobile-web-app-capable" content="yes" />
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
@@ -162,16 +158,13 @@ button {
 /* ==========================================================================
    HUD Panel & Bars
    ========================================================================== */
-/* ==========================================================================
-   HUD Panel & Bars (Matching Top Bar Design Mockup)
-   ========================================================================== */
 .hud {
   position: fixed;
   inset: max(8px, env(safe-area-inset-top)) max(12px, env(safe-area-inset-right)) auto
     max(12px, env(safe-area-inset-left));
   display: flex;
   justify-content: space-between;
-  align-items: flex-start;
+  align-items: center;
   gap: 10px;
   pointer-events: none;
   z-index: 10;
@@ -181,41 +174,21 @@ button {
   display: flex;
   flex-direction: column;
   gap: 4px;
-  width: min(340px, 40vw);
-  background: rgba(8, 14, 24, 0.88);
+  width: min(390px, 46vw);
+  background: rgba(8, 12, 18, 0.85);
   padding: 6px 10px;
-  border-radius: 12px;
-  border: 1.5px solid rgba(84, 247, 255, 0.25);
-  backdrop-filter: blur(14px);
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.6);
-  pointer-events: auto;
-}
-
-.hud-bar-row {
-  display: flex;
-  align-items: center;
-  gap: 6px;
-  width: 100%;
-}
-
-.hud-bar-badge {
-  display: grid;
-  place-items: center;
-  width: 18px;
-  height: 18px;
-  font-size: 11px;
-  line-height: 1;
-  flex-shrink: 0;
+  border-radius: 10px;
+  border: 1px solid var(--panel-border);
+  backdrop-filter: blur(12px);
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.5);
 }
 
 .bar {
   position: relative;
-  flex: 1;
-  height: 12px;
+  height: 9px;
   background: rgba(255, 255, 255, 0.08);
-  border-radius: 6px;
+  border-radius: 5px;
   overflow: hidden;
-  border: 1px solid rgba(255, 255, 255, 0.12);
 }
 
 .bar span {
@@ -232,118 +205,45 @@ button {
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 8.5px;
+  font-size: 8px;
   font-style: normal;
   font-weight: 800;
-  letter-spacing: 0.3px;
-  text-shadow: 0 1px 3px rgba(0, 0, 0, 0.95), 0 0 4px rgba(0, 0, 0, 0.8);
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
+  letter-spacing: 0.4px;
+  text-shadow: 0 1px 3px rgba(0, 0, 0, 0.9);
 }
 
-/* Can Barı: Belirgin, Büyük & 16-Bit Neon Vurgulu */
+/* Can Barı: Belirgin, Büyük & 16-Bit Retro Vurgulu */
 .bar.health {
   height: 18px;
-  border: 1.5px solid rgba(255, 42, 109, 0.75);
+  border: 2px solid rgba(255, 73, 92, 0.65);
   border-radius: 6px;
-  background: rgba(30, 6, 14, 0.7);
-  box-shadow: 0 0 12px rgba(255, 42, 109, 0.35);
+  background: rgba(40, 0, 10, 0.6);
+  box-shadow: 0 0 12px rgba(255, 73, 92, 0.35);
+  margin-bottom: 2px;
 }
 
 .bar.health span {
-  background: linear-gradient(90deg, #ff0055 0%, #ff2a6d 50%, #ff5277 100%);
-  box-shadow: 0 0 14px rgba(255, 42, 109, 0.7);
+  background: linear-gradient(90deg, #ff0055 0%, #ff495c 40%, #ffd166 75%, #00f59b 100%);
+  box-shadow: 0 0 14px rgba(255, 73, 92, 0.6);
   border-radius: 4px;
 }
 
 .bar.health em {
-  font-size: 10.5px;
+  font-size: 10px;
   font-weight: 900;
   color: #ffffff;
   letter-spacing: 0.6px;
   text-shadow: 0 1px 4px #000000, 0 0 6px #000000;
 }
 
-.bar.xp {
-  border-color: rgba(0, 240, 255, 0.35);
-}
-
 .xp span {
-  background: linear-gradient(90deg, #00f0ff, #54f7ff);
-  box-shadow: 0 0 10px rgba(84, 247, 255, 0.4);
-}
-
-.bar.special {
-  border-color: rgba(181, 140, 255, 0.35);
+  background: linear-gradient(90deg, #ffd166, #54f7ff);
+  box-shadow: 0 0 10px rgba(84, 247, 255, 0.35);
 }
 
 .special span {
-  background: linear-gradient(90deg, #9d4edd, #b58cff);
-  box-shadow: 0 0 10px rgba(181, 140, 255, 0.4);
-}
-
-/* 🛸 Orta Taraf: Kompakt & Profesyonel Eklenti Göstergesi */
-.hud-center {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  pointer-events: none;
-}
-
-.module-badge {
-  display: inline-flex;
-  align-items: center;
-  gap: 8px;
-  padding: 5px 12px;
-  background: rgba(12, 18, 28, 0.88);
-  border: 1.5px solid rgba(255, 170, 0, 0.75);
-  border-radius: 10px;
-  backdrop-filter: blur(14px);
-  box-shadow: 0 0 16px rgba(255, 170, 0, 0.3), inset 0 0 8px rgba(255, 170, 0, 0.1);
-  animation: pulseModulePill 1.4s infinite alternate ease-in-out;
-  pointer-events: none;
-}
-
-@keyframes pulseModulePill {
-  0% { transform: scale(0.98); opacity: 0.9; }
-  100% { transform: scale(1.02); opacity: 1; filter: brightness(1.15); }
-}
-
-.module-icon {
-  font-size: 16px;
-  line-height: 1;
-  filter: drop-shadow(0 0 6px rgba(255, 170, 0, 0.6));
-}
-
-.module-text-group {
-  display: flex;
-  align-items: center;
-  gap: 6px;
-}
-
-.module-name {
-  font-size: 11.5px;
-  font-weight: 900;
-  color: #fff8db;
-  letter-spacing: 0.4px;
-  text-shadow: 0 1px 3px #000, 0 0 4px #000;
-  white-space: nowrap;
-}
-
-.module-timer {
-  font-size: 11px;
-  font-weight: 900;
-  color: #ffd166;
-  letter-spacing: 0.5px;
-  white-space: nowrap;
-/* 📊 Sağ Taraf: Skor, Ses ve Ergonomik Pause Butonları */
-.hud-right-group {
-  display: flex;
-  flex-direction: column;
-  align-items: flex-end;
-  gap: 6px;
-  pointer-events: auto;
+  background: linear-gradient(90deg, #b58cff, #ff4f87);
+  box-shadow: 0 0 10px rgba(181, 140, 255, 0.35);
 }
 
 .scoreline {
@@ -358,71 +258,47 @@ button {
 
 .scoreline span,
 .hud-btn {
-  background: rgba(8, 14, 24, 0.82);
-  padding: 5px 9px;
+  background: rgba(8, 12, 18, 0.75);
+  padding: 5px 8px;
   border-radius: 8px;
   border: 1px solid var(--panel-border);
   backdrop-filter: blur(12px);
   color: var(--text);
-  white-space: nowrap;
 }
 
-.hud-action-row {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  justify-content: flex-end;
+.hud-btn#pauseBtn {
+  font-size: 14px;
+  border-color: rgba(255, 209, 102, 0.4);
 }
 
-.hud-ctrl-btn {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  width: 44px;
-  height: 44px;
-  border-radius: 10px;
-  border: 2px solid rgba(84, 247, 255, 0.6);
-  background: rgba(12, 18, 28, 0.92);
-  color: #54f7ff;
-  font-size: 20px;
-  box-shadow: 0 0 14px rgba(84, 247, 255, 0.35);
-  cursor: pointer;
-  pointer-events: auto;
-  transition: transform 0.1s ease, filter 0.15s ease, background 0.15s ease, border-color 0.15s ease;
-}
-
-.hud-ctrl-btn:active {
-  transform: scale(0.92);
-  background: rgba(84, 247, 255, 0.2);
-}
-
-.hud-sound-btn {
-  border-color: rgba(255, 209, 102, 0.6);
-  color: #ffd166;
-  box-shadow: 0 0 14px rgba(255, 209, 102, 0.35);
-}
-
-.hud-sound-btn:active {
-  background: rgba(255, 209, 102, 0.2);
-}
-
-/* Mobilde ve Dokunmatikte Sağ Üstteki Tam Ekran Butonunu Gizle */
-@media (max-width: 1200px), (pointer: coarse) {
-  .desktop-only,
-  #fullscreenBtn {
-    display: none !important;
+@media (max-width: 900px), (pointer: coarse) {
+  .hud-btn#pauseBtn {
+    min-width: 44px !important;
+    min-height: 44px !important;
+    font-size: 20px !important;
+    padding: 6px 12px !important;
+    border: 2px solid rgba(255, 209, 102, 0.7) !important;
+    background: rgba(18, 26, 40, 0.94) !important;
+    box-shadow: 0 0 12px rgba(255, 209, 102, 0.4) !important;
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    border-radius: 10px !important;
   }
-}
-
-.is-touch-device #fullscreenBtn,
-.is-touch-device .desktop-only {
-  display: none !important;
 }
 
 .badge-wave {
   background: rgba(255, 79, 135, 0.22) !important;
   border-color: rgba(255, 79, 135, 0.5) !important;
   color: #ff4f87 !important;
+}
+
+.badge-module {
+  background: rgba(84, 247, 255, 0.18) !important;
+  border-color: rgba(84, 247, 255, 0.5) !important;
+  color: #54f7ff !important;
+  box-shadow: 0 0 14px rgba(84, 247, 255, 0.35) !important;
+  animation: pulseModuleBadge 1.2s infinite alternate ease-in-out;
 }
 
 @keyframes pulseModuleBadge {
@@ -530,7 +406,7 @@ button {
 }
 
 /* ==========================================================================
-   Mobil Dokunmatik Kontroller (Analog Joystick & 4 Yetenek/Ateş Butonu)
+   Mobil Dokunmatik Kontroller (Analog Joystick & Action Buttons)
    ========================================================================== */
 .joystick {
   position: fixed;
@@ -538,37 +414,14 @@ button {
   bottom: max(18px, env(safe-area-inset-bottom));
   width: 110px;
   height: 110px;
-  display: block !important;
-  border: 2px solid rgba(84, 247, 255, 0.35);
+  display: none;
+  border: 2px solid rgba(84, 247, 255, 0.4);
   border-radius: 50%;
-  background: radial-gradient(circle, rgba(14, 28, 48, 0.45) 0%, rgba(4, 8, 16, 0.8) 100%);
-  box-shadow: 0 0 20px rgba(84, 247, 255, 0.2), inset 0 0 20px rgba(84, 247, 255, 0.15);
-  pointer-events: auto;
-  touch-action: none;
-  z-index: 15;
-}
-
-.joystick::before {
-  content: '';
-  position: absolute;
-  inset: 18px;
-  border: 1px dashed rgba(84, 247, 255, 0.25);
-  border-radius: 50%;
+  background: rgba(10, 18, 28, 0.45);
+  box-shadow: inset 0 0 20px rgba(84, 247, 255, 0.15), 0 0 18px rgba(0, 0, 0, 0.4);
   pointer-events: none;
+  z-index: 12;
 }
-
-.joy-dir {
-  position: absolute;
-  font-size: 9px;
-  font-weight: 900;
-  color: rgba(84, 247, 255, 0.4);
-  pointer-events: none;
-}
-
-.joy-n { top: 4px; left: 50%; transform: translateX(-50%); }
-.joy-s { bottom: 4px; left: 50%; transform: translateX(-50%); }
-.joy-w { left: 4px; top: 50%; transform: translateY(-50%); }
-.joy-e { right: 4px; top: 50%; transform: translateY(-50%); }
 
 .joystick span {
   position: absolute;
@@ -577,33 +430,41 @@ button {
   width: 40px;
   height: 40px;
   border-radius: 50%;
-  background: #ffffff;
-  box-shadow: 0 0 16px #ffffff, 0 0 28px rgba(84, 247, 255, 0.9);
-  border: 2px solid #54f7ff;
-  pointer-events: none;
-  transition: transform 0.04s ease-out;
-}
-
-.is-touch-device .joystick {
-  display: block !important;
+  background: var(--cyan);
+  box-shadow: 0 0 20px rgba(84, 247, 255, 0.8);
+  border: 2px solid #ffffff;
 }
 
 .actions {
   position: fixed;
-  right: max(16px, env(safe-area-inset-right));
-  bottom: max(14px, env(safe-area-inset-bottom));
+  right: max(18px, env(safe-area-inset-right));
+  bottom: max(16px, env(safe-area-inset-bottom));
   display: flex;
-  align-items: center;
+  align-items: flex-end;
   gap: 10px;
-  z-index: 15;
+  z-index: 12;
   pointer-events: auto;
-  touch-action: none;
-  user-select: none;
-  -webkit-user-select: none;
 }
 
-.is-touch-device .actions {
-  display: flex !important;
+.joystick {
+  position: fixed;
+  left: max(22px, env(safe-area-inset-left));
+  bottom: max(18px, env(safe-area-inset-bottom));
+  width: 110px;
+  height: 110px;
+  display: none;
+  border: 2px solid rgba(84, 247, 255, 0.4);
+  border-radius: 50%;
+  background: rgba(10, 18, 28, 0.45);
+  box-shadow: inset 0 0 20px rgba(84, 247, 255, 0.15), 0 0 18px rgba(0, 0, 0, 0.4);
+  pointer-events: none;
+  z-index: 12;
+}
+
+@media (pointer: coarse), (max-width: 900px) {
+  .joystick {
+    display: block;
+  }
 }
 
 .action-btn {
@@ -613,152 +474,93 @@ button {
   flex-direction: column;
   align-items: center;
   justify-content: center;
+  border: 2px solid rgba(255, 255, 255, 0.25);
   border-radius: 50%;
-  background: rgba(10, 16, 26, 0.88);
-  color: #ffffff;
+  background: rgba(14, 20, 30, 0.85);
+  color: #fff;
   font-weight: 900;
   touch-action: none;
   cursor: pointer;
-  backdrop-filter: blur(10px);
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.4);
   transition: transform 0.08s ease, filter 0.15s ease;
 }
 
 .action-btn:active {
-  transform: scale(0.92);
+  transform: scale(0.91);
 }
 
 .btn-icon {
-  font-size: 20px;
+  font-size: 22px;
   line-height: 1;
   z-index: 1;
 }
 
 .btn-label {
-  font-size: 7px;
+  font-size: 8px;
   font-weight: 900;
-  letter-spacing: 0.4px;
-  margin-top: 1px;
+  letter-spacing: 0.5px;
+  margin-top: 2px;
   z-index: 1;
-  white-space: nowrap;
+  opacity: 0.9;
 }
 
-.btn-subtext {
-  font-size: 10px;
-  font-weight: 900;
-  line-height: 1;
-  margin-top: 1px;
-  z-index: 1;
-}
-
-/* 1. Phantom / Vortex (Purple/Magenta) */
 .vortex {
-  width: 58px;
-  height: 58px;
-  border: 2px solid #b58cff;
+  width: 60px;
+  height: 60px;
+  border-color: rgba(157, 78, 221, 0.7);
   color: #e0aaff;
-  box-shadow: 0 0 16px rgba(181, 140, 255, 0.4), inset 0 0 10px rgba(181, 140, 255, 0.2);
-}
-
-.vortex .btn-label {
-  color: #b58cff;
-}
-
-.vortex .btn-subtext {
-  color: #ffffff;
+  box-shadow: 0 0 18px rgba(157, 78, 221, 0.35);
 }
 
 .vortex.is-ready {
-  background: rgba(157, 78, 221, 0.3);
-  box-shadow: 0 0 24px rgba(181, 140, 255, 0.7), inset 0 0 14px rgba(181, 140, 255, 0.35);
-  animation: pulseVortexBtn 1.2s infinite alternate ease-in-out;
+  background: rgba(157, 78, 221, 0.35);
+  box-shadow: 0 0 30px rgba(157, 78, 221, 0.7);
+  animation: pulseVortexBtn 1s infinite alternate ease-in-out;
 }
 
 @keyframes pulseVortexBtn {
   0% { transform: scale(1); filter: brightness(1); }
-  100% { transform: scale(1.05); filter: brightness(1.25); }
+  100% { transform: scale(1.06); filter: brightness(1.3); }
 }
 
-/* 2. Void Rift / EMP Shock (Cyan/Electric Blue) */
 .power {
-  width: 58px;
-  height: 58px;
-  border: 2px solid #00f0ff;
+  width: 60px;
+  height: 60px;
+  border-color: rgba(0, 210, 255, 0.7);
   color: #00f0ff;
-  box-shadow: 0 0 16px rgba(0, 240, 255, 0.4), inset 0 0 10px rgba(0, 240, 255, 0.2);
-}
-
-.power .btn-label {
-  color: #00f0ff;
-}
-
-.power .btn-subtext {
-  color: #ffffff;
+  box-shadow: 0 0 18px rgba(0, 210, 255, 0.35);
 }
 
 .power.is-ready {
-  background: rgba(0, 210, 255, 0.3);
-  box-shadow: 0 0 24px rgba(0, 240, 255, 0.7), inset 0 0 14px rgba(0, 240, 255, 0.35);
-  animation: pulsePowerBtn 1.2s infinite alternate ease-in-out;
+  background: rgba(0, 210, 255, 0.35);
+  box-shadow: 0 0 30px rgba(0, 210, 255, 0.7);
+  animation: pulsePowerBtn 1s infinite alternate ease-in-out;
 }
 
 @keyframes pulsePowerBtn {
   0% { transform: scale(1); filter: brightness(1); }
-  100% { transform: scale(1.05); filter: brightness(1.25); }
+  100% { transform: scale(1.06); filter: brightness(1.3); }
 }
 
-/* 3. Quantum Blink / Hyper Boost (Gold/Amber) */
 .dash {
-  width: 58px;
-  height: 58px;
-  border: 2px solid #ffd166;
-  color: #ffd166;
-  box-shadow: 0 0 16px rgba(255, 209, 102, 0.4), inset 0 0 10px rgba(255, 209, 102, 0.2);
+  width: 60px;
+  height: 60px;
+  border-color: rgba(255, 209, 102, 0.6);
+  color: #fff8db;
+  box-shadow: 0 0 18px rgba(255, 209, 102, 0.25);
 }
 
-.dash .btn-label {
-  color: #ffd166;
-}
-
-.dash .btn-subtext {
-  color: #ffffff;
-}
-
-.dash.is-ready {
-  background: rgba(255, 209, 102, 0.25);
-  box-shadow: 0 0 24px rgba(255, 209, 102, 0.65), inset 0 0 14px rgba(255, 209, 102, 0.3);
-}
-
-/* 4. Primary Fire (Large Radiant Glow) */
 .shoot {
   width: 76px;
   height: 76px;
-  border: 3px solid #54f7ff;
-  color: #ffffff;
-  background: radial-gradient(circle, rgba(16, 32, 50, 0.95) 0%, rgba(6, 14, 24, 0.95) 100%);
-  box-shadow: 0 0 24px rgba(84, 247, 255, 0.6), inset 0 0 14px rgba(84, 247, 255, 0.35);
-  margin-left: 4px;
-}
-
-.shoot .btn-icon {
-  font-size: 26px;
-  color: #ffffff;
-  text-shadow: 0 0 12px #54f7ff, 0 0 24px #54f7ff;
-}
-
-.shoot .btn-label {
-  font-size: 8.5px;
-  color: #54f7ff;
-  letter-spacing: 0.6px;
-}
-
-.shoot .btn-subtext {
-  font-size: 13px;
-  color: #54f7ff;
+  border-color: rgba(84, 247, 255, 0.7);
+  color: #e0f7fa;
+  box-shadow: 0 0 24px rgba(84, 247, 255, 0.35);
 }
 
 .shoot.is-firing {
   background: rgba(84, 247, 255, 0.35);
-  box-shadow: 0 0 35px rgba(84, 247, 255, 0.85);
+  box-shadow: 0 0 35px rgba(84, 247, 255, 0.7);
 }
 
 .action-btn i {
@@ -767,10 +569,9 @@ button {
   height: 0;
 }
 
-.vortex i { background: rgba(181, 140, 255, 0.4); }
-.power i { background: rgba(0, 240, 255, 0.4); }
-.dash i { background: rgba(255, 209, 102, 0.45); }
+.power i { background: rgba(181, 140, 255, 0.4); }
 .shoot i { background: rgba(84, 247, 255, 0.4); }
+.dash i { background: rgba(255, 209, 102, 0.45); }
 
 /* ==========================================================================
    Overlay Menüsü (Başlangıç / Pause / Game Over Modalleri)
@@ -1517,60 +1318,23 @@ button {
   }
 
   .bars {
-    width: min(290px, 36vw);
+    width: min(340px, 38vw);
     padding: 4px 8px;
     gap: 3px;
-    border-radius: 10px;
-  }
-
-  .bar.health {
-    height: 15px;
   }
 
   .bar {
-    height: 10px;
-  }
-
-  .bar.health em {
-    font-size: 9.5px;
+    height: 9px;
   }
 
   .bar em {
-    font-size: 7.5px;
-  }
-
-  .module-badge {
-    padding: 3px 8px;
-    gap: 5px;
-  }
-
-  .module-icon {
-    font-size: 14px;
-  }
-
-  .module-name {
-    font-size: 10px;
-  }
-
-  .module-timer {
-    font-size: 9.5px;
+    font-size: 8px;
   }
 
   .scoreline span,
   .hud-btn {
     padding: 3px 6px;
-    font-size: 9.5px;
-  }
-
-  .hud-action-row {
-    gap: 6px;
-  }
-
-  .hud-ctrl-btn {
-    width: 38px;
-    height: 38px;
-    font-size: 17px;
-    border-radius: 8px;
+    font-size: 10px;
   }
 
   .joystick {
@@ -1589,37 +1353,33 @@ button {
   }
 
   .actions {
-    right: max(12px, env(safe-area-inset-right));
+    right: max(14px, env(safe-area-inset-right));
     bottom: max(10px, env(safe-area-inset-bottom));
-    gap: 8px;
+    gap: 10px;
     touch-action: none;
     user-select: none;
     -webkit-user-select: none;
   }
 
   .shoot {
-    width: 66px;
-    height: 66px;
-    margin-left: 2px;
+    width: 68px;
+    height: 68px;
+    margin-left: 6px;
   }
 
   .vortex,
   .power,
   .dash {
-    width: 48px;
-    height: 48px;
+    width: 52px;
+    height: 52px;
   }
 
   .btn-icon {
-    font-size: 16px;
+    font-size: 18px;
   }
 
   .btn-label {
-    font-size: 6.5px;
-  }
-
-  .btn-subtext {
-    font-size: 8.5px;
+    font-size: 7px;
   }
 
   /* 🛸 MOBIL HANGAR & BAŞLANGIÇ EKRANI — 2 KOLONLU SIFIR KAYDIRMA DÜZENİ */
@@ -2274,50 +2034,34 @@ button {
     <!-- Top HUD Status Bar -->
     <section id="hud" class="hud" aria-live="polite">
       <div class="bars">
-        <div class="hud-bar-row">
-          <span class="hud-bar-badge health-badge">💖</span>
-          <div class="bar health" aria-label="Hull Health">
-            <span id="healthFill"></span>
-            <em id="healthText">100 / 100</em>
-          </div>
+        <div class="bar health" aria-label="Hull Health">
+          <span id="healthFill"></span>
+          <em id="healthText">100 / 100</em>
         </div>
-        <div class="hud-bar-row">
-          <span class="hud-bar-badge xp-badge">🚀</span>
-          <div class="bar xp" aria-label="XP Experience">
-            <span id="xpFill"></span>
-            <em id="xpText">LEVEL 1</em>
-          </div>
+        <div class="bar xp" aria-label="XP Experience">
+          <span id="xpFill"></span>
+          <em id="xpText">LEVEL 1</em>
         </div>
-        <div class="hud-bar-row">
-          <span class="hud-bar-badge special-badge">◎</span>
-          <div class="bar special" aria-label="Special Ability Charge">
-            <span id="specialFill"></span>
-            <em id="specialText">0%</em>
-          </div>
+        <div class="bar special" aria-label="Special Ability Charge">
+          <span id="specialFill"></span>
+          <em id="specialText">0%</em>
         </div>
       </div>
 
       <div class="hud-center">
         <div id="moduleBadge" class="module-badge hidden" title="Active Weapon Attachment">
-          <span id="moduleIcon" class="module-icon">🚀</span>
-          <div class="module-text-group">
-            <strong id="moduleName" class="module-name">Micro Guided Rocket Pod</strong>
-            <span id="moduleTimer" class="module-timer">(42s)</span>
-          </div>
+          ⚡ Dual Plasma (45s)
         </div>
       </div>
 
-      <div class="hud-right-group">
-        <div class="scoreline">
-          <span id="timer" class="time">00:00</span>
-          <span id="score" class="score">0</span>
-          <span id="coins" class="coins">🪙 0</span>
-          <span id="waveBadge" class="wave-badge">Sector 1</span>
-        </div>
-        <div class="hud-action-row">
-          <button id="muteBtn" class="hud-ctrl-btn hud-sound-btn" type="button" aria-label="Toggle Sound" title="Sound On/Off (M)">🔊</button>
-          <button id="pauseBtn" class="hud-ctrl-btn hud-pause-btn" type="button" aria-label="Pause" title="Pause (P / ESC)">⏸️</button>
-        </div>
+      <div class="scoreline">
+        <span id="timer" class="time">00:00</span>
+        <span id="score" class="score">0</span>
+        <span id="coins" class="coins">0</span>
+        <span id="waveBadge" class="wave-badge">Sector 1</span>
+        <button id="pauseBtn" class="hud-btn" type="button" aria-label="Pause" title="Pause (P / ESC)">⏸️</button>
+        <button id="fullscreenBtn" class="hud-btn" type="button" aria-label="Fullscreen" title="Fullscreen (H)">⛶</button>
+        <button id="muteBtn" class="hud-btn" type="button" aria-label="Toggle Sound" title="Sound On/Off (M)">🔊</button>
       </div>
     </section>
 
@@ -2326,36 +2070,28 @@ button {
 
     <!-- Mobile Dual Touch Joystick & Action Buttons -->
     <div id="joystick" class="joystick" aria-hidden="true">
-      <div class="joy-dir joy-n">▲</div>
-      <div class="joy-dir joy-s">▼</div>
-      <div class="joy-dir joy-w">◀</div>
-      <div class="joy-dir joy-e">▶</div>
       <span id="stickNub"></span>
     </div>
 
     <div id="actions" class="actions" aria-label="Mobile Action Controls">
-      <button id="vortexBtn" class="action-btn vortex" type="button" aria-label="Phantom / Vortex Ability (F)" title="Phantom / Vortex Ability (F / E)">
-        <span class="btn-icon">☠️</span>
-        <small class="btn-label">PHANTOM</small>
-        <span id="vortexSubtext" class="btn-subtext">2</span>
+      <button id="vortexBtn" class="action-btn vortex" type="button" aria-label="Vortex Ability (F)" title="Vortex Ability (F / E)">
+        <span class="btn-icon">🌪️</span>
+        <small class="btn-label">VORTEX</small>
         <i id="vortexCooldown"></i>
       </button>
-      <button id="powerBtn" class="action-btn power" type="button" aria-label="Void Rift / Shockwave (G)" title="Void Rift / Shockwave (G / Q)">
-        <span class="btn-icon">🌀</span>
-        <small class="btn-label">VOID RIFT</small>
-        <span id="powerSubtext" class="btn-subtext">1</span>
+      <button id="powerBtn" class="action-btn power" type="button" aria-label="EMP Shockwave (G)" title="EMP Shockwave (G / Q)">
+        <span class="btn-icon">⚡</span>
+        <small class="btn-label">SHOCK</small>
         <i id="powerCooldown"></i>
       </button>
-      <button id="dashBtn" class="action-btn dash" type="button" aria-label="Quantum Blink / Hyper Boost (Space)" title="Quantum Blink / Hyper Boost (Space / Shift)">
-        <span class="btn-icon">🌌</span>
-        <small class="btn-label">BLINK</small>
-        <span id="dashSubtext" class="btn-subtext">2</span>
+      <button id="dashBtn" class="action-btn dash" type="button" aria-label="Hyper Boost (Space)" title="Hyper Boost (Space / Shift)">
+        <span class="btn-icon">🚀</span>
+        <small class="btn-label">BOOST</small>
         <i id="dashCooldown"></i>
       </button>
       <button id="shootBtn" class="action-btn shoot" type="button" aria-label="Primary Fire (Left Click / B)" title="Primary Fire (Left Click / B)">
         <span class="btn-icon">✦</span>
         <small class="btn-label">FIRE</small>
-        <span id="shootSubtext" class="btn-subtext">∞</span>
         <i id="shootCooldown"></i>
       </button>
     </div>
@@ -3765,7 +3501,6 @@ class SoundEngine {
   }
 
   pauseMusic() {
-    this.isMusicPlaying = false;
     if (this.musicInterval) {
       clearInterval(this.musicInterval);
       this.musicInterval = null;
@@ -3791,16 +3526,10 @@ class SoundEngine {
     const stepDuration = 60 / this.bpm / 4;
     const lookahead = 0.10;
 
-    if (this.nextNoteTime < this.ctx.currentTime) {
-      this.nextNoteTime = this.ctx.currentTime + 0.02;
-    }
-
-    let safetyCount = 0;
-    while (this.nextNoteTime < this.ctx.currentTime + lookahead && safetyCount < 16) {
+    while (this.nextNoteTime < this.ctx.currentTime + lookahead) {
       this._playBgmStep(this.currentStep, this.nextNoteTime, stepDuration);
       this.nextNoteTime += stepDuration;
       this.currentStep = (this.currentStep + 1) % 64;
-      safetyCount++;
     }
   }
 
@@ -11215,8 +10944,6 @@ const resumeBtn = getEl("resumeBtn");
 const pauseFullscreenBtn = getEl("pauseFullscreenBtn");
 const restartFromPauseBtn = getEl("restartFromPauseBtn");
 const pauseHomeBtn = getEl("pauseHomeBtn");
-let introFinishedAt = 0;
-let isIntroActive = false;
 
 // Ölüm Ekranı Elemanları
 const deathTag = getEl("deathTag");
@@ -12140,145 +11867,75 @@ function updateHud() {
   const spPct = clamp(state.specialCharge * 100, 0, 100);
 
   hud.healthFill.style.width = `${hpPct}%`;
-  if (hud.healthFill) {
-    hud.healthFill.style.width = `${hpPct}%`;
-    hud.healthText.textContent = `${Math.ceil(player.hp)} / ${Math.ceil(player.maxHp)}`;
-  }
+  hud.healthText.textContent = `${Math.ceil(player.hp)} / ${Math.ceil(player.maxHp)}`;
 
-  if (hud.xpFill) {
-    hud.xpFill.style.width = `${xpPct}%`;
-    hud.xpText.textContent = `Level ${state.level} (${player.currentForm ? player.currentForm.name : 'Viper Corvette'})`;
-  }
+  hud.xpFill.style.width = `${xpPct}%`;
+  hud.xpText.textContent = `Level ${state.level} (${player.currentForm.name})`;
 
   const isDread = player.shipClass && player.shipClass.id === "dreadnought";
   const isVoid = player.shipClass && player.shipClass.id === "void_phantom";
-  let specialName = "EMP SHOCK";
+  let specialName = "SHOCK";
   if (isDread) specialName = "SIEGE";
   else if (isVoid) specialName = "RIFT";
 
-  if (hud.specialFill) {
-    hud.specialFill.style.width = `${spPct}%`;
-    hud.specialText.textContent =
-      state.specialCharge >= 0.08
-        ? `◎ ${specialName} (Ready: ${Math.floor(spPct)}%)`
-        : `◎ ${specialName}: ${Math.floor(spPct)}%`;
-  }
+  hud.specialFill.style.width = `${spPct}%`;
+  hud.specialText.textContent =
+    state.specialCharge >= 0.08
+      ? `G ${specialName} (Ready: ${Math.floor(spPct)}%)`
+      : `G ${specialName}: ${Math.floor(spPct)}%`;
 
-  if (hud.timer) hud.timer.textContent = formatTime(state.time);
-  if (hud.score) hud.score.textContent = `Score: ${Math.floor(state.score)}`;
-  if (hud.coins) hud.coins.textContent = `🪙 ${state.coins}`;
+  hud.timer.textContent = formatTime(state.time);
+  hud.score.textContent = `Score: ${Math.floor(state.score)}`;
+  hud.coins.textContent = `🪙 ${state.coins}`;
   if (hud.waveBadge) {
     if (state.level >= 21) {
       const chaosMult = (1 + (state.level - 20) * 0.35).toFixed(1);
-      hud.waveBadge.textContent = `♾️ ${state.level} [${chaosMult}x]`;
+      hud.waveBadge.textContent = `♾️ ENDLESS · SECTOR ${state.level} [${chaosMult}x CHAOS]`;
       hud.waveBadge.style.borderColor = "#ffd166";
       hud.waveBadge.style.color = "#ffd166";
     } else {
-      hud.waveBadge.textContent = `Sector ${state.level}`;
+      hud.waveBadge.textContent = `WAVE ${state.wave} · ${state.currentBiome.name}`;
       hud.waveBadge.style.borderColor = state.currentBiome.accentColor;
       hud.waveBadge.style.color = state.currentBiome.accentColor;
     }
   }
 
-  // Aktif Silah Eklentisi Göstergesi (Kompakt ve Profesyonel)
+  // Aktif Silah Eklentisi Göstergesi
   if (moduleBadge) {
-    if (player.activeModule && player.moduleTimer > 0) {
+    if (player.activeModule) {
       moduleBadge.classList.remove("hidden");
-      const iconEl = getEl("moduleIcon");
-      const nameEl = getEl("moduleName");
-      const timerEl = getEl("moduleTimer");
-      if (iconEl) iconEl.textContent = player.activeModule.icon || "🚀";
-      if (nameEl) nameEl.textContent = player.activeModule.name;
-      if (timerEl) timerEl.textContent = `(${Math.ceil(player.moduleTimer)}s)`;
-      moduleBadge.style.borderColor = player.activeModule.color || "#ffaa00";
+      moduleBadge.style.borderColor = player.activeModule.color;
+      moduleBadge.style.color = player.activeModule.color;
+      moduleBadge.textContent = `${player.activeModule.icon} ${player.activeModule.name} (${Math.ceil(player.moduleTimer)}s)`;
     } else {
       moduleBadge.classList.add("hidden");
     }
   }
 
   const hasVortex = !player.shipClass || player.shipClass.hasVortex !== false;
-  const vortexSubtext = getEl("vortexSubtext");
-  const powerSubtext = getEl("powerSubtext");
-  const dashSubtext = getEl("dashSubtext");
-  const shootSubtext = getEl("shootSubtext");
 
-  // 1. Vortex / Phantom Butonu
   if (vortexBtn) {
     vortexBtn.style.display = hasVortex ? "" : "none";
     if (hasVortex) {
-      const isVortexReady = player.vortexCooldown <= 0;
-      vortexBtn.classList.toggle("is-ready", isVortexReady);
+      vortexBtn.classList.toggle("is-ready", player.vortexCooldown <= 0);
       const lbl = vortexBtn.querySelector(".btn-label");
       const ico = vortexBtn.querySelector(".btn-icon");
       if (lbl && ico) {
         if (isVoid) {
           lbl.textContent = "PHANTOM";
-          ico.textContent = "☠️";
-        } else if (isDread) {
-          lbl.textContent = "DEFENSE";
-          ico.textContent = "🛡️";
+          ico.textContent = "👻";
         } else {
           lbl.textContent = "VORTEX";
           ico.textContent = "🌪️";
         }
       }
-      if (vortexSubtext) {
-        vortexSubtext.textContent = isVortexReady ? "2" : `${Math.ceil(player.vortexCooldown)}s`;
-      }
     }
-  }
-
-  // 2. Void Rift / EMP Shock Butonu
-  if (powerBtn) {
-    const isPowerReady = state.specialCharge >= 0.08;
-    powerBtn.classList.toggle("is-ready", isPowerReady);
-    const lbl = powerBtn.querySelector(".btn-label");
-    const ico = powerBtn.querySelector(".btn-icon");
-    if (lbl && ico) {
-      if (isVoid) {
-        lbl.textContent = "VOID RIFT";
-        ico.textContent = "🌀";
-      } else if (isDread) {
-        lbl.textContent = "SIEGE";
-        ico.textContent = "💥";
-      } else {
-        lbl.textContent = "SHOCK";
-        ico.textContent = "⚡";
-      }
-    }
-    if (powerSubtext) {
-      powerSubtext.textContent = isPowerReady ? "1" : `${Math.floor(spPct)}%`;
-    }
-  }
-
-  // 3. Quantum Blink / Hyper Boost Butonu
-  if (dashBtn) {
-    const isBoostReady = player.boostCooldown <= 0;
-    dashBtn.classList.toggle("is-ready", isBoostReady);
-    const lbl = dashBtn.querySelector(".btn-label");
-    const ico = dashBtn.querySelector(".btn-icon");
-    if (lbl && ico) {
-      if (isVoid) {
-        lbl.textContent = "QUANTUM BLINK";
-        ico.textContent = "🌌";
-      } else {
-        lbl.textContent = "BLINK";
-        ico.textContent = "🚀";
-      }
-    }
-    if (dashSubtext) {
-      dashSubtext.textContent = isBoostReady ? "2" : `${Math.ceil(player.boostCooldown)}s`;
-    }
-  }
-
-  // 4. Primary Fire
-  if (shootSubtext) {
-    shootSubtext.textContent = "∞";
   }
 
   if (hud.specialFill && hud.specialFill.parentElement) {
     hud.specialFill.parentElement.classList.toggle("is-ready", state.specialCharge >= 0.08);
   }
+  if (powerBtn) powerBtn.classList.toggle("is-ready", state.specialCharge >= 0.08);
 
   if (hud.powerCooldown) hud.powerCooldown.style.height = `${100 - spPct}%`;
   if (hud.vortexCooldown) {
@@ -12510,7 +12167,6 @@ if (typeof window !== "undefined") {
 
     // 1. Başlangıç ekranındayken: Space basıldığında tam ekran değilse ÖNCE tam ekrana geçirir, tam ekrandaysa oyunu başlatır! X / R tuşu oyunu başlatır!
     if (!state.running && !state.over && !state.paused) {
-      if (isIntroActive || (Date.now() - introFinishedAt < 500)) return;
       if ((k === "arrowleft" || k === "a") && !isRepeat) {
         e.preventDefault();
         prevShip();
@@ -12659,6 +12315,11 @@ if (typeof window !== "undefined") {
           joystick.startY = t.clientY;
           joystick.vx = 0;
           joystick.vy = 0;
+          if (joystickEl) {
+            joystickEl.classList.remove("hidden");
+            joystickEl.style.left = `${t.clientX}px`;
+            joystickEl.style.top = `${t.clientY}px`;
+          }
           if (stickNub) stickNub.style.transform = `translate(0px, 0px)`;
         } else if (t.clientX >= width * 0.45 && aimTouchId === null) {
           aimTouchId = t.identifier;
@@ -12676,7 +12337,7 @@ if (typeof window !== "undefined") {
           const dx = t.clientX - joystick.startX;
           const dy = t.clientY - joystick.startY;
           const distVal = Math.hypot(dx, dy);
-          const maxDist = 45;
+          const maxDist = 55;
           const angle = Math.atan2(dy, dx);
           const clampedDist = Math.min(distVal, maxDist);
 
@@ -12699,7 +12360,7 @@ if (typeof window !== "undefined") {
         joystick.id = null;
         joystick.vx = 0;
         joystick.vy = 0;
-        if (stickNub) stickNub.style.transform = `translate(0px, 0px)`;
+        if (joystickEl) joystickEl.classList.add("hidden");
       }
       if (t.identifier === aimTouchId) {
         aimTouchId = null;
@@ -12718,71 +12379,6 @@ if (typeof window !== "undefined") {
         endTouch(e.changedTouches[i]);
       }
     });
-
-    if (joystickEl) {
-      joystickEl.addEventListener("touchstart", (e) => {
-        e.preventDefault();
-        e.stopPropagation();
-        audio.ensureContext();
-        if (e.changedTouches.length > 0 && !joystick.active) {
-          const t = e.changedTouches[0];
-          const rect = joystickEl.getBoundingClientRect();
-          const cx = rect.left + rect.width / 2;
-          const cy = rect.top + rect.height / 2;
-          joystick.active = true;
-          joystick.id = t.identifier;
-          joystick.startX = cx;
-          joystick.startY = cy;
-          const dx = t.clientX - cx;
-          const dy = t.clientY - cy;
-          const distVal = Math.hypot(dx, dy);
-          const maxDist = 45;
-          const angle = Math.atan2(dy, dx);
-          const clampedDist = Math.min(distVal, maxDist);
-          joystick.vx = (Math.cos(angle) * clampedDist) / maxDist;
-          joystick.vy = (Math.sin(angle) * clampedDist) / maxDist;
-          const nx = Math.cos(angle) * clampedDist;
-          const ny = Math.sin(angle) * clampedDist;
-          if (stickNub) stickNub.style.transform = `translate(${nx}px, ${ny}px)`;
-        }
-      }, { passive: false });
-
-      joystickEl.addEventListener("touchmove", (e) => {
-        e.preventDefault();
-        e.stopPropagation();
-        for (let i = 0; i < e.changedTouches.length; i++) {
-          const t = e.changedTouches[i];
-          if (joystick.active && t.identifier === joystick.id) {
-            const dx = t.clientX - joystick.startX;
-            const dy = t.clientY - joystick.startY;
-            const distVal = Math.hypot(dx, dy);
-            const maxDist = 45;
-            const angle = Math.atan2(dy, dx);
-            const clampedDist = Math.min(distVal, maxDist);
-            joystick.vx = (Math.cos(angle) * clampedDist) / maxDist;
-            joystick.vy = (Math.sin(angle) * clampedDist) / maxDist;
-            const nx = Math.cos(angle) * clampedDist;
-            const ny = Math.sin(angle) * clampedDist;
-            if (stickNub) stickNub.style.transform = `translate(${nx}px, ${ny}px)`;
-          }
-        }
-      }, { passive: false });
-
-      joystickEl.addEventListener("touchend", (e) => {
-        e.preventDefault();
-        e.stopPropagation();
-        for (let i = 0; i < e.changedTouches.length; i++) {
-          endTouch(e.changedTouches[i]);
-        }
-      });
-      joystickEl.addEventListener("touchcancel", (e) => {
-        e.preventDefault();
-        e.stopPropagation();
-        for (let i = 0; i < e.changedTouches.length; i++) {
-          endTouch(e.changedTouches[i]);
-        }
-      });
-    }
   }
 
   // Mobil Eylem Butonları Dinleyicileri (Pointer Capture & Ghost Touch Koruması)
@@ -12794,6 +12390,11 @@ if (typeof window !== "undefined") {
       audio.ensureContext();
       touchFire.active = true;
       shootBtn.classList.add("is-firing");
+      try {
+        if (e.pointerId !== undefined && shootBtn.setPointerCapture) {
+          shootBtn.setPointerCapture(e.pointerId);
+        }
+      } catch (err) {}
     };
 
     const endShoot = (e) => {
@@ -12801,14 +12402,17 @@ if (typeof window !== "undefined") {
       e.stopPropagation();
       touchFire.active = false;
       shootBtn.classList.remove("is-firing");
+      try {
+        if (e.pointerId !== undefined && shootBtn.releasePointerCapture) {
+          shootBtn.releasePointerCapture(e.pointerId);
+        }
+      } catch (err) {}
     };
 
     shootBtn.addEventListener("pointerdown", startShoot);
     shootBtn.addEventListener("pointerup", endShoot);
     shootBtn.addEventListener("pointercancel", endShoot);
-    shootBtn.addEventListener("touchstart", startShoot, { passive: false });
-    shootBtn.addEventListener("touchend", endShoot, { passive: false });
-    shootBtn.addEventListener("touchcancel", endShoot, { passive: false });
+    shootBtn.addEventListener("pointerleave", endShoot);
   }
 
   let lastVortexTap = 0;
@@ -12818,7 +12422,7 @@ if (typeof window !== "undefined") {
       e.stopPropagation();
       if (e.target && e.target.blur) e.target.blur();
       const now = performance.now();
-      if (now - lastVortexTap < 200) return;
+      if (now - lastVortexTap < 220) return;
       lastVortexTap = now;
       audio.ensureContext();
       vibrate([50, 40, 70]);
@@ -12828,7 +12432,6 @@ if (typeof window !== "undefined") {
       player.launchVortex(tx, ty, state);
     };
     vortexBtn.addEventListener("pointerdown", onVortex);
-    vortexBtn.addEventListener("touchstart", onVortex, { passive: false });
   }
 
   let lastPowerTap = 0;
@@ -12838,7 +12441,7 @@ if (typeof window !== "undefined") {
       e.stopPropagation();
       if (e.target && e.target.blur) e.target.blur();
       const now = performance.now();
-      if (now - lastPowerTap < 200) return;
+      if (now - lastPowerTap < 220) return;
       lastPowerTap = now;
       audio.ensureContext();
       vibrate([40, 30, 60]);
@@ -12848,7 +12451,6 @@ if (typeof window !== "undefined") {
       player.activateSpecialPower(enemies, state, pickupManager, bulletManager, aimX, aimY);
     };
     powerBtn.addEventListener("pointerdown", onPower);
-    powerBtn.addEventListener("touchstart", onPower, { passive: false });
   }
 
   let lastDashTap = 0;
@@ -12858,55 +12460,38 @@ if (typeof window !== "undefined") {
       e.stopPropagation();
       if (e.target && e.target.blur) e.target.blur();
       const now = performance.now();
-      if (now - lastDashTap < 200) return;
+      if (now - lastDashTap < 250) return; // Yanlışlıkla veya kayarak basılmaları filtreler
       lastDashTap = now;
       audio.ensureContext();
       vibrate(25);
       player.triggerSpeedBoost(state);
     };
     dashBtn.addEventListener("pointerdown", onDash);
-    dashBtn.addEventListener("touchstart", onDash, { passive: false });
-  }
-
-  // Menü Butonları Bağlayıcıları (Dokunmatik ve Tıklama Korumalı)
-  function bindButton(btn, action) {
-    if (!btn) return;
-    let lastTime = 0;
-    const handler = (e) => {
-      const now = Date.now();
-      if (now - lastTime < 250) return;
-      lastTime = now;
-      if (e && e.stopPropagation) e.stopPropagation();
-      action();
-    };
-    btn.addEventListener("click", handler);
-    btn.addEventListener("pointerdown", handler);
-    btn.addEventListener("touchend", handler);
   }
 
   if (pauseBtn) {
-    bindButton(pauseBtn, () => {
+    pauseBtn.addEventListener("click", () => {
       audio.ensureContext();
       togglePause();
     });
   }
 
   if (fullscreenBtn) {
-    bindButton(fullscreenBtn, () => {
+    fullscreenBtn.addEventListener("click", () => {
       audio.ensureContext();
       lockLandscape();
     });
   }
 
   if (pauseFullscreenBtn) {
-    bindButton(pauseFullscreenBtn, () => {
+    pauseFullscreenBtn.addEventListener("click", () => {
       audio.ensureContext();
       lockLandscape();
     });
   }
 
   if (muteBtn) {
-    bindButton(muteBtn, () => {
+    muteBtn.addEventListener("click", () => {
       audio.ensureContext();
       const isMuted = audio.toggleMute();
       muteBtn.textContent = isMuted ? "🔇" : "🔊";
@@ -12930,8 +12515,25 @@ if (typeof window !== "undefined") {
     });
   }
 
+  // Menü Butonları Bağlayıcıları (Dokunmatik ve Tıklama Korumalı)
+  const bindButton = (btn, action) => {
+    if (!btn) return;
+    let lastTime = 0;
+    const handler = (e) => {
+      const now = Date.now();
+      if (now - lastTime < 300) return;
+      lastTime = now;
+      if (e) {
+        if (e.stopPropagation) e.stopPropagation();
+      }
+      action();
+    };
+    btn.addEventListener("click", handler);
+    btn.addEventListener("pointerdown", handler);
+    btn.addEventListener("touchend", handler);
+  };
+
   bindButton(startBtn, () => {
-    if (isIntroActive || (Date.now() - introFinishedAt < 500)) return;
     enterFullscreen();
     startGame();
   });
@@ -13067,7 +12669,6 @@ if (typeof window !== "undefined") {
   const finishEonIntro = () => {
     if (!isIntroActive) return;
     isIntroActive = false;
-    introFinishedAt = Date.now();
     if (introTimer) {
       clearTimeout(introTimer);
       introTimer = null;
@@ -13171,8 +12772,6 @@ if (typeof window !== "undefined") {
   }
 
   // Başlatma
-  updateDeviceSpecificUI();
-  showStartScreen();
   resize();
   startEonIntro();
   updateHud();
