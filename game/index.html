@@ -394,19 +394,31 @@ button {
   position: fixed;
   right: max(18px, env(safe-area-inset-right));
   bottom: max(16px, env(safe-area-inset-bottom));
-  display: none;
+  display: flex;
   align-items: flex-end;
   gap: 10px;
   z-index: 12;
   pointer-events: auto;
 }
 
+.joystick {
+  position: fixed;
+  left: max(22px, env(safe-area-inset-left));
+  bottom: max(18px, env(safe-area-inset-bottom));
+  width: 110px;
+  height: 110px;
+  display: none;
+  border: 2px solid rgba(84, 247, 255, 0.4);
+  border-radius: 50%;
+  background: rgba(10, 18, 28, 0.45);
+  box-shadow: inset 0 0 20px rgba(84, 247, 255, 0.15), 0 0 18px rgba(0, 0, 0, 0.4);
+  pointer-events: none;
+  z-index: 12;
+}
+
 @media (pointer: coarse), (max-width: 900px) {
   .joystick {
     display: block;
-  }
-  .actions {
-    display: flex;
   }
 }
 
@@ -2534,6 +2546,7 @@ function resolveCircleBoxCollision(circle, box) {
 // ============================================================================
 // Neon Survivor 2D — Audio Engine (Web Audio API Synthesizer)
 // Sıfır harici dosya bağımlılığıyla prosedürel 8-bit/synth ses efektleri
+// 100% Sızıntısız, Otomatik Node Temizlemeli & Düşük Gecikmeli Web Audio Mimarisi
 // ============================================================================
 
 class SoundEngine {
@@ -2550,6 +2563,11 @@ class SoundEngine {
     this.bpm = 126;
     this.isBossMusic = false;
     this.musicMode = null;
+
+    this.activeVoices = 0;
+    this.maxVoices = 10;
+    this.noiseBuffer = null;
+    this._introGainNode = null;
 
     // Local Storage Audio Settings (Default: Crisp Action SFX at 80%, Ambient BGM at 75%)
     this.bgmVolume = 0.75;
@@ -2604,9 +2622,41 @@ class SoundEngine {
       this.sfxGain = this.ctx.createGain();
       this.updateSfxGain();
       this.sfxGain.connect(this.masterGain);
+
+      this._getNoiseBuffer();
     } catch (e) {
       console.warn("Web Audio API not supported:", e);
     }
+  }
+
+  _getNoiseBuffer() {
+    if (!this.noiseBuffer && this.ctx) {
+      const sampleRate = this.ctx.sampleRate || 44100;
+      const bufferSize = Math.floor(sampleRate * 2.0);
+      this.noiseBuffer = this.ctx.createBuffer(1, bufferSize, sampleRate);
+      const data = this.noiseBuffer.getChannelData(0);
+      for (let i = 0; i < bufferSize; i++) {
+        data[i] = Math.random() * 2 - 1;
+      }
+    }
+    return this.noiseBuffer;
+  }
+
+  _bindCleanup(source, isVoice = false, ...nodes) {
+    if (!source) return;
+    source.onended = () => {
+      if (isVoice) {
+        this.activeVoices = Math.max(0, this.activeVoices - 1);
+      }
+      try {
+        source.disconnect();
+        for (let i = 0; i < nodes.length; i++) {
+          if (nodes[i] && typeof nodes[i].disconnect === "function") {
+            nodes[i].disconnect();
+          }
+        }
+      } catch (e) {}
+    };
   }
 
   updateBgmGain() {
@@ -2669,7 +2719,10 @@ class SoundEngine {
   }
 
   playShoot(pitch = 1) {
-    if (this.muted || !this.ctx) return;
+    if (this.muted || !this.ctx || this.sfxMuted) return;
+    if (this.activeVoices >= this.maxVoices) return;
+    this.activeVoices++;
+
     const now = this.ctx.currentTime;
     const osc = this.ctx.createOscillator();
     const gain = this.ctx.createGain();
@@ -2684,12 +2737,16 @@ class SoundEngine {
     osc.connect(gain);
     gain.connect(this.sfxGain || this.masterGain);
 
+    this._bindCleanup(osc, true, gain);
     osc.start(now);
     osc.stop(now + 0.12);
   }
 
   playHit(isCrit = false) {
-    if (this.muted || !this.ctx) return;
+    if (this.muted || !this.ctx || this.sfxMuted) return;
+    if (this.activeVoices >= this.maxVoices) return;
+    this.activeVoices++;
+
     const now = this.ctx.currentTime;
     const osc = this.ctx.createOscillator();
     const gain = this.ctx.createGain();
@@ -2704,24 +2761,23 @@ class SoundEngine {
     osc.connect(gain);
     gain.connect(this.sfxGain || this.masterGain);
 
+    this._bindCleanup(osc, true, gain);
     osc.start(now);
     osc.stop(now + 0.09);
   }
 
   playExplosion(isBig = false) {
-    if (this.muted || !this.ctx) return;
+    if (this.muted || !this.ctx || this.sfxMuted) return;
+    if (this.activeVoices >= this.maxVoices) return;
+    this.activeVoices++;
+
     const now = this.ctx.currentTime;
     const duration = isBig ? 0.45 : 0.25;
-
-    const bufferSize = Math.floor(this.ctx.sampleRate * duration);
-    const buffer = this.ctx.createBuffer(1, bufferSize, this.ctx.sampleRate);
-    const data = buffer.getChannelData(0);
-    for (let i = 0; i < bufferSize; i++) {
-      data[i] = Math.random() * 2 - 1;
-    }
+    const noiseBuf = this._getNoiseBuffer();
+    if (!noiseBuf) return;
 
     const noise = this.ctx.createBufferSource();
-    noise.buffer = buffer;
+    noise.buffer = noiseBuf;
 
     const filter = this.ctx.createBiquadFilter();
     filter.type = "lowpass";
@@ -2736,12 +2792,16 @@ class SoundEngine {
     filter.connect(gain);
     gain.connect(this.sfxGain || this.masterGain);
 
+    this._bindCleanup(noise, true, filter, gain);
     noise.start(now);
     noise.stop(now + duration);
   }
 
   playDash() {
-    if (this.muted || !this.ctx) return;
+    if (this.muted || !this.ctx || this.sfxMuted) return;
+    if (this.activeVoices >= this.maxVoices) return;
+    this.activeVoices++;
+
     const now = this.ctx.currentTime;
     const osc = this.ctx.createOscillator();
     const gain = this.ctx.createGain();
@@ -2757,16 +2817,20 @@ class SoundEngine {
     osc.connect(gain);
     gain.connect(this.sfxGain || this.masterGain);
 
+    this._bindCleanup(osc, true, gain);
     osc.start(now);
     osc.stop(now + 0.18);
   }
 
   playHeal() {
-    if (this.muted || !this.ctx) return;
+    if (this.muted || !this.ctx || this.sfxMuted) return;
     const now = this.ctx.currentTime;
     const notes = [440, 554.37, 659.25, 880];
 
     notes.forEach((freq, idx) => {
+      if (this.activeVoices >= this.maxVoices) return;
+      this.activeVoices++;
+
       const osc = this.ctx.createOscillator();
       const gain = this.ctx.createGain();
       const noteTime = now + idx * 0.04;
@@ -2780,13 +2844,17 @@ class SoundEngine {
       osc.connect(gain);
       gain.connect(this.sfxGain || this.masterGain);
 
+      this._bindCleanup(osc, true, gain);
       osc.start(noteTime);
       osc.stop(noteTime + 0.16);
     });
   }
 
   playGem(pitch = 1) {
-    if (this.muted || !this.ctx) return;
+    if (this.muted || !this.ctx || this.sfxMuted) return;
+    if (this.activeVoices >= this.maxVoices) return;
+    this.activeVoices++;
+
     const now = this.ctx.currentTime;
     const osc = this.ctx.createOscillator();
     const gain = this.ctx.createGain();
@@ -2801,16 +2869,20 @@ class SoundEngine {
     osc.connect(gain);
     gain.connect(this.sfxGain || this.masterGain);
 
+    this._bindCleanup(osc, true, gain);
     osc.start(now);
     osc.stop(now + 0.08);
   }
 
   playLevelUp() {
-    if (this.muted || !this.ctx) return;
+    if (this.muted || !this.ctx || this.sfxMuted) return;
     const now = this.ctx.currentTime;
     const chords = [523.25, 659.25, 783.99, 1046.5];
 
     chords.forEach((freq, idx) => {
+      if (this.activeVoices >= this.maxVoices) return;
+      this.activeVoices++;
+
       const osc = this.ctx.createOscillator();
       const gain = this.ctx.createGain();
       const time = now + idx * 0.07;
@@ -2824,15 +2896,18 @@ class SoundEngine {
       osc.connect(gain);
       gain.connect(this.sfxGain || this.masterGain);
 
+      this._bindCleanup(osc, true, gain);
       osc.start(time);
       osc.stop(time + 0.35);
     });
   }
 
   playShockwave() {
-    if (this.muted || !this.ctx) return;
-    const now = this.ctx.currentTime;
+    if (this.muted || !this.ctx || this.sfxMuted) return;
+    if (this.activeVoices >= this.maxVoices) return;
+    this.activeVoices++;
 
+    const now = this.ctx.currentTime;
     const osc = this.ctx.createOscillator();
     const gain = this.ctx.createGain();
 
@@ -2846,12 +2921,16 @@ class SoundEngine {
     osc.connect(gain);
     gain.connect(this.sfxGain || this.masterGain);
 
+    this._bindCleanup(osc, true, gain);
     osc.start(now);
     osc.stop(now + 0.38);
   }
 
   playObjectBreak() {
-    if (this.muted || !this.ctx) return;
+    if (this.muted || !this.ctx || this.sfxMuted) return;
+    if (this.activeVoices >= this.maxVoices) return;
+    this.activeVoices++;
+
     const now = this.ctx.currentTime;
     const osc = this.ctx.createOscillator();
     const gain = this.ctx.createGain();
@@ -2866,12 +2945,16 @@ class SoundEngine {
     osc.connect(gain);
     gain.connect(this.sfxGain || this.masterGain);
 
+    this._bindCleanup(osc, true, gain);
     osc.start(now);
     osc.stop(now + 0.12);
   }
 
   playBoost() {
-    if (this.muted || !this.ctx) return;
+    if (this.muted || !this.ctx || this.sfxMuted) return;
+    if (this.activeVoices >= this.maxVoices) return;
+    this.activeVoices++;
+
     const now = this.ctx.currentTime;
     const osc = this.ctx.createOscillator();
     const gain = this.ctx.createGain();
@@ -2887,12 +2970,13 @@ class SoundEngine {
     osc.connect(gain);
     gain.connect(this.sfxGain || this.masterGain);
 
+    this._bindCleanup(osc, true, gain);
     osc.start(now);
     osc.stop(now + 1.2);
   }
 
   playDeath() {
-    if (this.muted || !this.ctx) return;
+    if (this.muted || !this.ctx || this.sfxMuted) return;
     const now = this.ctx.currentTime;
 
     // 1. Derin Patlama Bası (Sub-Bass Drop)
@@ -2907,34 +2991,34 @@ class SoundEngine {
 
     subOsc.connect(subGain);
     subGain.connect(this.sfxGain || this.masterGain);
+    this._bindCleanup(subOsc, false, subGain);
     subOsc.start(now);
     subOsc.stop(now + 1.2);
 
-    // 2. Gemi Gövdesi Parçalanma Gürültüsü (Hull Shatter Noise)
+    // 2. Gemi Gövdesi Parçalanma Gürültüsü (Reuse shared buffer)
     const duration = 0.9;
-    const bufferSize = Math.floor(this.ctx.sampleRate * duration);
-    const buffer = this.ctx.createBuffer(1, bufferSize, this.ctx.sampleRate);
-    const data = buffer.getChannelData(0);
-    for (let i = 0; i < bufferSize; i++) {
-      data[i] = Math.random() * 2 - 1;
+    const noiseBuf = this._getNoiseBuffer();
+    if (noiseBuf) {
+      const noise = this.ctx.createBufferSource();
+      noise.buffer = noiseBuf;
+
+      const filter = this.ctx.createBiquadFilter();
+      filter.type = "lowpass";
+      filter.frequency.setValueAtTime(600, now);
+      filter.frequency.exponentialRampToValueAtTime(40, now + duration);
+
+      const noiseGain = this.ctx.createGain();
+      noiseGain.gain.setValueAtTime(0.45, now);
+      noiseGain.gain.exponentialRampToValueAtTime(0.001, now + duration);
+
+      noise.connect(filter);
+      filter.connect(noiseGain);
+      noiseGain.connect(this.sfxGain || this.masterGain);
+
+      this._bindCleanup(noise, false, filter, noiseGain);
+      noise.start(now);
+      noise.stop(now + duration);
     }
-    const noise = this.ctx.createBufferSource();
-    noise.buffer = buffer;
-
-    const filter = this.ctx.createBiquadFilter();
-    filter.type = "lowpass";
-    filter.frequency.setValueAtTime(600, now);
-    filter.frequency.exponentialRampToValueAtTime(40, now + duration);
-
-    const noiseGain = this.ctx.createGain();
-    noiseGain.gain.setValueAtTime(0.45, now);
-    noiseGain.gain.exponentialRampToValueAtTime(0.001, now + duration);
-
-    noise.connect(filter);
-    filter.connect(noiseGain);
-    noiseGain.connect(this.sfxGain || this.masterGain);
-    noise.start(now);
-    noise.stop(now + duration);
 
     // 3. Acil Durum Alarmı (Emergency Distress Ping)
     const alarmNotes = [880, 587.33, 440, 293.66];
@@ -2953,16 +3037,16 @@ class SoundEngine {
       osc.connect(gain);
       gain.connect(this.sfxGain || this.masterGain);
 
+      this._bindCleanup(osc, false, gain);
       osc.start(time);
       osc.stop(time + 0.15);
     });
   }
 
   playShipSelect(shipClassId = "interceptor") {
-    if (this.muted || !this.ctx) return;
+    if (this.muted || !this.ctx || this.sfxMuted) return;
     const now = this.ctx.currentTime;
 
-    // 1. Ortak Hafif Sci-Fi Arayüz Menü Geçiş Sesi (UI Slide Click)
     const clickOsc = this.ctx.createOscillator();
     const clickGain = this.ctx.createGain();
     clickOsc.type = "sine";
@@ -2972,14 +3056,11 @@ class SoundEngine {
     clickGain.gain.exponentialRampToValueAtTime(0.001, now + 0.05);
     clickOsc.connect(clickGain);
     clickGain.connect(this.sfxGain || this.masterGain);
+    this._bindCleanup(clickOsc, false, clickGain);
     clickOsc.start(now);
     clickOsc.stop(now + 0.05);
 
-    // 2. Gemiye Özel Karakteristik Hangar Ses Efektleri:
-
-    // 🛡️ TİTAN KRUVAZÖRÜ: Derin Hidrolik Kenetlenme & Ağır Manyetik Zırh Sesi (Heavy Hydraulic Armor Clank)
     if (shipClassId === "dreadnought") {
-      // Ağır Hidrolik İtiş (Low-End Hydraulic Servo)
       const osc1 = this.ctx.createOscillator();
       const gain1 = this.ctx.createGain();
       osc1.type = "sawtooth";
@@ -2989,10 +3070,10 @@ class SoundEngine {
       gain1.gain.exponentialRampToValueAtTime(0.001, now + 0.22);
       osc1.connect(gain1);
       gain1.connect(this.sfxGain || this.masterGain);
+      this._bindCleanup(osc1, false, gain1);
       osc1.start(now);
       osc1.stop(now + 0.22);
 
-      // Tok Metalik Kenetlenme (Solid Armor Lock "Thud-Clank")
       const osc2 = this.ctx.createOscillator();
       const gain2 = this.ctx.createGain();
       osc2.type = "triangle";
@@ -3002,27 +3083,13 @@ class SoundEngine {
       gain2.gain.exponentialRampToValueAtTime(0.001, now + 0.19);
       osc2.connect(gain2);
       gain2.connect(this.sfxGain || this.masterGain);
+      this._bindCleanup(osc2, false, gain2);
       osc2.start(now + 0.035);
       osc2.stop(now + 0.19);
-
-      // Manyetik Güç Kilidi Bip
-      const osc3 = this.ctx.createOscillator();
-      const gain3 = this.ctx.createGain();
-      osc3.type = "sine";
-      osc3.frequency.setValueAtTime(460, now + 0.07);
-      osc3.frequency.exponentialRampToValueAtTime(180, now + 0.22);
-      gain3.gain.setValueAtTime(0.2, now + 0.07);
-      gain3.gain.exponentialRampToValueAtTime(0.001, now + 0.22);
-      osc3.connect(gain3);
-      gain3.connect(this.sfxGain || this.masterGain);
-      osc3.start(now + 0.07);
-      osc3.stop(now + 0.22);
       return;
     }
 
-    // 🌌 TAYF HAYALETİ: Kuantum Boyut Rezonansı & Eterik Hiçlik Uğultusu (Ethereal Cosmic Warp)
     if (shipClassId === "void_phantom") {
-      // Kozmik Boyut Parıltısı (Ethereal Chord Arpeggio)
       const freqs = [440, 659.25, 880, 1318.5, 1760];
       freqs.forEach((freq, idx) => {
         const osc = this.ctx.createOscillator();
@@ -3038,27 +3105,13 @@ class SoundEngine {
 
         osc.connect(gain);
         gain.connect(this.sfxGain || this.masterGain);
+        this._bindCleanup(osc, false, gain);
         osc.start(t);
         osc.stop(t + 0.16);
       });
-
-      // Derin Kuantum Titreşimi (Deep Sub-Bass Portal Swell)
-      const subOsc = this.ctx.createOscillator();
-      const subGain = this.ctx.createGain();
-      subOsc.type = "triangle";
-      subOsc.frequency.setValueAtTime(75, now);
-      subOsc.frequency.linearRampToValueAtTime(140, now + 0.10);
-      subOsc.frequency.exponentialRampToValueAtTime(48, now + 0.26);
-      subGain.gain.setValueAtTime(0.28, now);
-      subGain.gain.exponentialRampToValueAtTime(0.001, now + 0.26);
-      subOsc.connect(subGain);
-      subGain.connect(this.sfxGain || this.masterGain);
-      subOsc.start(now);
-      subOsc.stop(now + 0.26);
       return;
     }
 
-    // ⚡ YILDIRIM AVCISI: Çevik İyon Motoru & Yüksek Frekanslı Siber Kilitlenme (Cyber Jet Lock)
     const tones = [523.25, 783.99, 1046.5, 1567.98];
     tones.forEach((freq, idx) => {
       const osc = this.ctx.createOscillator();
@@ -3074,26 +3127,14 @@ class SoundEngine {
 
       osc.connect(gain);
       gain.connect(this.sfxGain || this.masterGain);
+      this._bindCleanup(osc, false, gain);
       osc.start(t);
       osc.stop(t + 0.10);
     });
-
-    // İyon İtkisi Punch (Sub-Bass Pop)
-    const punchOsc = this.ctx.createOscillator();
-    const punchGain = this.ctx.createGain();
-    punchOsc.type = "sine";
-    punchOsc.frequency.setValueAtTime(220, now);
-    punchOsc.frequency.exponentialRampToValueAtTime(70, now + 0.12);
-    punchGain.gain.setValueAtTime(0.25, now);
-    punchGain.gain.exponentialRampToValueAtTime(0.001, now + 0.12);
-    punchOsc.connect(punchGain);
-    punchGain.connect(this.sfxGain || this.masterGain);
-    punchOsc.start(now);
-    punchOsc.stop(now + 0.12);
   }
 
   playBarrierHum() {
-    if (this.muted || !this.ctx) return;
+    if (this.muted || !this.ctx || this.sfxMuted) return;
     const now = this.ctx.currentTime;
     const osc = this.ctx.createOscillator();
     const gain = this.ctx.createGain();
@@ -3108,12 +3149,13 @@ class SoundEngine {
 
     osc.connect(gain);
     gain.connect(this.sfxGain || this.masterGain);
+    this._bindCleanup(osc, true, gain);
     osc.start(now);
     osc.stop(now + 0.35);
   }
 
   playBarrierExplosion() {
-    if (this.muted || !this.ctx) return;
+    if (this.muted || !this.ctx || this.sfxMuted) return;
     const now = this.ctx.currentTime;
     const osc = this.ctx.createOscillator();
     const gain = this.ctx.createGain();
@@ -3127,6 +3169,7 @@ class SoundEngine {
 
     osc.connect(gain);
     gain.connect(this.sfxGain || this.masterGain);
+    this._bindCleanup(osc, true, gain);
     osc.start(now);
     osc.stop(now + 0.28);
 
@@ -3134,10 +3177,11 @@ class SoundEngine {
   }
 
   playSiegeCannon() {
-    if (this.muted || !this.ctx) return;
-    const now = this.ctx.currentTime;
+    if (this.muted || !this.ctx || this.sfxMuted) return;
+    if (this.activeVoices >= this.maxVoices) return;
+    this.activeVoices++;
 
-    // Derin Kuşatma Topu Thud
+    const now = this.ctx.currentTime;
     const osc = this.ctx.createOscillator();
     const gain = this.ctx.createGain();
     osc.type = "sawtooth";
@@ -3149,14 +3193,17 @@ class SoundEngine {
 
     osc.connect(gain);
     gain.connect(this.sfxGain || this.masterGain);
+    this._bindCleanup(osc, true, gain);
     osc.start(now);
     osc.stop(now + 0.32);
   }
 
   playSeismicBlast() {
-    if (this.muted || !this.ctx) return;
-    const now = this.ctx.currentTime;
+    if (this.muted || !this.ctx || this.sfxMuted) return;
+    if (this.activeVoices >= this.maxVoices) return;
+    this.activeVoices++;
 
+    const now = this.ctx.currentTime;
     const osc = this.ctx.createOscillator();
     const gain = this.ctx.createGain();
     osc.type = "triangle";
@@ -3168,18 +3215,21 @@ class SoundEngine {
 
     osc.connect(gain);
     gain.connect(this.sfxGain || this.masterGain);
+    this._bindCleanup(osc, true, gain);
     osc.start(now);
     osc.stop(now + 0.45);
 
     this.playExplosion(true);
   }
 
-  // 🌌 Tayf Hayaleti: Hayalet Boyut Sesi (Ethereal Ghost Shimmer)
   playGhostPhase() {
-    if (this.muted || !this.ctx) return;
+    if (this.muted || !this.ctx || this.sfxMuted) return;
     const now = this.ctx.currentTime;
     const tones = [523.25, 783.99, 1046.5, 1567.98];
     tones.forEach((freq, idx) => {
+      if (this.activeVoices >= this.maxVoices) return;
+      this.activeVoices++;
+
       const osc = this.ctx.createOscillator();
       const gain = this.ctx.createGain();
       const t = now + idx * 0.035;
@@ -3193,14 +3243,17 @@ class SoundEngine {
 
       osc.connect(gain);
       gain.connect(this.sfxGain || this.masterGain);
+      this._bindCleanup(osc, true, gain);
       osc.start(t);
       osc.stop(t + 0.18);
     });
   }
 
-  // 🌀 Tayf Hayaleti: Boyut Yarığı Açılma ve Çekim Sesi
   playVoidRift() {
-    if (this.muted || !this.ctx) return;
+    if (this.muted || !this.ctx || this.sfxMuted) return;
+    if (this.activeVoices >= this.maxVoices) return;
+    this.activeVoices++;
+
     const now = this.ctx.currentTime;
     const osc = this.ctx.createOscillator();
     const gain = this.ctx.createGain();
@@ -3215,13 +3268,16 @@ class SoundEngine {
 
     osc.connect(gain);
     gain.connect(this.sfxGain || this.masterGain);
+    this._bindCleanup(osc, true, gain);
     osc.start(now);
     osc.stop(now + 0.6);
   }
 
-  // 💥 Tayf Hayaleti: Boyut Yarığı Çöküşü & Kıyamet İnfilakı
   playRiftCollapse() {
-    if (this.muted || !this.ctx) return;
+    if (this.muted || !this.ctx || this.sfxMuted) return;
+    if (this.activeVoices >= this.maxVoices) return;
+    this.activeVoices++;
+
     const now = this.ctx.currentTime;
     const osc = this.ctx.createOscillator();
     const gain = this.ctx.createGain();
@@ -3233,13 +3289,18 @@ class SoundEngine {
     gain.gain.setValueAtTime(0.5, now);
     gain.gain.exponentialRampToValueAtTime(0.001, now + 0.35);
 
+    osc.connect(gain);
+    gain.connect(this.sfxGain || this.masterGain);
+    this._bindCleanup(osc, true, gain);
+    osc.start(now);
+    osc.stop(now + 0.35);
+
     this.playExplosion(true);
   }
 
-  // 🎬 EON YAZILIM — Sinematik Stüdyo Giriş Ses Efekti (Deep Space Cinematic Swell & Harmonic Bloom)
   playCinematicIntroSound() {
     this.ensureContext();
-    if (this.muted || !this.ctx) return;
+    if (this.muted || !this.ctx || this.sfxMuted) return;
     this.stopCinematicIntroSound();
 
     const now = this.ctx.currentTime;
@@ -3251,7 +3312,7 @@ class SoundEngine {
     introGain.connect(this.masterGain);
     this._introGainNode = introGain;
 
-    // 1. Derin Sinematik Sub-Bass Yükselişi (Resonant Cinematic Swell)
+    // 1. Sub-Bass
     const subOsc = this.ctx.createOscillator();
     const subFilter = this.ctx.createBiquadFilter();
     subOsc.type = "sine";
@@ -3269,11 +3330,12 @@ class SoundEngine {
     subOsc.connect(subFilter);
     subFilter.connect(subGain);
     subGain.connect(introGain);
+    this._bindCleanup(subOsc, false, subFilter, subGain);
     subOsc.start(now);
     subOsc.stop(now + 2.8);
 
-    // 2. Işıltılı Kozmik Akor Pad'leri (Celestial Major Harmonics)
-    const chordPitches = [164.81, 246.94, 329.63, 415.30, 493.88, 659.25]; // E Major Pad
+    // 2. Chords
+    const chordPitches = [164.81, 246.94, 329.63, 415.30, 493.88, 659.25];
     chordPitches.forEach((freq, idx) => {
       const padOsc = this.ctx.createOscillator();
       const padGain = this.ctx.createGain();
@@ -3294,6 +3356,7 @@ class SoundEngine {
       padOsc.connect(padFilter);
       padFilter.connect(padGain);
       padGain.connect(introGain);
+      this._bindCleanup(padOsc, false, padFilter, padGain);
       padOsc.start(now);
       padOsc.stop(now + 2.8);
     });
@@ -3362,7 +3425,7 @@ class SoundEngine {
     this.nextNoteTime = this.ctx.currentTime + 0.05;
     this.musicInterval = setInterval(() => {
       this._scheduleMusic();
-    }, 35);
+    }, 40);
   }
 
   stopMusic() {
@@ -3390,13 +3453,13 @@ class SoundEngine {
     this.nextNoteTime = this.ctx.currentTime + 0.05;
     this.musicInterval = setInterval(() => {
       this._scheduleMusic();
-    }, 35);
+    }, 40);
   }
 
   _scheduleMusic() {
-    if (!this.ctx || this.muted || !this.isMusicPlaying) return;
-    const stepDuration = 60 / this.bpm / 4; // 16th note step
-    const lookahead = 0.12;
+    if (!this.ctx || this.muted || this.bgmMuted || !this.isMusicPlaying) return;
+    const stepDuration = 60 / this.bpm / 4;
+    const lookahead = 0.10;
 
     while (this.nextNoteTime < this.ctx.currentTime + lookahead) {
       this._playBgmStep(this.currentStep, this.nextNoteTime, stepDuration);
@@ -3406,30 +3469,30 @@ class SoundEngine {
   }
 
   _playBgmStep(step, time, duration) {
-    if (!this.bgmGain || !this.ctx) return;
+    if (!this.bgmGain || !this.ctx || this.bgmMuted) return;
 
     const bar = Math.floor(step / 16);
     const subStep = step % 16;
     const mode = this.musicMode || "battle";
+    const noiseBuf = this._getNoiseBuffer();
 
     // --------------------------------------------------------------------------
-    // TRACK 1: START MENU & HANGAR THEME (Atmospheric Space Synthwave - 112 BPM)
+    // TRACK 1: MENU THEME (112 BPM)
     // --------------------------------------------------------------------------
     if (mode === "menu") {
-      let rootFreq = 73.42; // D2
-      let arpScale = [293.66, 349.23, 440.0, 523.25, 587.33, 440.0, 349.23, 293.66]; // Dm
+      let rootFreq = 73.42;
+      let arpScale = [293.66, 349.23, 440.0, 523.25, 587.33, 440.0, 349.23, 293.66];
       if (bar === 1) {
-        rootFreq = 58.27; // Bb1
-        arpScale = [233.08, 293.66, 349.23, 466.16, 587.33, 466.16, 349.23, 293.66]; // Bb
+        rootFreq = 58.27;
+        arpScale = [233.08, 293.66, 349.23, 466.16, 587.33, 466.16, 349.23, 293.66];
       } else if (bar === 2) {
-        rootFreq = 65.41; // C2
-        arpScale = [261.63, 329.63, 392.0, 523.25, 659.25, 523.25, 392.0, 329.63]; // C
+        rootFreq = 65.41;
+        arpScale = [261.63, 329.63, 392.0, 523.25, 659.25, 523.25, 392.0, 329.63];
       } else if (bar === 3) {
-        rootFreq = 55.0; // A1
-        arpScale = [220.0, 261.63, 329.63, 440.0, 523.25, 440.0, 329.63, 261.63]; // Am
+        rootFreq = 55.0;
+        arpScale = [220.0, 261.63, 329.63, 440.0, 523.25, 440.0, 329.63, 261.63];
       }
 
-      // Smooth Ambient Kick (Steps 0, 8)
       if (subStep === 0 || subStep === 8) {
         const kickOsc = this.ctx.createOscillator();
         const kickGain = this.ctx.createGain();
@@ -3440,17 +3503,14 @@ class SoundEngine {
         kickGain.gain.exponentialRampToValueAtTime(0.001, time + 0.11);
         kickOsc.connect(kickGain);
         kickGain.connect(this.bgmGain);
+        this._bindCleanup(kickOsc, false, kickGain);
         kickOsc.start(time);
         kickOsc.stop(time + 0.11);
       }
 
-      // Soft Hangar Hi-Hat (Even ticks)
-      if (subStep % 2 === 0) {
-        const hatBuf = this.ctx.createBuffer(1, Math.floor(this.ctx.sampleRate * 0.02), this.ctx.sampleRate);
-        const data = hatBuf.getChannelData(0);
-        for (let i = 0; i < data.length; i++) data[i] = Math.random() * 2 - 1;
+      if (subStep % 2 === 0 && noiseBuf) {
         const hat = this.ctx.createBufferSource();
-        hat.buffer = hatBuf;
+        hat.buffer = noiseBuf;
         const filter = this.ctx.createBiquadFilter();
         filter.type = "highpass";
         filter.frequency.setValueAtTime(7000, time);
@@ -3460,11 +3520,11 @@ class SoundEngine {
         hat.connect(filter);
         filter.connect(hatGain);
         hatGain.connect(this.bgmGain);
+        this._bindCleanup(hat, false, filter, hatGain);
         hat.start(time);
         hat.stop(time + 0.02);
       }
 
-      // Warm Sub-Bass Pulse
       const bassOsc = this.ctx.createOscillator();
       const bassGain = this.ctx.createGain();
       const bassFilter = this.ctx.createBiquadFilter();
@@ -3477,43 +3537,42 @@ class SoundEngine {
       bassOsc.connect(bassFilter);
       bassFilter.connect(bassGain);
       bassGain.connect(this.bgmGain);
+      this._bindCleanup(bassOsc, false, bassFilter, bassGain);
       bassOsc.start(time);
       bassOsc.stop(time + duration * 1.1);
 
-      // Shimmering Atmospheric Lead
       const noteIdx = (step * 2) % arpScale.length;
-      const arpFreq = arpScale[noteIdx];
       const leadOsc = this.ctx.createOscillator();
       const leadGain = this.ctx.createGain();
       leadOsc.type = "sine";
-      leadOsc.frequency.setValueAtTime(arpFreq, time);
+      leadOsc.frequency.setValueAtTime(arpScale[noteIdx], time);
       leadGain.gain.setValueAtTime(0.10, time);
       leadGain.gain.exponentialRampToValueAtTime(0.001, time + duration * 0.85);
       leadOsc.connect(leadGain);
       leadGain.connect(this.bgmGain);
+      this._bindCleanup(leadOsc, false, leadGain);
       leadOsc.start(time);
       leadOsc.stop(time + duration * 0.85);
       return;
     }
 
     // --------------------------------------------------------------------------
-    // TRACK 2: GAME OVER / DEFEAT THEME (Mournful Melancholy Chiptune - 96 BPM)
+    // TRACK 2: GAME OVER THEME (96 BPM)
     // --------------------------------------------------------------------------
     if (mode === "gameover") {
-      let rootFreq = 65.41; // C2
-      let melodyNotes = [392.0, 311.13, 261.63, 196.0]; // G4, Eb4, C4, G3 (Cm)
+      let rootFreq = 65.41;
+      let melodyNotes = [392.0, 311.13, 261.63, 196.0];
       if (bar === 1) {
-        rootFreq = 51.91; // Ab1
-        melodyNotes = [311.13, 261.63, 207.65, 155.56]; // Eb4, C4, Ab3, Eb3 (Ab)
+        rootFreq = 51.91;
+        melodyNotes = [311.13, 261.63, 207.65, 155.56];
       } else if (bar === 2) {
-        rootFreq = 43.65; // F1
-        melodyNotes = [261.63, 207.65, 174.61, 130.81]; // C4, Ab3, F3, C3 (Fm)
+        rootFreq = 43.65;
+        melodyNotes = [261.63, 207.65, 174.61, 130.81];
       } else if (bar === 3) {
-        rootFreq = 49.0; // G1
-        melodyNotes = [293.66, 233.08, 196.0, 146.83]; // D4, Bb3, G3, D3 (G)
+        rootFreq = 49.0;
+        melodyNotes = [293.66, 233.08, 196.0, 146.83];
       }
 
-      // Deep Somber Tom / Kick (Steps 0, 8)
       if (subStep === 0 || subStep === 8) {
         const kickOsc = this.ctx.createOscillator();
         const kickGain = this.ctx.createGain();
@@ -3524,11 +3583,11 @@ class SoundEngine {
         kickGain.gain.exponentialRampToValueAtTime(0.001, time + 0.16);
         kickOsc.connect(kickGain);
         kickGain.connect(this.bgmGain);
+        this._bindCleanup(kickOsc, false, kickGain);
         kickOsc.start(time);
         kickOsc.stop(time + 0.16);
       }
 
-      // Dark Resonant Bass
       if (subStep % 4 === 0) {
         const bassOsc = this.ctx.createOscillator();
         const bassGain = this.ctx.createGain();
@@ -3542,11 +3601,11 @@ class SoundEngine {
         bassOsc.connect(bassFilter);
         bassFilter.connect(bassGain);
         bassGain.connect(this.bgmGain);
+        this._bindCleanup(bassOsc, false, bassFilter, bassGain);
         bassOsc.start(time);
         bassOsc.stop(time + duration * 3.5);
       }
 
-      // Mournful Expressive Lead
       if (subStep % 4 === 0) {
         const note = melodyNotes[Math.floor(subStep / 4)];
         const leadOsc = this.ctx.createOscillator();
@@ -3557,6 +3616,7 @@ class SoundEngine {
         leadGain.gain.exponentialRampToValueAtTime(0.001, time + duration * 3.2);
         leadOsc.connect(leadGain);
         leadGain.connect(this.bgmGain);
+        this._bindCleanup(leadOsc, false, leadGain);
         leadOsc.start(time);
         leadOsc.stop(time + duration * 3.2);
       }
@@ -3564,23 +3624,22 @@ class SoundEngine {
     }
 
     // --------------------------------------------------------------------------
-    // TRACK 3: GALACTIC CHAMPION VICTORY THEME (Heroic Major Fanfare - 134 BPM)
+    // TRACK 3: VICTORY THEME (134 BPM)
     // --------------------------------------------------------------------------
     if (mode === "victory") {
-      let rootFreq = 65.41; // C2
-      let arpScale = [261.63, 329.63, 392.0, 523.25, 659.25, 783.99, 659.25, 523.25]; // C Major Fanfare
+      let rootFreq = 65.41;
+      let arpScale = [261.63, 329.63, 392.0, 523.25, 659.25, 783.99, 659.25, 523.25];
       if (bar === 1) {
-        rootFreq = 98.0; // G2
-        arpScale = [392.0, 493.88, 587.33, 783.99, 987.77, 1174.66, 987.77, 783.99]; // G Major
+        rootFreq = 98.0;
+        arpScale = [392.0, 493.88, 587.33, 783.99, 987.77, 1174.66, 987.77, 783.99];
       } else if (bar === 2) {
-        rootFreq = 110.0; // A2
-        arpScale = [440.0, 523.25, 659.25, 880.0, 1046.5, 1318.51, 1046.5, 880.0]; // A Minor Triumph
+        rootFreq = 110.0;
+        arpScale = [440.0, 523.25, 659.25, 880.0, 1046.5, 1318.51, 1046.5, 880.0];
       } else if (bar === 3) {
-        rootFreq = subStep < 8 ? 87.31 : 98.0; // F2 -> G2
-        arpScale = [349.23, 440.0, 523.25, 698.46, 392.0, 493.88, 587.33, 783.99]; // F -> G
+        rootFreq = subStep < 8 ? 87.31 : 98.0;
+        arpScale = [349.23, 440.0, 523.25, 698.46, 392.0, 493.88, 587.33, 783.99];
       }
 
-      // Celebratory Kick Drum (0, 4, 8, 12)
       if (subStep % 4 === 0) {
         const kickOsc = this.ctx.createOscillator();
         const kickGain = this.ctx.createGain();
@@ -3591,15 +3650,12 @@ class SoundEngine {
         kickGain.gain.exponentialRampToValueAtTime(0.001, time + 0.08);
         kickOsc.connect(kickGain);
         kickGain.connect(this.bgmGain);
+        this._bindCleanup(kickOsc, false, kickGain);
         kickOsc.start(time);
         kickOsc.stop(time + 0.08);
       }
 
-      // Victory Snare / Claps (Steps 4, 12)
-      if (subStep === 4 || subStep === 12) {
-        const noiseBuf = this.ctx.createBuffer(1, Math.floor(this.ctx.sampleRate * 0.06), this.ctx.sampleRate);
-        const data = noiseBuf.getChannelData(0);
-        for (let i = 0; i < data.length; i++) data[i] = Math.random() * 2 - 1;
+      if ((subStep === 4 || subStep === 12) && noiseBuf) {
         const noise = this.ctx.createBufferSource();
         noise.buffer = noiseBuf;
         const filter = this.ctx.createBiquadFilter();
@@ -3611,11 +3667,11 @@ class SoundEngine {
         noise.connect(filter);
         filter.connect(snareGain);
         snareGain.connect(this.bgmGain);
+        this._bindCleanup(noise, false, filter, snareGain);
         noise.start(time);
         noise.stop(time + 0.06);
       }
 
-      // Driving Heroic Bass
       const bassOsc = this.ctx.createOscillator();
       const bassGain = this.ctx.createGain();
       bassOsc.type = "sawtooth";
@@ -3624,143 +3680,118 @@ class SoundEngine {
       bassGain.gain.exponentialRampToValueAtTime(0.001, time + duration * 0.85);
       bassOsc.connect(bassGain);
       bassGain.connect(this.bgmGain);
+      this._bindCleanup(bassOsc, false, bassFilter, bassGain);
       bassOsc.start(time);
       bassOsc.stop(time + duration * 0.85);
 
-      // Heroic Fanfare Lead
       const noteIdx = (step * 2) % arpScale.length;
-      const arpFreq = arpScale[noteIdx];
       const leadOsc = this.ctx.createOscillator();
       const leadGain = this.ctx.createGain();
       leadOsc.type = "square";
-      leadOsc.frequency.setValueAtTime(arpFreq, time);
+      leadOsc.frequency.setValueAtTime(arpScale[noteIdx], time);
       leadGain.gain.setValueAtTime(0.20, time);
       leadGain.gain.exponentialRampToValueAtTime(0.001, time + duration * 0.7);
       leadOsc.connect(leadGain);
       leadGain.connect(this.bgmGain);
+      this._bindCleanup(leadOsc, false, leadGain);
       leadOsc.start(time);
       leadOsc.stop(time + duration * 0.7);
       return;
     }
 
     // --------------------------------------------------------------------------
-    // TRACK 4: IN-GAME SPACE BATTLE & BOSS THEME (126 / 144 BPM Driving Arcade)
+    // TRACK 4: IN-GAME BATTLE / BOSS THEME (126 / 144 BPM)
     // --------------------------------------------------------------------------
-    let rootFreq = 110.0; // A2
+    let rootFreq = 110.0;
     let arpScale = [440.0, 523.25, 659.25, 783.99, 880.0, 659.25, 523.25, 440.0];
     if (bar === 1) {
-      rootFreq = 87.31; // F2
+      rootFreq = 87.31;
       arpScale = [349.23, 440.0, 523.25, 698.46, 880.0, 698.46, 523.25, 440.0];
     } else if (bar === 2) {
-      rootFreq = 98.00; // G2
+      rootFreq = 98.00;
       arpScale = [392.0, 493.88, 587.33, 783.99, 987.77, 783.99, 587.33, 493.88];
     } else if (bar === 3) {
-      rootFreq = subStep < 8 ? 82.41 : 73.42; // E2 -> D2
+      rootFreq = subStep < 8 ? 82.41 : 73.42;
       arpScale = [329.63, 392.0, 493.88, 659.25, 587.33, 493.88, 392.0, 329.63];
     }
 
-    // Kick Drum (Every 4 steps)
     if (subStep === 0 || subStep === 4 || subStep === 8 || subStep === 12) {
       const kickOsc = this.ctx.createOscillator();
       const kickGain = this.ctx.createGain();
       kickOsc.type = "sine";
       kickOsc.frequency.setValueAtTime(mode === "boss" ? 175 : 145, time);
       kickOsc.frequency.exponentialRampToValueAtTime(30, time + 0.09);
-
       kickGain.gain.setValueAtTime(0.22, time);
       kickGain.gain.exponentialRampToValueAtTime(0.001, time + 0.09);
-
       kickOsc.connect(kickGain);
       kickGain.connect(this.bgmGain);
+      this._bindCleanup(kickOsc, false, kickGain);
       kickOsc.start(time);
       kickOsc.stop(time + 0.09);
     }
 
-    // Snare / Clap (Steps 4 and 12)
-    if (subStep === 4 || subStep === 12) {
-      const noiseBuf = this.ctx.createBuffer(1, Math.floor(this.ctx.sampleRate * 0.06), this.ctx.sampleRate);
-      const data = noiseBuf.getChannelData(0);
-      for (let i = 0; i < data.length; i++) data[i] = Math.random() * 2 - 1;
-
+    if ((subStep === 4 || subStep === 12) && noiseBuf) {
       const noise = this.ctx.createBufferSource();
       noise.buffer = noiseBuf;
-
       const filter = this.ctx.createBiquadFilter();
       filter.type = "highpass";
       filter.frequency.setValueAtTime(1100, time);
-
       const snareGain = this.ctx.createGain();
       snareGain.gain.setValueAtTime(0.12, time);
       snareGain.gain.exponentialRampToValueAtTime(0.001, time + 0.06);
-
       noise.connect(filter);
       filter.connect(snareGain);
       snareGain.connect(this.bgmGain);
+      this._bindCleanup(noise, false, filter, snareGain);
       noise.start(time);
       noise.stop(time + 0.06);
     }
 
-    // Hi-Hat on Offbeats (Steps 2, 6, 10, 14)
-    if (subStep % 2 === 0 && subStep % 4 !== 0) {
-      const hatBuf = this.ctx.createBuffer(1, Math.floor(this.ctx.sampleRate * 0.025), this.ctx.sampleRate);
-      const data = hatBuf.getChannelData(0);
-      for (let i = 0; i < data.length; i++) data[i] = Math.random() * 2 - 1;
-
+    if (subStep % 2 === 0 && subStep % 4 !== 0 && noiseBuf) {
       const hat = this.ctx.createBufferSource();
-      hat.buffer = hatBuf;
-
+      hat.buffer = noiseBuf;
       const filter = this.ctx.createBiquadFilter();
       filter.type = "highpass";
       filter.frequency.setValueAtTime(5500, time);
-
       const hatGain = this.ctx.createGain();
       hatGain.gain.setValueAtTime(0.08, time);
       hatGain.gain.exponentialRampToValueAtTime(0.001, time + 0.025);
-
       hat.connect(filter);
       filter.connect(hatGain);
       hatGain.connect(this.bgmGain);
+      this._bindCleanup(hat, false, filter, hatGain);
       hat.start(time);
       hat.stop(time + 0.025);
     }
 
-    // Driving Saw Bass (16th-note rhythm)
     const bassOsc = this.ctx.createOscillator();
     const bassGain = this.ctx.createGain();
     const bassFilter = this.ctx.createBiquadFilter();
-
     bassOsc.type = "sawtooth";
     bassOsc.frequency.setValueAtTime(rootFreq, time);
-
     bassFilter.type = "lowpass";
     bassFilter.frequency.setValueAtTime(subStep % 2 === 0 ? 900 : 500, time);
     bassFilter.Q.setValueAtTime(3.5, time);
-
     const bassVol = subStep % 4 === 0 ? 0.16 : 0.11;
     bassGain.gain.setValueAtTime(bassVol, time);
     bassGain.gain.exponentialRampToValueAtTime(0.001, time + duration * 0.9);
-
     bassOsc.connect(bassFilter);
     bassFilter.connect(bassGain);
     bassGain.connect(this.bgmGain);
+    this._bindCleanup(bassOsc, false, bassFilter, bassGain);
     bassOsc.start(time);
     bassOsc.stop(time + duration * 0.9);
 
-    // 16-Bit Chiptune Arpeggiator Lead
     const noteIdx = (step * 2) % arpScale.length;
-    const arpFreq = arpScale[noteIdx];
-
     const leadOsc = this.ctx.createOscillator();
     const leadGain = this.ctx.createGain();
-
     leadOsc.type = "square";
-    leadOsc.frequency.setValueAtTime(arpFreq, time);
-
+    leadOsc.frequency.setValueAtTime(arpScale[noteIdx], time);
     leadGain.gain.setValueAtTime(0.09, time);
     leadGain.gain.exponentialRampToValueAtTime(0.001, time + duration * 0.7);
-
     leadOsc.connect(leadGain);
     leadGain.connect(this.bgmGain);
+    this._bindCleanup(leadOsc, false, leadGain);
     leadOsc.start(time);
     leadOsc.stop(time + duration * 0.7);
   }
