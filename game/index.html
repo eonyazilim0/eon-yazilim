@@ -173,20 +173,21 @@ button {
 .bars {
   display: flex;
   flex-direction: column;
-  gap: 5px;
-  width: min(380px, 45vw);
-  background: rgba(8, 12, 18, 0.75);
+  gap: 4px;
+  width: min(390px, 46vw);
+  background: rgba(8, 12, 18, 0.85);
   padding: 6px 10px;
   border-radius: 10px;
   border: 1px solid var(--panel-border);
   backdrop-filter: blur(12px);
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.5);
 }
 
 .bar {
   position: relative;
-  height: 11px;
+  height: 9px;
   background: rgba(255, 255, 255, 0.08);
-  border-radius: 6px;
+  border-radius: 5px;
   overflow: hidden;
 }
 
@@ -194,7 +195,7 @@ button {
   display: block;
   height: 100%;
   width: 100%;
-  border-radius: 6px;
+  border-radius: 5px;
   transition: width 0.12s ease-out;
 }
 
@@ -204,26 +205,45 @@ button {
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 9px;
+  font-size: 8px;
   font-style: normal;
   font-weight: 800;
   letter-spacing: 0.4px;
   text-shadow: 0 1px 3px rgba(0, 0, 0, 0.9);
 }
 
-.health span {
-  background: linear-gradient(90deg, #ff495c, #74ff9d);
-  box-shadow: 0 0 12px rgba(116, 255, 157, 0.4);
+/* Can Barı: Belirgin, Büyük & 16-Bit Retro Vurgulu */
+.bar.health {
+  height: 18px;
+  border: 2px solid rgba(255, 73, 92, 0.65);
+  border-radius: 6px;
+  background: rgba(40, 0, 10, 0.6);
+  box-shadow: 0 0 12px rgba(255, 73, 92, 0.35);
+  margin-bottom: 2px;
+}
+
+.bar.health span {
+  background: linear-gradient(90deg, #ff0055 0%, #ff495c 40%, #ffd166 75%, #00f59b 100%);
+  box-shadow: 0 0 14px rgba(255, 73, 92, 0.6);
+  border-radius: 4px;
+}
+
+.bar.health em {
+  font-size: 10px;
+  font-weight: 900;
+  color: #ffffff;
+  letter-spacing: 0.6px;
+  text-shadow: 0 1px 4px #000000, 0 0 6px #000000;
 }
 
 .xp span {
   background: linear-gradient(90deg, #ffd166, #54f7ff);
-  box-shadow: 0 0 12px rgba(84, 247, 255, 0.4);
+  box-shadow: 0 0 10px rgba(84, 247, 255, 0.35);
 }
 
 .special span {
   background: linear-gradient(90deg, #b58cff, #ff4f87);
-  box-shadow: 0 0 12px rgba(181, 140, 255, 0.4);
+  box-shadow: 0 0 10px rgba(181, 140, 255, 0.35);
 }
 
 .scoreline {
@@ -244,6 +264,27 @@ button {
   border: 1px solid var(--panel-border);
   backdrop-filter: blur(12px);
   color: var(--text);
+}
+
+.hud-btn#pauseBtn {
+  font-size: 14px;
+  border-color: rgba(255, 209, 102, 0.4);
+}
+
+@media (max-width: 900px), (pointer: coarse) {
+  .hud-btn#pauseBtn {
+    min-width: 44px !important;
+    min-height: 44px !important;
+    font-size: 20px !important;
+    padding: 6px 12px !important;
+    border: 2px solid rgba(255, 209, 102, 0.7) !important;
+    background: rgba(18, 26, 40, 0.94) !important;
+    box-shadow: 0 0 12px rgba(255, 209, 102, 0.4) !important;
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    border-radius: 10px !important;
+  }
 }
 
 .badge-wave {
@@ -2294,9 +2335,6 @@ button {
           <button id="startBtn" class="pixel-btn pixel-btn-primary pulse-btn" type="button">
             <span class="btn-main">[ SPACE ] LAUNCH MISSION</span>
           </button>
-          <button id="startQuitBtn" class="pixel-btn pixel-btn-danger" type="button">
-            <span class="btn-main">[ X ] QUIT GAME (EXIT FULLSCREEN)</span>
-          </button>
         </div>
       </div>
 
@@ -2371,13 +2409,10 @@ button {
             <span class="btn-main">[ SPACE / P ] RESUME</span>
           </button>
           <button id="restartFromPauseBtn" class="pixel-btn pixel-btn-secondary" type="button">
-            <span class="btn-main">🔄 RESTART MISSION</span>
+            <span class="btn-main">[ X ] RESTART MISSION</span>
           </button>
           <button id="pauseHomeBtn" class="pixel-btn pixel-btn-secondary" type="button">
             <span class="btn-main">[ ENTER ] MAIN MENU</span>
-          </button>
-          <button id="pauseQuitBtn" class="pixel-btn pixel-btn-danger" type="button">
-            <span class="btn-main">[ X ] QUIT GAME (EXIT FULLSCREEN)</span>
           </button>
           <button id="pauseFullscreenBtn" class="pixel-btn pixel-btn-secondary" type="button">
             <span class="btn-main">⛶ FULLSCREEN</span>
@@ -2435,13 +2470,10 @@ button {
 
         <div class="pixel-btn-group">
           <button id="respawnBtn" class="pixel-btn pixel-btn-primary pulse-btn" type="button">
-            <span class="btn-main">[ SPACE ] RETRY MISSION</span>
+            <span class="btn-main">[ SPACE / X ] RETRY MISSION</span>
           </button>
           <button id="homeBtn" class="pixel-btn pixel-btn-secondary" type="button">
             <span class="btn-main">[ ENTER ] MAIN MENU</span>
-          </button>
-          <button id="gameOverQuitBtn" class="pixel-btn pixel-btn-danger" type="button">
-            <span class="btn-main">[ X ] QUIT GAME (EXIT FULLSCREEN)</span>
           </button>
         </div>
       </div>
@@ -2477,9 +2509,6 @@ button {
           </button>
           <button id="endlessFinishBtn" class="pixel-btn pixel-btn-secondary" type="button">
             <span class="btn-main">[ ENTER ] MAIN MENU (VICTORY)</span>
-          </button>
-          <button id="endlessQuitBtn" class="pixel-btn pixel-btn-danger" type="button">
-            <span class="btn-main">[ X ] QUIT GAME (EXIT FULLSCREEN)</span>
           </button>
         </div>
       </div>
@@ -10573,7 +10602,6 @@ const endlessFinishBtn = getEl("endlessFinishBtn");
 
 // Başlangıç Ekranı & Hangar Elemanları
 const startBtn = getEl("startBtn");
-const startQuitBtn = getEl("startQuitBtn");
 const startBestScore = getEl("startBestScore");
 const prevShipBtn = getEl("prevShipBtn");
 const nextShipBtn = getEl("nextShipBtn");
@@ -10627,11 +10655,10 @@ const I18N = {
     lblScore: "MEVCUT SKOR",
     btnResume: "[ SPACE / P ] DEVAM ET",
     btnResumeTouch: "▶ DEVAM ET",
-    btnRestart: "🔄 YENİDEN BAŞLAT",
+    btnRestart: "[ X ] YENİDEN BAŞLAT",
+    btnRestartTouch: "🔄 YENİDEN BAŞLAT",
     btnMenu: "[ ENTER ] ANA MENÜ",
     btnMenuTouch: "🏠 ANA MENÜ",
-    btnQuit: "[ X ] OYUNDAN ÇIK (TAM EKRANDAN ÇIK)",
-    btnQuitTouch: "🚪 OYUNDAN ÇIK",
     btnFullscreen: "⛶ TAM EKRAN",
 
     // Game Over
@@ -10645,7 +10672,7 @@ const I18N = {
     lblFinalScore: "SON SKOR",
     lblAllTimeBest: "EN YÜKSEK SKOR",
     lblSectorLevel: "SEKTÖR SEVİYESİ",
-    btnRetry: "[ SPACE ] TEKRAR DENE",
+    btnRetry: "[ SPACE / X ] TEKRAR DENE",
     btnRetryTouch: "🚀 TEKRAR DENE",
 
     // Rotate Overlay
@@ -10671,12 +10698,12 @@ const I18N = {
     interceptorDesc: "+30% Speed, +18% Critical Strike, Dual Plasma Thrusters, Agile Evasion.",
     
     dreadnoughtName: "TITAN DREADNOUGHT",
-    dreadnoughtRole: "🛡️ HEAVY SIEGE & KINETIC ARMOR",
-    dreadnoughtDesc: "Heavy steel plating, supreme damage mitigation, and devastating nuclear siege artillery.",
+    dreadnoughtRole: "🛡️ HEAVY ARMOR & SIEGE CANNON",
+    dreadnoughtDesc: "Heavy titanium plating, siege kinetic cannons, and 100% invulnerability shield.",
     
     voidPhantomName: "VOID PHANTOM",
-    voidPhantomRole: "🌌 QUANTUM WARP & ABYSS VORTEX",
-    voidPhantomDesc: "Quantum Phase Dash, Dark Vortex Rift, and piercing cosmic anti-matter pulses.",
+    voidPhantomRole: "🌌 QUANTUM WARP & VORTEX",
+    voidPhantomDesc: "Quantum Phase Shift, Interdimensional Singularity Vortex, piercing antimatter bolts.",
 
     // Pause Screen
     pauseTag: "⏸️ SYSTEM PAUSED",
@@ -10689,11 +10716,10 @@ const I18N = {
     lblScore: "CURRENT SCORE",
     btnResume: "[ SPACE / P ] RESUME",
     btnResumeTouch: "▶ RESUME MISSION",
-    btnRestart: "🔄 RESTART MISSION",
+    btnRestart: "[ X ] RESTART MISSION",
+    btnRestartTouch: "🔄 RESTART MISSION",
     btnMenu: "[ ENTER ] MAIN MENU",
     btnMenuTouch: "🏠 MAIN MENU",
-    btnQuit: "[ X ] QUIT GAME (EXIT FULLSCREEN)",
-    btnQuitTouch: "🚪 QUIT GAME",
     btnFullscreen: "⛶ FULLSCREEN",
 
     // Game Over
@@ -10707,7 +10733,7 @@ const I18N = {
     lblFinalScore: "FINAL SCORE",
     lblAllTimeBest: "ALL-TIME BEST",
     lblSectorLevel: "SECTOR LEVEL",
-    btnRetry: "[ SPACE ] RETRY MISSION",
+    btnRetry: "[ SPACE / X ] RETRY MISSION",
     btnRetryTouch: "🚀 RETRY MISSION",
 
     // Rotate Overlay
@@ -10918,7 +10944,6 @@ const resumeBtn = getEl("resumeBtn");
 const pauseFullscreenBtn = getEl("pauseFullscreenBtn");
 const restartFromPauseBtn = getEl("restartFromPauseBtn");
 const pauseHomeBtn = getEl("pauseHomeBtn");
-const pauseQuitBtn = getEl("pauseQuitBtn");
 
 // Ölüm Ekranı Elemanları
 const deathTag = getEl("deathTag");
@@ -10935,8 +10960,6 @@ const deathRankBadge = getEl("deathRankBadge");
 const newRecordBadge = getEl("newRecordBadge");
 const respawnBtn = getEl("respawnBtn");
 const homeBtn = getEl("homeBtn");
-const gameOverQuitBtn = getEl("gameOverQuitBtn");
-const endlessQuitBtn = getEl("endlessQuitBtn");
 
 // Kontrol & HUD
 const toastFeed = getEl("toastFeed");
@@ -11258,21 +11281,15 @@ function updateDeviceSpecificUI() {
       document.body.classList.add("is-touch-device");
       const startMainText = startBtn ? startBtn.querySelector(".btn-main") : null;
       if (startMainText) startMainText.textContent = dict.launchTouch;
-
-      const startQuitMainText = startQuitBtn ? startQuitBtn.querySelector(".btn-main") : null;
-      if (startQuitMainText) startQuitMainText.textContent = dict.btnQuitTouch;
       
       const resumeMainText = resumeBtn ? resumeBtn.querySelector(".btn-main") : null;
       if (resumeMainText) resumeMainText.textContent = dict.btnResumeTouch;
 
       const restartMainText = restartFromPauseBtn ? restartFromPauseBtn.querySelector(".btn-main") : null;
-      if (restartMainText) restartMainText.textContent = dict.btnRestart;
+      if (restartMainText) restartMainText.textContent = dict.btnRestartTouch;
 
       const pauseHomeMainText = pauseHomeBtn ? pauseHomeBtn.querySelector(".btn-main") : null;
       if (pauseHomeMainText) pauseHomeMainText.textContent = dict.btnMenuTouch;
-
-      const pauseQuitMainText = pauseQuitBtn ? pauseQuitBtn.querySelector(".btn-main") : null;
-      if (pauseQuitMainText) pauseQuitMainText.textContent = dict.btnQuitTouch;
 
       const respawnMainText = respawnBtn ? respawnBtn.querySelector(".btn-main") : null;
       if (respawnMainText) respawnMainText.textContent = dict.btnRetryTouch;
@@ -11280,24 +11297,15 @@ function updateDeviceSpecificUI() {
       const homeMainText = homeBtn ? homeBtn.querySelector(".btn-main") : null;
       if (homeMainText) homeMainText.textContent = dict.btnMenuTouch;
 
-      const gameOverQuitMainText = gameOverQuitBtn ? gameOverQuitBtn.querySelector(".btn-main") : null;
-      if (gameOverQuitMainText) gameOverQuitMainText.textContent = dict.btnQuitTouch;
-
       const endlessContText = endlessContinueBtn ? endlessContinueBtn.querySelector(".btn-main") : null;
       if (endlessContText) endlessContText.textContent = "🚀 CONTINUE (ENDLESS)";
 
       const endlessFinText = endlessFinishBtn ? endlessFinishBtn.querySelector(".btn-main") : null;
       if (endlessFinText) endlessFinText.textContent = "🏠 MAIN MENU";
-
-      const endlessQuitText = endlessQuitBtn ? endlessQuitBtn.querySelector(".btn-main") : null;
-      if (endlessQuitText) endlessQuitText.textContent = dict.btnQuitTouch;
     } else {
       document.body.classList.remove("is-touch-device");
       const startMainText = startBtn ? startBtn.querySelector(".btn-main") : null;
       if (startMainText) startMainText.textContent = dict.launchDesktop;
-
-      const startQuitMainText = startQuitBtn ? startQuitBtn.querySelector(".btn-main") : null;
-      if (startQuitMainText) startQuitMainText.textContent = dict.btnQuit;
 
       const resumeMainText = resumeBtn ? resumeBtn.querySelector(".btn-main") : null;
       if (resumeMainText) resumeMainText.textContent = dict.btnResume;
@@ -11308,26 +11316,17 @@ function updateDeviceSpecificUI() {
       const pauseHomeMainText = pauseHomeBtn ? pauseHomeBtn.querySelector(".btn-main") : null;
       if (pauseHomeMainText) pauseHomeMainText.textContent = dict.btnMenu;
 
-      const pauseQuitMainText = pauseQuitBtn ? pauseQuitBtn.querySelector(".btn-main") : null;
-      if (pauseQuitMainText) pauseQuitMainText.textContent = dict.btnQuit;
-
       const respawnMainText = respawnBtn ? respawnBtn.querySelector(".btn-main") : null;
       if (respawnMainText) respawnMainText.textContent = dict.btnRetry;
 
       const homeMainText = homeBtn ? homeBtn.querySelector(".btn-main") : null;
       if (homeMainText) homeMainText.textContent = dict.btnMenu;
 
-      const gameOverQuitMainText = gameOverQuitBtn ? gameOverQuitBtn.querySelector(".btn-main") : null;
-      if (gameOverQuitMainText) gameOverQuitMainText.textContent = dict.btnQuit;
-
       const endlessContText = endlessContinueBtn ? endlessContinueBtn.querySelector(".btn-main") : null;
       if (endlessContText) endlessContText.textContent = "[ SPACE ] CONTINUE (ENDLESS)";
 
       const endlessFinText = endlessFinishBtn ? endlessFinishBtn.querySelector(".btn-main") : null;
       if (endlessFinText) endlessFinText.textContent = "[ ENTER ] MAIN MENU (VICTORY)";
-
-      const endlessQuitText = endlessQuitBtn ? endlessQuitBtn.querySelector(".btn-main") : null;
-      if (endlessQuitText) endlessQuitText.textContent = dict.btnQuit;
     }
   }
 }
@@ -12146,7 +12145,7 @@ if (typeof window !== "undefined") {
       }
     }
 
-    // 0. Sonsuzluk Modu Zafer Modali açıkken: Space ile DEVAM ET, Enter ile Ana Menü, X ile OYUNDAN VE TAM EKRANDAN ÇIK
+    // 0. Sonsuzluk Modu Zafer Modali açıkken: Space ile DEVAM ET, X/R ile YENİDEN BAŞLAT, Enter ile Ana Menü
     if (endlessVictoryModal && !endlessVictoryModal.classList.contains("hidden")) {
       if (k === " " || k === "spacebar") {
         e.preventDefault();
@@ -12159,15 +12158,14 @@ if (typeof window !== "undefined") {
         finishGameWithVictory();
         return;
       }
-      if (k === "x") {
+      if (k === "x" || k === "r") {
         e.preventDefault();
-        showStartScreen();
-        exitFullscreen();
+        startGame();
         return;
       }
     }
 
-    // 1. Başlangıç ekranındayken: Space basıldığında tam ekran değilse ÖNCE tam ekrana geçirir, tam ekrandaysa oyunu başlatır! X tuşu tam ekrandan çıkar!
+    // 1. Başlangıç ekranındayken: Space basıldığında tam ekran değilse ÖNCE tam ekrana geçirir, tam ekrandaysa oyunu başlatır! X / R tuşu oyunu başlatır!
     if (!state.running && !state.over && !state.paused) {
       if ((k === "arrowleft" || k === "a") && !isRepeat) {
         e.preventDefault();
@@ -12188,22 +12186,17 @@ if (typeof window !== "undefined") {
         }
         return;
       }
-      if (k === "enter" && !isRepeat) {
+      if ((k === "enter" || k === "x" || k === "r") && !isRepeat) {
         e.preventDefault();
         enterFullscreen();
         startGame();
         return;
       }
-      if (k === "x" && !isRepeat) {
-        e.preventDefault();
-        exitFullscreen();
-        return;
-      }
     }
 
-    // 2. Oyun bitti (Game Over) ekranındayken: Space ile TEKRAR OYNA, Enter / ESC ile ANA MENÜYE DÖN, X ile TAMAMEN OYUNDAN VE TAM EKRANDAN ÇIK
+    // 2. Oyun bitti (Game Over) ekranındayken: Space / X / R ile GÖREVİ YENİDEN BAŞLAT, Enter / ESC ile ANA MENÜYE DÖN
     if (state.over) {
-      if ((k === " " || k === "spacebar") && !isRepeat) {
+      if ((k === " " || k === "spacebar" || k === "x" || k === "r") && !isRepeat) {
         e.preventDefault();
         startGame();
         return;
@@ -12213,16 +12206,15 @@ if (typeof window !== "undefined") {
         showStartScreen();
         return;
       }
-      if ((k === "x" || k === "backspace") && !isRepeat) {
-        e.preventDefault();
-        showStartScreen();
-        exitFullscreen();
-        return;
-      }
     }
 
-    // 3. Oyun duraklatılmışken (Pause): Space / P / ESC ile oyuna devam et (Resume), Enter ile Ana Menüye dön, X ile TAMAMEN OYUNDAN VE TAM EKRANDAN ÇIK
+    // 3. Oyun duraklatılmışken (Pause): Space / P / ESC ile oyuna devam et (Resume), X / R ile YENİDEN BAŞLAT, Enter ile Ana Menüye dön
     if (state.paused) {
+      if ((k === "x" || k === "r") && !isRepeat) {
+        e.preventDefault();
+        startGame();
+        return;
+      }
       if ((k === " " || k === "spacebar" || k === "p" || k === "escape" || k === "esc") && !isRepeat) {
         e.preventDefault();
         togglePause();
@@ -12231,12 +12223,6 @@ if (typeof window !== "undefined") {
       if (k === "enter" && !isRepeat) {
         e.preventDefault();
         showStartScreen();
-        return;
-      }
-      if (k === "x" && !isRepeat) {
-        e.preventDefault();
-        showStartScreen();
-        exitFullscreen();
         return;
       }
     }
@@ -12547,24 +12533,10 @@ if (typeof window !== "undefined") {
     btn.addEventListener("touchend", handler);
   };
 
-  const bindQuit = (btn) => {
-    bindButton(btn, () => {
-      isAutoFullscreenEnabled = false;
-      audio.ensureContext();
-      showStartScreen();
-      exitFullscreen();
-    });
-  };
-
   bindButton(startBtn, () => {
     enterFullscreen();
     startGame();
   });
-
-  bindQuit(startQuitBtn);
-  bindQuit(pauseQuitBtn);
-  bindQuit(gameOverQuitBtn);
-  bindQuit(endlessQuitBtn);
 
   bindButton(resumeBtn, () => {
     togglePause();
