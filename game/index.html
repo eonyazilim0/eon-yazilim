@@ -2290,6 +2290,9 @@ button {
           <button id="startBtn" class="pixel-btn pixel-btn-primary pulse-btn" type="button">
             <span class="btn-main">[ SPACE ] LAUNCH MISSION</span>
           </button>
+          <button id="startQuitBtn" class="pixel-btn pixel-btn-danger" type="button">
+            <span class="btn-main">[ X ] QUIT GAME (EXIT FULLSCREEN)</span>
+          </button>
         </div>
       </div>
 
@@ -10518,6 +10521,7 @@ const endlessFinishBtn = getEl("endlessFinishBtn");
 
 // Başlangıç Ekranı & Hangar Elemanları
 const startBtn = getEl("startBtn");
+const startQuitBtn = getEl("startQuitBtn");
 const startBestScore = getEl("startBestScore");
 const prevShipBtn = getEl("prevShipBtn");
 const nextShipBtn = getEl("nextShipBtn");
@@ -11202,6 +11206,9 @@ function updateDeviceSpecificUI() {
       document.body.classList.add("is-touch-device");
       const startMainText = startBtn ? startBtn.querySelector(".btn-main") : null;
       if (startMainText) startMainText.textContent = dict.launchTouch;
+
+      const startQuitMainText = startQuitBtn ? startQuitBtn.querySelector(".btn-main") : null;
+      if (startQuitMainText) startQuitMainText.textContent = dict.btnQuitTouch;
       
       const resumeMainText = resumeBtn ? resumeBtn.querySelector(".btn-main") : null;
       if (resumeMainText) resumeMainText.textContent = dict.btnResumeTouch;
@@ -11236,6 +11243,9 @@ function updateDeviceSpecificUI() {
       document.body.classList.remove("is-touch-device");
       const startMainText = startBtn ? startBtn.querySelector(".btn-main") : null;
       if (startMainText) startMainText.textContent = dict.launchDesktop;
+
+      const startQuitMainText = startQuitBtn ? startQuitBtn.querySelector(".btn-main") : null;
+      if (startQuitMainText) startQuitMainText.textContent = dict.btnQuit;
 
       const resumeMainText = resumeBtn ? resumeBtn.querySelector(".btn-main") : null;
       if (resumeMainText) resumeMainText.textContent = dict.btnResume;
@@ -12097,7 +12107,7 @@ if (typeof window !== "undefined") {
       }
     }
 
-    // 1. Başlangıç ekranındayken: Space basıldığında tam ekran değilse ÖNCE tam ekrana geçirir, tam ekrandaysa oyunu başlatır! Sayfa ASLA aşağı kaymaz!
+    // 1. Başlangıç ekranındayken: Space basıldığında tam ekran değilse ÖNCE tam ekrana geçirir, tam ekrandaysa oyunu başlatır! X tuşu tam ekrandan çıkar!
     if (!state.running && !state.over && !state.paused) {
       if ((k === "arrowleft" || k === "a") && !isRepeat) {
         e.preventDefault();
@@ -12124,21 +12134,26 @@ if (typeof window !== "undefined") {
         startGame();
         return;
       }
+      if (k === "x" && !isRepeat) {
+        e.preventDefault();
+        exitFullscreen();
+        return;
+      }
     }
 
-    // 2. Oyun bitti (Game Over) ekranındayken: Space ile TEKRAR OYNA, Enter ile ANA MENÜYE DÖN, X / ESC ile TAMAMEN OYUNDAN VE TAM EKRANDAN ÇIK
+    // 2. Oyun bitti (Game Over) ekranındayken: Space ile TEKRAR OYNA, Enter / ESC ile ANA MENÜYE DÖN, X ile TAMAMEN OYUNDAN VE TAM EKRANDAN ÇIK
     if (state.over) {
       if ((k === " " || k === "spacebar") && !isRepeat) {
         e.preventDefault();
         startGame();
         return;
       }
-      if (k === "enter" && !isRepeat) {
+      if ((k === "enter" || k === "escape" || k === "esc") && !isRepeat) {
         e.preventDefault();
         showStartScreen();
         return;
       }
-      if ((k === "x" || k === "escape" || k === "esc" || k === "h" || k === "backspace") && !isRepeat) {
+      if ((k === "x" || k === "backspace") && !isRepeat) {
         e.preventDefault();
         showStartScreen();
         exitFullscreen();
@@ -12146,8 +12161,13 @@ if (typeof window !== "undefined") {
       }
     }
 
-    // 3. Oyun duraklatılmışken (Pause): Enter ile Ana Menüye dön, X ile TAMAMEN OYUNDAN VE TAM EKRANDAN ÇIK, Space / P / ESC ile oyuna devam et
+    // 3. Oyun duraklatılmışken (Pause): Space / P / ESC ile oyuna devam et (Resume), Enter ile Ana Menüye dön, X ile TAMAMEN OYUNDAN VE TAM EKRANDAN ÇIK
     if (state.paused) {
+      if ((k === " " || k === "spacebar" || k === "p" || k === "escape" || k === "esc") && !isRepeat) {
+        e.preventDefault();
+        togglePause();
+        return;
+      }
       if (k === "enter" && !isRepeat) {
         e.preventDefault();
         showStartScreen();
@@ -12157,11 +12177,6 @@ if (typeof window !== "undefined") {
         e.preventDefault();
         showStartScreen();
         exitFullscreen();
-        return;
-      }
-      if ((k === " " || k === "spacebar" || k === "p" || k === "escape" || k === "esc") && !isRepeat) {
-        e.preventDefault();
-        togglePause();
         return;
       }
     }
@@ -12205,6 +12220,7 @@ if (typeof window !== "undefined") {
       // P veya ESC tuşu: OYUNU DURAKLAT (ESC tam ekrandan çıkmaz, oyunu duraklatır)
       if ((k === "p" || k === "escape" || k === "esc") && !isRepeat) {
         e.preventDefault();
+        e.stopPropagation();
         togglePause();
         return;
       }
@@ -12214,7 +12230,7 @@ if (typeof window !== "undefined") {
       const isMuted = audio.toggleMute();
       if (muteBtn) muteBtn.textContent = isMuted ? "🔇" : "🔊";
     }
-    if ((k === "h" || k === "f11") && !isRepeat) {
+    if (k === "f11" && !isRepeat) {
       toggleFullscreen();
     }
 
@@ -12453,96 +12469,73 @@ if (typeof window !== "undefined") {
     });
   }
 
-  // Menü Butonları
-  if (startBtn) {
-    startBtn.addEventListener("click", (e) => {
-      e.stopPropagation();
-      enterFullscreen();
-      startGame();
-    });
-  }
+  // Menü Butonları Bağlayıcıları (Dokunmatik ve Tıklama Korumalı)
+  const bindButton = (btn, action) => {
+    if (!btn) return;
+    const handler = (e) => {
+      if (e) {
+        if (e.stopPropagation) e.stopPropagation();
+        if (e.preventDefault && e.cancelable) e.preventDefault();
+      }
+      action();
+    };
+    btn.addEventListener("click", handler);
+    btn.addEventListener("pointerdown", handler);
+    btn.addEventListener("touchend", handler);
+  };
 
-  if (resumeBtn) {
-    resumeBtn.addEventListener("click", (e) => {
-      e.stopPropagation();
-      togglePause();
-    });
-  }
-
-  if (restartFromPauseBtn) {
-    restartFromPauseBtn.addEventListener("click", (e) => {
-      e.stopPropagation();
-      startGame();
-    });
-  }
-
-  if (respawnBtn) {
-    respawnBtn.addEventListener("click", (e) => {
-      e.stopPropagation();
-      startGame();
-    });
-  }
-
-  if (homeBtn) {
-    homeBtn.addEventListener("click", (e) => {
-      e.stopPropagation();
-      audio.ensureContext();
-      showStartScreen();
-    });
-  }
-
-  if (pauseHomeBtn) {
-    pauseHomeBtn.addEventListener("click", (e) => {
-      e.stopPropagation();
-      audio.ensureContext();
-      showStartScreen();
-    });
-  }
-
-  if (pauseQuitBtn) {
-    pauseQuitBtn.addEventListener("click", (e) => {
-      e.stopPropagation();
+  const bindQuit = (btn) => {
+    bindButton(btn, () => {
+      isAutoFullscreenEnabled = false;
       audio.ensureContext();
       showStartScreen();
       exitFullscreen();
     });
-  }
+  };
 
-  if (gameOverQuitBtn) {
-    gameOverQuitBtn.addEventListener("click", (e) => {
-      e.stopPropagation();
-      audio.ensureContext();
-      showStartScreen();
-      exitFullscreen();
-    });
-  }
+  bindButton(startBtn, () => {
+    enterFullscreen();
+    startGame();
+  });
 
-  if (endlessContinueBtn) {
-    endlessContinueBtn.addEventListener("click", (e) => {
-      e.stopPropagation();
-      audio.ensureContext();
-      state.paused = false;
-      hideModals();
-      audio.playBattleMusic(true);
-    });
-  }
+  bindQuit(startQuitBtn);
+  bindQuit(pauseQuitBtn);
+  bindQuit(gameOverQuitBtn);
+  bindQuit(endlessQuitBtn);
 
-  if (endlessFinishBtn) {
-    endlessFinishBtn.addEventListener("click", (e) => {
-      e.stopPropagation();
-      audio.ensureContext();
-      finishGameWithVictory();
-    });
-  }
+  bindButton(resumeBtn, () => {
+    togglePause();
+  });
 
-  if (endlessQuitBtn) {
-    endlessQuitBtn.addEventListener("click", (e) => {
-      e.stopPropagation();
-      audio.ensureContext();
-      showStartScreen();
-      exitFullscreen();
-    });
-  }
+  bindButton(restartFromPauseBtn, () => {
+    startGame();
+  });
+
+  bindButton(respawnBtn, () => {
+    startGame();
+  });
+
+  bindButton(homeBtn, () => {
+    audio.ensureContext();
+    showStartScreen();
+  });
+
+  bindButton(pauseHomeBtn, () => {
+    audio.ensureContext();
+    showStartScreen();
+  });
+
+  bindButton(endlessContinueBtn, () => {
+    audio.ensureContext();
+    state.paused = false;
+    hideModals();
+    audio.playBattleMusic(true);
+  });
+
+  bindButton(endlessFinishBtn, () => {
+    audio.ensureContext();
+    finishGameWithVictory();
+  });
 
   // Ses Ayarları Event Listener'ları (BGM & SFX Sliders + Mute Butonları)
   const onBgmChange = (e) => {
@@ -12723,20 +12716,23 @@ if (typeof window !== "undefined") {
   window.addEventListener("keydown", triggerMenuAudioOnInteraction, { passive: true });
   window.addEventListener("touchstart", triggerMenuAudioOnInteraction, { passive: true });
 
-  // İlk Kullanıcı Etkileşiminde (Tıklama, Tuş, Dokunma) ve Sayfa Yenilemelerinde Otomatik Tam Ekrana Geçiş
-  const handleAutoFullscreenOnInteraction = () => {
-    if (isAutoFullscreenEnabled) {
-      enterFullscreen();
+  // Tam ekran modunda ESC tuşunun browser tarafından tam ekrandan çıkmasını engelleme (Keyboard Lock API)
+  const handleFsChange = () => {
+    if (isFullscreen()) {
+      if (typeof navigator !== "undefined" && navigator.keyboard && navigator.keyboard.lock) {
+        navigator.keyboard.lock(["Escape"]).catch(() => {});
+      }
     }
   };
-  window.addEventListener("pointerdown", handleAutoFullscreenOnInteraction, { passive: true });
-  window.addEventListener("click", handleAutoFullscreenOnInteraction, { passive: true });
-  window.addEventListener("keydown", handleAutoFullscreenOnInteraction, { passive: true });
-  window.addEventListener("touchstart", handleAutoFullscreenOnInteraction, { passive: true });
+  if (typeof document !== "undefined") {
+    document.addEventListener("fullscreenchange", handleFsChange);
+    document.addEventListener("webkitfullscreenchange", handleFsChange);
+    document.addEventListener("mozfullscreenchange", handleFsChange);
+    document.addEventListener("MSFullscreenChange", handleFsChange);
+  }
 
   // Başlatma
   resize();
-  enterFullscreen();
   startEonIntro();
   updateHud();
   updateAudioSettingsUI();
