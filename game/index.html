@@ -455,15 +455,9 @@ button {
    Toast Bildirimleri
    ========================================================================== */
 .toast-feed {
-  position: fixed;
-  top: max(68px, calc(env(safe-area-inset-top) + 68px));
-  right: max(14px, env(safe-area-inset-right));
-  display: flex;
-  flex-direction: column;
-  gap: 6px;
-  z-index: 15;
-  pointer-events: none;
-  max-width: 300px;
+  display: none !important;
+  visibility: hidden !important;
+  pointer-events: none !important;
 }
 
 .toast-item {
@@ -1969,18 +1963,18 @@ button {
     display: none !important;
   }
 
-  /* Mobilde (iOS & Android) Sektör Değişim Bildirimi Kompakt Konumu */
+  /* Mobilde ve PC'de Mesaj Kartları (Toast Feed) Tamamen Gizlidir */
   .toast-feed {
-    top: max(58px, calc(env(safe-area-inset-top) + 58px));
-    right: max(10px, env(safe-area-inset-right));
-    max-width: 240px;
+    display: none !important;
+    visibility: hidden !important;
+    pointer-events: none !important;
   }
 }
 
 .is-touch-device .toast-feed {
-  top: max(58px, calc(env(safe-area-inset-top) + 58px));
-  right: max(10px, env(safe-area-inset-right));
-  max-width: 240px;
+  display: none !important;
+  visibility: hidden !important;
+  pointer-events: none !important;
 }
 
 /* ==========================================================================
@@ -11404,36 +11398,13 @@ const upgradeManager = new UpgradeManager((perk) => {
 player.upgradeManager = upgradeManager;
 
 function showToast(perk) {
-  // Ekranı sade ve temiz tutmak için perk toast bildirimleri gösterilmez (mobildeki gibi temiz arayüz)
+  // Perk ve seviye bildirimleri tamamen kaldırıldı
   return;
 }
 
 function showBiomeBanner(biome) {
-  if (!toastFeed || !biome) return;
-
-  while (toastFeed.children.length > 0) {
-    toastFeed.lastElementChild.remove();
-  }
-
-  const banner = document.createElement("div");
-  banner.className = "toast-item biome-banner";
-  banner.style.borderColor = biome.accentColor || "#00f0ff";
-  banner.style.boxShadow = `0 0 24px ${biome.accentColor || "#00f0ff"}66`;
-  const shipName = player.currentForm ? player.currentForm.name : "Viper";
-  const bonus = player.currentForm && player.currentForm.bonusText ? ` (${player.currentForm.bonusText})` : "";
-  banner.innerHTML = `
-    <span class="toast-icon" style="background:${biome.accentColor || '#00f0ff'}22; color:${biome.accentColor || '#00f0ff'}; font-size:22px;">🚀</span>
-    <div class="toast-info">
-      <strong style="color:${biome.accentColor || '#00f0ff'}; font-size:13px; letter-spacing:0.5px;">SECTOR WARP: ${biome.name.toUpperCase()}!</strong>
-      <span style="color:#fff; font-size:10px; font-weight:700;">Ship: ${shipName}${bonus}</span>
-    </div>
-  `;
-  toastFeed.prepend(banner);
-
-  setTimeout(() => {
-    banner.classList.add("fade-out");
-    setTimeout(() => banner.remove(), 400);
-  }, 3800);
+  // Sektör geçiş mesajları ve tüm toast bildirimleri hem mobilde hem bilgisayarda tamamen kaldırıldı
+  return;
 }
 
 function showEndlessVictoryModal() {
