@@ -456,14 +456,14 @@ button {
    ========================================================================== */
 .toast-feed {
   position: fixed;
-  top: max(60px, calc(env(safe-area-inset-top) + 60px));
+  top: max(68px, calc(env(safe-area-inset-top) + 68px));
   right: max(14px, env(safe-area-inset-right));
   display: flex;
   flex-direction: column;
   gap: 6px;
   z-index: 15;
   pointer-events: none;
-  max-width: 280px;
+  max-width: 300px;
 }
 
 .toast-item {
@@ -1969,19 +1969,18 @@ button {
     display: none !important;
   }
 
-  /* Mobilde (iOS & Android) Sağdaki Mesaj Kartları (Toast Feed) Gizlenir */
+  /* Mobilde (iOS & Android) Sektör Değişim Bildirimi Kompakt Konumu */
   .toast-feed {
-    display: none !important;
-    visibility: hidden !important;
-    pointer-events: none !important;
+    top: max(58px, calc(env(safe-area-inset-top) + 58px));
+    right: max(10px, env(safe-area-inset-right));
+    max-width: 240px;
   }
 }
 
-/* Dokunmatik Cihazlarda da Toast Feed Gizlenir */
 .is-touch-device .toast-feed {
-  display: none !important;
-  visibility: hidden !important;
-  pointer-events: none !important;
+  top: max(58px, calc(env(safe-area-inset-top) + 58px));
+  right: max(10px, env(safe-area-inset-right));
+  max-width: 240px;
 }
 
 /* ==========================================================================
@@ -11405,54 +11404,28 @@ const upgradeManager = new UpgradeManager((perk) => {
 player.upgradeManager = upgradeManager;
 
 function showToast(perk) {
-  if (!toastFeed) return;
-  // Mobilde (iOS & Android) sağ taraftaki mesaj kartları gösterilmez
-  const isTouchMobile = typeof window !== "undefined" && (
-    ('ontouchstart' in window) ||
-    (navigator.maxTouchPoints > 0) ||
-    /Android|iPhone|iPad|iPod|Mobile/i.test(navigator.userAgent || "")
-  );
-  if (isTouchMobile) return;
-
-  while (toastFeed.children.length >= 3) {
-    toastFeed.lastElementChild.remove();
-  }
-  const toast = document.createElement("div");
-  toast.className = "toast-item";
-  toast.innerHTML = `
-    <span class="toast-icon">${perk.icon}</span>
-    <div class="toast-info">
-      <strong>LEVEL ${perk.level} · ${perk.title}</strong>
-      <span>${perk.desc}</span>
-    </div>
-  `;
-  toastFeed.prepend(toast);
-
-  setTimeout(() => {
-    toast.classList.add("fade-out");
-    setTimeout(() => toast.remove(), 300);
-  }, 2800);
+  // Ekranı sade ve temiz tutmak için perk toast bildirimleri gösterilmez (mobildeki gibi temiz arayüz)
+  return;
 }
 
 function showBiomeBanner(biome) {
-  if (!toastFeed) return;
-  // Mobilde (iOS & Android) sağ taraftaki mesaj kartları gösterilmez
-  const isTouchMobile = typeof window !== "undefined" && (
-    ('ontouchstart' in window) ||
-    (navigator.maxTouchPoints > 0) ||
-    /Android|iPhone|iPad|iPod|Mobile/i.test(navigator.userAgent || "")
-  );
-  if (isTouchMobile) return;
+  if (!toastFeed || !biome) return;
+
+  while (toastFeed.children.length > 0) {
+    toastFeed.lastElementChild.remove();
+  }
 
   const banner = document.createElement("div");
   banner.className = "toast-item biome-banner";
-  banner.style.borderColor = biome.accentColor;
-  banner.style.boxShadow = `0 0 25px ${biome.accentColor}`;
+  banner.style.borderColor = biome.accentColor || "#00f0ff";
+  banner.style.boxShadow = `0 0 24px ${biome.accentColor || "#00f0ff"}66`;
+  const shipName = player.currentForm ? player.currentForm.name : "Viper";
+  const bonus = player.currentForm && player.currentForm.bonusText ? ` (${player.currentForm.bonusText})` : "";
   banner.innerHTML = `
-    <span class="toast-icon" style="background:${biome.accentColor}22; color:${biome.accentColor}; font-size:24px;">🚀</span>
+    <span class="toast-icon" style="background:${biome.accentColor || '#00f0ff'}22; color:${biome.accentColor || '#00f0ff'}; font-size:22px;">🚀</span>
     <div class="toast-info">
-      <strong style="color:${biome.accentColor}; font-size:14px;">SECTOR WARP: ${biome.name}!</strong>
-      <span style="color:#fff; font-weight:700;">Ship: ${player.currentForm.name} (${player.currentForm.bonusText})</span>
+      <strong style="color:${biome.accentColor || '#00f0ff'}; font-size:13px; letter-spacing:0.5px;">SECTOR WARP: ${biome.name.toUpperCase()}!</strong>
+      <span style="color:#fff; font-size:10px; font-weight:700;">Ship: ${shipName}${bonus}</span>
     </div>
   `;
   toastFeed.prepend(banner);
@@ -11460,7 +11433,7 @@ function showBiomeBanner(biome) {
   setTimeout(() => {
     banner.classList.add("fade-out");
     setTimeout(() => banner.remove(), 400);
-  }, 4000);
+  }, 3800);
 }
 
 function showEndlessVictoryModal() {
